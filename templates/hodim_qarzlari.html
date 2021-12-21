@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/table/datatable/datatables.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/table/datatable/dt-global_style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/table/datatable/custom_dt_multiple_tables.css' %}">
+
+{% endblock css %}
+
+
+{% block content %}
+    <!--  BEGIN MAIN CONTAINER  -->
+    <!-- <div class="main-container" id="container"> -->
+        <!--  BEGIN CONTENT AREA  -->
+        <div id="content" class="main-content">
+            <div class="layout-px-spacing">
+                
+                <div class="row layout-top-spacing">
+                    <div class="col-xl-12 col-lg-8 col-sm-12  layout-spacing">
+                        <div class="widget-content widget-content-area br-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <h4>{{hodim.toliq_ism_ol}}</h4>
+                                </div>
+                            </div>
+                            <div class="table-responsive mb-4 mt-4">
+                                <table class="multi-table table table-hover" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left;">#</th>
+                                            <th style="text-align: left;">Qarz(so'm)</th>
+                                            <th style="text-align: left;">Qarz($)</th>
+                                            <th style="text-align: left;">Izox</th>
+                                            <th style="text-align: left;">Sana</th>
+                                            <th style="text-align: left;">To'lash</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for qarz in qarzlari %}
+                                        <tr>
+                                            <td style="text-align: left;">{{ forloop.counter}}</td>
+                                            <td style="text-align: left;">{{ qarz.qancha_som }} so'm</td>
+                                            <td style="text-align: left;">{{ qarz.qancha_dol }} $</td>
+                                            <td style="text-align: left;">{{ qarz.izox }}</td>
+                                            <td style="text-align: left;">{{ qarz.qachon }}</td>
+                                            <td style="text-align: left;"><button class="btn btn-primary" data-toggle="modal" data-target="#Qarzni_olish_Modal_{{qarz.id}}">To'lash</button></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th style="text-align: left;">#</th>
+                                            <th style="text-align: left;">Qarz(so'm)</th>
+                                            <th style="text-align: left;">Qarz($)</th>
+                                            <th style="text-align: left;">Izox</th>
+                                            <th style="text-align: left;">Sana</th>
+                                            <th style="text-align: left;">To'lash</th>
+                                        </tr>
+                                    </tfoot>
+                                    
+                                </table>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+        </div>
+
+
+        <!-- Qarzni olish Modal -->
+        {% for qarz in hodim.hodimqarz_set.all %}
+        <div class="modal fade" id="Qarzni_olish_Modal_{{qarz.id}}" tabindex="-1" aria-labelledby="Qarzni_olish_ModalLabel_{{qarz.id}}" aria-hidden="true">
+            <div class="modal-dialog">
+            <form action="{% url 'hodim-qarz' %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="Qarzmi_olish_ModalLabel_{{qarz.id}}">Qarzni olish</h5>
+                
+                    </div>
+                    <div class="modal-body">
+                        <input class="form-control" type="number" name="qancha_som" placeholder="Qancha (so'm)"><br>
+                        <input class="form-control" type="number" name="qancha_dol" placeholder="Qancha (dollar)"><br>
+                        <textarea class="form-control" name="izox" id="" cols="30" rows="5" placeholder="Izox kiriting"></textarea>
+                        <input type="hidden" name="qarz_id" value="{{qarz.id}}" >
+                        <input type="hidden" name="hodim_id" value="{{hodim.id}}" >
+                        <input type="hidden" name="uslub" value="tolash" id="">
+                        
+                    </div>
+                    <div class="modal-footer">
+                        
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Yopish</button>
+                    <button type="submit" class="btn btn-primary">Saqlash</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+        {% endfor %}
+
+    <!-- Succses Modal -->
+    <div class="modal fade" id="MessageModal" data-backdrop="static" tabindex="-1" aria-labelledby="MessageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="ChiqimModalLabel" style="color: green;"></h5>
+            
+                </div>
+                <div class="modal-body">
+                    {% for message in messages %}
+                        <h4>{{message}}</h4>
+                    {% endfor %}
+                    
+                </div>
+                <div class="modal-footer">
+                    
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Yopish</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!--  END CONTENT AREA  -->
+    <!-- </div> -->
+    <!-- END MAIN CONTAINER -->
+{% endblock content %}
+
+{% block js %}
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="{% static 'plugins/table/datatable/datatables.js' %}"></script>
+        <!--  BEGIN CUSTOM SCRIPTS FILE  -->
+        <script src="{% static 'assets/js/scrollspyNav.js' %}"></script>
+
+        
+   <script>
+        $(document).ready(function() {
+            $('table.multi-table').DataTable({
+                "oLanguage": {
+                    "oPaginate": { "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>', "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>' },
+                    "sInfo": "Showing page _PAGE_ of _PAGES_",
+                    "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                    "sSearchPlaceholder": "Search...",
+                   "sLengthMenu": "Results :  _MENU_",
+                },
+                "stripeClasses": [],
+                "lengthMenu": [7, 10, 20, 50],
+                "pageLength": 7,
+                drawCallback: function () {
+                    $('.t-dot').tooltip({ template: '<div class="tooltip status" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>' })
+                    $('.dataTables_wrapper table').removeClass('table-striped');
+                }
+            });
+        } );
+    </script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+
+    {% if messages %}
+    <script>
+        $(document).ready(function() {
+            $('#MessageModal').modal({
+                show: true
+            });
+        });
+    </script>
+    {% endif %}
+   
+{% endblock js %}

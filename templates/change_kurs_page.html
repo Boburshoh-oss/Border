@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title>Nasiyachi | Bordo</title>
+{% endblock title %}
+{% block css %}
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/forms/theme-checkbox-radio.css' %}">
+    <link href="{% static 'plugins/jquery-ui/jquery-ui.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'assets/css/apps/contacts.css' %}" rel="stylesheet" type="text/css"/>
+    <!-- END PAGE LEVEL STYLES -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="{% static 'assets/css/scrollspyNav.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'plugins/animate/animate.css' %}" rel="stylesheet" type="text/css"/>
+    <script src="{% static 'plugins/sweetalerts/promise-polyfill.js' %}"></script>
+    <link href="{% static 'plugins/sweetalerts/sweetalert2.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'plugins/sweetalerts/sweetalert.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'assets/css/components/custom-sweetalert.css' %}" rel="stylesheet" type="text/css"/>
+    <!-- END THEME GLOBAL STYLES -->
+{% endblock css %}
+{% block content %}
+    <!--  BEGIN CONTENT AREA  -->
+    <div id="content" class="main-content">
+    <div class="layout-px-spacing">
+        <p></p>
+        <form action="{% url 'kurs_page' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="kurs" value="{{ kurs }}">
+            <button type="submit" class="btn btn-info">O'zgartirish</button>
+        </form>
+    </div>
+{% endblock content %}
+{% block js %}
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+    <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'assets/js/apps/contact.js' %}"></script>
+    <script src="{% static 'plugins/highlight/highlight.pack.js' %}"></script>
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+    <!-- BEGIN THEME GLOBAL STYLE -->
+    <script src="{% static 'assets/js/scrollspyNav.js' %}"></script>
+    <script src="{% static 'plugins/sweetalerts/sweetalert2.min.js' %}"></script>
+    <script src="{% static 'plugins/sweetalerts/custom-sweetalert.js' %}"></script>
+    <!-- END THEME GLOBAL STYLE -->
+{% endblock js %}

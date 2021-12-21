@@ -1,0 +1,467 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}
+    <title>Filial | Bordo</title>
+{% endblock title %}
+{% block css %}
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    <link href="{% static 'plugins/apex/apexcharts.css'%}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/widgets/modules-widgets.css'%}">
+    <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="{% static 'plugins/flatpickr/flatpickr.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/noUiSlider/nouislider.min.css'%}" rel="stylesheet" type="text/css">
+    <!-- END THEME GLOBAL STYLES -->
+
+    <!--  BEGIN CUSTOM STYLE FILE  -->
+    <link href="{% static 'assets/css/scrollspyNav.css'%}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'plugins/flatpickr/custom-flatpickr.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/noUiSlider/custom-nouiSlider.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/bootstrap-range-Slider/bootstrap-slider.css'%}" rel="stylesheet" type="text/css">
+    <!--  END CUSTOM STYLE FILE  -->
+        <link rel="stylesheet" type="text/css" href="{% static 'plugins/table/datatable/datatables.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/table/datatable/custom_dt_html5.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/table/datatable/dt-global_style.css'%}">
+{% endblock css %}
+{% block content %}
+        <!--  BEGIN CONTENT AREA  -->
+        <div id="content" class="main-content">
+            <div class="layout-px-spacing">
+                <div class="row sales layout-top-spacing">
+                    <div class="col-12 layout-spacing">
+                        <div class="widget widget-chart-one">
+                            <div class="widget-heading">
+                                <h5>Kirim</h5>
+                            </div>
+
+                            <div class="widget-content">
+                                <div class="tabs tab-content">
+                                    <div id="content_1" class="tabcontent">
+                                        <div id="revenueMonthly1"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 layout-spacing">
+
+                        <div class="widget-content widget-content-area br-6">
+                            <div class="widget-content pb-2">
+                                <div class="row">
+                                    <div class="form-group mb-0 col-5">
+                                        <input id="rangeCalendarFlatpickr" class="form-control flatpickr flatpickr-input active" type="text" placeholder="Sanani tanlang">
+                                    </div>
+                                    <div class="form-group mb-0 col-4">
+                                        <span class="form-control flatpickr flatpickr-input text-center" id="som">Jami (so`m) : {{ som }}</span>
+                                    </div>
+                                    <div class="form-group mb-0 col-3">
+                                        <span class="form-control flatpickr flatpickr-input text-center" id="dollar">Jami (dollar) : {{ dollar }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="widget-content">
+                                <div class="table-responsive mb-4 mt-4">
+                                    <table class="table" id="html5-extension">
+                                        <thead>
+                                            <tr>
+                                                <th><div class="th-content">№</div></th>
+                                                <th><div class="th-content">Filial</div></th>
+                                                <th><div class="th-content">Naqd So'm</div></th>
+                                                <th><div class="th-content">Naqd Dollar</div></th>
+                                                <th><div class="th-content">Plastik</div></th>
+                                                <th><div class="th-content">Nasiya So'm</div></th>
+                                                <th><div class="th-content">Nasiya Dollar</div></th>
+                                                <th><div class="th-content">Transfer</div></th>
+                                                <th><div class="th-content">Skidka So'm</div></th>
+                                                <th><div class="th-content">Skidka Dollar</div></th>
+                                                <th><div class="th-content">To'landi (so'm)</div></th>
+                                                <th><div class="th-content">To'landi (dollar)</div></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="fil">
+                                            {% for filial in filials %}
+                                                <tr>
+                                                    <td><div class="td-content">{{ forloop.counter }}</div></td>
+                                                    <th><a href="{% url  'filialinfo' filial.id %}"><div class="th-content">{{ filial.name }}</div></a></th>
+                                                    <td><div class="td-content">{{ filial.naqd_som|intcomma  }}</div></td>
+                                                    <td><div class="td-content">{{ filial.naqd_dollar }}</div></td>
+                                                    <td><div class="td-content">{{ filial.plastik }}</div></td>
+                                                    <td><div class="td-content">{{ filial.nasiya_som }}</div></td>
+                                                    <td><div class="td-content">{{ filial.nasiya_dollar }}</div></td>
+                                                    <td><div class="td-content">{{ filial.transfer }}</div></td>
+                                                    <td><div class="td-content">{{ filial.skidka_som }}</div></td>
+                                                    <td><div class="td-content">{{ filial.skidka_dollar }}</div></td>
+                                                    <td><div class="td-content">{{ filial.pay_som }}</div></td>
+                                                    <td><div class="td-content">{{ filial.pay_dollar }}</div></td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock content %}
+{% block js %}
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    <script src="{% static 'plugins/apex/apexcharts.min.js'%}"></script>
+{#    <script src="{% static 'assets/js/widgets/modules-widgets.js'%}"></script>#}
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    <script src="{% static 'plugins/highlight/highlight.pack.js'%}"></script>
+
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="{% static 'assets/js/scrollspyNav.js'%}"></script>
+    <script src="{% static 'plugins/flatpickr/flatpickr.js'%}"></script>
+    <script src="{% static 'plugins/noUiSlider/nouislider.min.js'%}"></script>
+
+    <script src="{% static 'plugins/flatpickr/custom-flatpickr.js'%}"></script>
+    <script src="{% static 'plugins/noUiSlider/custom-nouiSlider.js'%}"></script>
+    <script src="{% static 'plugins/bootstrap-range-Slider/bootstrap-rangeSlider.js'%}"></script>
+        <!-- BEGIN PAGE LEVEL CUSTOM SCRIPTS -->
+    <script src="{% static 'plugins/table/datatable/datatables.js'%}"></script>
+    <!-- NOTE TO Use Copy CSV Excel PDF Print Options You Must Include These Files  -->
+    <script src="{% static 'plugins/table/datatable/button-ext/dataTables.buttons.min.js'%}"></script>
+    <script src="{% static 'plugins/table/datatable/button-ext/jszip.min.js'%}"></script>
+    <script src="{% static 'plugins/table/datatable/button-ext/buttons.html5.min.js'%}"></script>
+    <script src="{% static 'plugins/table/datatable/button-ext/buttons.print.min.js'%}"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script>
+    $(document).ready(function () {
+        $.ajax({
+            type: 'get',
+            url: '/filialkirim/',
+            success: function (data) {
+                var options1 = {
+                    chart: {
+                        fontFamily: 'Nunito, sans-serif',
+                        height: 365,
+                        type: 'area',
+                        zoom: {
+                            enabled: false
+                        },
+                        dropShadow: {
+                            enabled: true,
+                            opacity: 0.3,
+                            blur: 5,
+                            left: -7,
+                            top: 22
+                        },
+                        toolbar: {
+                            show: false
+                        },
+                        events: {
+                            mounted: function (ctx, config) {
+                                const highest1 = ctx.getHighestValueInSeries(0);
+                                const highest2 = ctx.getHighestValueInSeries(1);
+                                const highest3 = ctx.getHighestValueInSeries(2);
+
+                                ctx.addPointAnnotation({
+                                    x: new Date(ctx.w.globals.seriesX[0][ctx.w.globals.series[0].indexOf(highest1)]).getTime(),
+                                    y: highest1,
+                                    label: {
+                                        style: {
+                                            cssClass: 'd-none'
+                                        }
+                                    },
+                                    customSVG: {
+                                        SVG: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="#1b55e2" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg>',
+                                        cssClass: undefined,
+                                        offsetX: -8,
+                                        offsetY: 5
+                                    }
+                                })
+
+                                ctx.addPointAnnotation({
+                                    x: new Date(ctx.w.globals.seriesX[1][ctx.w.globals.series[1].indexOf(highest2)]).getTime(),
+                                    y: highest2,
+                                    label: {
+                                        style: {
+                                            cssClass: 'd-none'
+                                        }
+                                    },
+                                    customSVG: {
+                                        SVG: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="#e7515a" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg>',
+                                        cssClass: undefined,
+                                        offsetX: -8,
+                                        offsetY: 5
+                                    }
+                                })
+
+                                ctx.addPointAnnotation({
+                                    x: new Date(ctx.w.globals.seriesX[2][ctx.w.globals.series[2].indexOf(highest3)]).getTime(),
+                                    y: highest3,
+                                    label: {
+                                        style: {
+                                            cssClass: 'd-none'
+                                        }
+                                    },
+                                    customSVG: {
+                                        SVG: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="#e7515a" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg>',
+                                        cssClass: undefined,
+                                        offsetX: -8,
+                                        offsetY: 5
+                                    }
+                                })
+                            },
+                        }
+                    },
+                    colors: ['#1b55e2', '#e7515a', '#e75fff'],
+                    dataLabels: {
+                        enabled: false
+                    },
+                    markers: {
+                        discrete: [{
+                            seriesIndex: 0,
+                            dataPointIndex: 7,
+                            fillColor: '#000',
+                            strokeColor: '#000',
+                            size: 5
+                        }, {
+                            seriesIndex: 2,
+                            dataPointIndex: 11,
+                            fillColor: '#000',
+                            strokeColor: '#000',
+                            size: 4
+                        }, {
+                            seriesIndex: 2,
+                            dataPointIndex: 11,
+                            fillColor: '#000',
+                            strokeColor: '#000',
+                            size: 4
+                        }]
+                    },
+                    stroke: {
+                        show: true,
+                        curve: 'smooth',
+                        width: 2,
+                        lineCap: 'square'
+                    },
+                    series: [{
+                        name: 'Fil1',
+                        data: data['filial1']
+                    }, {
+                        name: 'Fil2',
+                        data: data['filial2']
+                    }, {
+                        name: 'Fil3',
+                        data: data['filial3']
+                    }, {
+                        name: 'Fil4',
+                        data: data['filial4']
+                    }, {
+                        name: 'Fil5',
+                        data: data['filial5']
+                    }
+                    ],
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    xaxis: {
+                        axisBorder: {
+                            show: false
+                        },
+                        axisTicks: {
+                            show: false
+                        },
+                        crosshairs: {
+                            show: true
+                        },
+                        labels: {
+                            offsetX: 0,
+                            offsetY: 5,
+                            style: {
+                                fontSize: '12px',
+                                fontFamily: 'Nunito, sans-serif',
+                                cssClass: 'apexcharts-xaxis-title',
+                            },
+                        }
+                    },
+                    yaxis: {
+                        labels: {
+                            formatter: function (value, index) {
+                                return (value / 1000000) + 'M'
+                            },
+                            offsetX: -22,
+                            offsetY: 0,
+                            style: {
+                                fontSize: '12px',
+                                fontFamily: 'Nunito, sans-serif',
+                                cssClass: 'apexcharts-yaxis-title',
+                            },
+                        }
+                    },
+                    grid: {
+                        borderColor: '#e0e6ed',
+                        strokeDashArray: 5,
+                        xaxis: {
+                            lines: {
+                                show: true
+                            }
+                        },
+                        yaxis: {
+                            lines: {
+                                show: false,
+                            }
+                        },
+                        padding: {
+                            top: 0,
+                            right: 0,
+                            bottom: 0,
+                            left: -10
+                        },
+                    },
+                    legend: {
+                        position: 'top',
+                        horizontalAlign: 'right',
+                        offsetY: -50,
+                        fontSize: '16px',
+                        fontFamily: 'Nunito, sans-serif',
+                        markers: {
+                            width: 10,
+                            height: 10,
+                            strokeWidth: 0,
+                            strokeColor: '#fff',
+                            fillColors: undefined,
+                            radius: 12,
+                            onClick: undefined,
+                            offsetX: 0,
+                            offsetY: 0
+                        },
+                        itemMargin: {
+                            horizontal: 0,
+                            vertical: 20
+                        }
+                    },
+                    tooltip: {
+                        theme: 'dark',
+                        marker: {
+                            show: true,
+                        },
+                        x: {
+                            show: false,
+                        }
+                    },
+                    fill: {
+                        type: "gradient",
+                        gradient: {
+                            type: "vertical",
+                            shadeIntensity: 1,
+                            inverseColors: !1,
+                            opacityFrom: .28,
+                            opacityTo: .05,
+                            stops: [45, 100]
+                        }
+                    },
+                    responsive: [{
+                        breakpoint: 575,
+                        options: {
+                            legend: {
+                                offsetY: -30,
+                            },
+                        },
+                    }]
+                }
+                var chart1 = new ApexCharts(
+                    document.querySelector("#revenueMonthly1"),
+                    options1
+                );
+                chart1.render()
+            }
+        });
+        
+    });
+    function getCSRFToken() {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            if (cookie.substring(0, 10) == ('csrftoken' + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(10));
+                break;
+            }
+            }
+        }
+      return cookieValue;
+    }
+    //$(document).ready(function(){
+        $('#rangeCalendarFlatpickr').on("change", function (){
+           
+            var csrfToken = getCSRFToken();
+            var date1 = $('#rangeCalendarFlatpickr').val().slice(0, 10);
+            var date2 = $('#rangeCalendarFlatpickr').val().slice(14, 24);
+            var dt = JSON.stringify({
+                date1:date1,
+                date2:date2,
+            })
+            
+            $.ajax({
+                headers: { "X-CSRFToken": csrfToken },
+                type: "POST",
+                url: "{% url 'datahome' %}",
+                data: dt,
+                success: function(data11) {
+                    var filials = data11['filials'];
+                    $("#fil").empty();
+                    var som = 0;
+                    var dollar = 0;
+                    var i = 1;
+                    for (dt of filials) {
+                        var tr = `<tr>
+                                    <td><div class="td-content customer-name">` + i + `</div></td>
+                                    <td><div class="td-content customer-name">` + dt.name + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.naqd_som|intcomma ) + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.naqd_dollar) + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.plastik) + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.nasiya_som|intcomma ) + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.nasiya_dollar) + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.transfer) + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.skidka_som|intcomma ) + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.skidka_dollar) + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.pay_som|intcomma ) + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.pay_dollar) + `</div></td>
+                                </tr>`;
+                        i++;
+                        $("#fil").append(tr);
+                        som += dt.naqd_som+dt.plastik+dt.nasiya_som + dt.transfer+ dt.skidka_som
+                        dollar += dt.naqd_dollar+dt.nasiya_dollar+dt.skidka_dollar
+                    }
+                    $('#som').empty();
+                    $('#som').append('Jami (so`m) : ', som|intcomma );
+                    $('#dollar').empty();
+                    $('#dollar').append('Jami (dollar) : ', dollar);
+                }
+            });
+        });
+    //});
+
+    $('#html5-extension').DataTable( {
+            dom: '<"row"<"col-md-12"<"row"<"col-md-6"B><"col-md-6"f> > ><"col-md-12"rt> <"col-md-12"<"row"<"col-md-5"i><"col-md-7"p>>> >',
+            buttons: {
+                buttons: [
+                    { extend: 'copy', className: 'btn' },
+                    { extend: 'csv', className: 'btn' },
+                    { extend: 'excel', className: 'btn' },
+                    { extend: 'print', className: 'btn' }
+                ]
+            },
+            "oLanguage": {
+                "oPaginate": { "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>', "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>' },
+                "sInfo": " _PAGE_ / _PAGES_",
+                "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                "sSearchPlaceholder": "Izlash",
+               "sLengthMenu": "Results :  _MENU_",
+            },
+            "stripeClasses": [],
+            "lengthMenu": [10, 20, 50, 100],
+            "pageLength": 15
+        } );
+    </script>
+{% endblock js %}

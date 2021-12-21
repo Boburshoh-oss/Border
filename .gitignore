@@ -1,0 +1,10 @@
+__pycache__/
+/venv
+/.vscode
+db.sqlite3
+db.sqlite3-journal
+media
+*.mo
+.idea
+/api/migrations
+/main/migrations

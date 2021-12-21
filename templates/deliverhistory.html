@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title>Bosh Sahifa | Bordo</title>
+{% endblock title %}
+{% block css %}
+    <link href="{% static 'assets/css/scrollspyNav.css' %}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/forms/theme-checkbox-radio.css' %}">
+    <link href="{% static 'assets/css/tables/table-basic.css' %}" rel="stylesheet" type="text/css"/>
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="{% static 'plugins/flatpickr/flatpickr.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/noUiSlider/nouislider.min.css' %}" rel="stylesheet" type="text/css">
+    <!-- END THEME GLOBAL STYLES -->
+    <link href="{% static 'plugins/flatpickr/custom-flatpickr.css' %}" rel="stylesheet" type="text/css">
+
+{% endblock css %}
+{% block content %}
+    <!--  BEGIN CONTENT AREA  -->
+    <div id="content" class="main-content">
+        <div class="container">
+            {#                <div class="loyout-px-spacing">#}
+            <div class="row layout-top-spacing" style="width: 100%;">
+                <div class="col-12 layout-spacing">
+                    <div class="statbox widget box box-shadow p-2">
+                        <div class="row">
+                            <div class="col-6">
+                                <input id="rangeCalendarFlatpickr" class="form-control flatpickr flatpickr-input active"
+                                       type="text" placeholder="Sanani tanlang">
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-success" style="float: right" data-toggle="modal"
+                                        data-target="#modal-center">Qarz to'lash
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div id="tableSimple" class="col-lg-12 col-12 layout-spacing">
+                        <div class="statbox widget box box-shadow">
+                            <div class="widget-header">
+                                <div class="row">
+                                    <div class="col-4 mt-3">
+                                        <h6>Qarz Tarix</h6>
+                                    </div>
+                                    <div class="col-4 mt-3">
+                                        <h6><span style="float: right">So'm : <a id="dsom">{{ dsom }}</a></span></h6>
+                                    </div>
+                                    <div class="col-4 mt-3">
+                                        <h6><span style="float: right">Dollar : <a id="ddollar">{{ ddollar }}</a></span>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget-content widget-content-area">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered mb-4">
+                                        <thead>
+                                        <tr>
+                                            <th>№</th>
+                                            <th>So'm</th>
+                                            <th>Dollar</th>
+                                            <th>Sana</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="debt">
+                                        {% for d in debts %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ d.som }}</td>
+                                                <td>{{ d.dollar|floatformat:2 }}</td>
+
+                                                <td>{{ d.date }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div id="tableSimple" class="col-lg-12 col-12 layout-spacing">
+                        <div class="statbox widget box box-shadow">
+                            <div class="widget-header">
+                                <div class="row">
+                                    <div class="col-4 mt-3">
+                                        <h6>To'lov Tarix</h6>
+                                    </div>
+                                    <div class="col-4 mt-3">
+                                        <h6><span style="float: right">So'm : <a id="psom">{{ psom }}</a></span></h6>
+                                    </div>
+                                    <div class="col-4 mt-3">
+                                        <h6><span style="float: right">Dollar : <a id="pdollar">{{ pdollar }}</a></span>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget-content widget-content-area">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered mb-4">
+                                        <thead>
+                                        <tr>
+                                            <th>№</th>
+                                            <th>So'm</th>
+                                            <th>Dollar</th>
+                                            <th>To'lov usuli</th>
+                                            <th>Sana</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="pay">
+                                        {% for p in pays %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ p.som }}</td>
+                                                <td>{{ p.dollar }}</td>
+                                                <td>{{ p.turi }}</td>
+                                                <td>{{ p.date }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#                </div>#}
+        </div>
+        <!-- Modal -->
+        <div class="modal center-modal fade" id="modal-center" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">To'lov qabul qilish</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'add_tolov' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{ d_id }}" name="deliver_id">
+                            <div class="form-group">
+                                <label>So'm</label>
+                                <input type="number" value="0" name="som" class="form-control" step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label>Dollar</label>
+                                <input type="number" value="0" name="dollor" class="form-control" step="0.01">
+                            </div>
+                            <div class="form-group form-group-float">
+                                <label class="form-group-float-label">To'lov usuli</label>
+                                <select class="form-control" name="turi">
+                                    <option value="Naqd" selected>Naqd</option>
+                                    <option value="Plastik">Plastik</option>
+                                    <option value="Pul o'tkazish">Pul o'tkazish</option>
+                                </select>
+                            </div>
+
+                            <button type="button" class="btn btn-rounded btn-secondary" data-dismiss="modal">Yopish
+                            </button>
+                            <input type="submit" class="btn btn-rounded btn-primary float-right" value="Saqlash">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal -->
+    </div>
+
+{% endblock content %}
+{% block js %}
+    <script src="{% static 'plugins/highlight/highlight.pack.js' %}"></script>
+    <script src="{% static 'plugins/flatpickr/custom-flatpickr.js' %}"></script>
+    <script src="{% static 'plugins/noUiSlider/custom-nouiSlider.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-range-Slider/bootstrap-rangeSlider.js' %}"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+
+    <script src="{% static 'assets/js/scrollspyNav.js' %}"></script>
+    <script>
+        checkall('todoAll', 'todochkbox');
+        $('[data-toggle="tooltip"]').tooltip()
+    </script>
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="{% static 'plugins/flatpickr/flatpickr.js' %}"></script>
+    <script src="{% static 'plugins/flatpickr/custom-flatpickr.js' %}"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script>
+        function getCSRFToken() {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    if (cookie.substring(0, 10) == ('csrftoken' + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(10));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        $(document).ready(function () {
+            $('#rangeCalendarFlatpickr').on("change", function () {
+                var csrfToken = getCSRFToken();
+                var date1 = $('#rangeCalendarFlatpickr').val().slice(0, 10);
+                var date2 = $('#rangeCalendarFlatpickr').val().slice(14, 24);
+                var dt = JSON.stringify({
+                    date1: date1,
+                    date2: date2,
+                    d_id:{{ d_id }},
+                })
+                $.ajax({
+                    headers: {"X-CSRFToken": csrfToken},
+                    type: "POST",
+                    url: "{% url 'nasiyatarix' %}",
+                    data: dt,
+                    success: function (data) {
+                        var dsom = data['dsom'];
+                        var ddollar = data['ddollar'];
+                        var psom = data['psom'];
+                        var pdollar = data['pdollar'];
+                        var debts = data['debts'];
+                        var pays = data['pays'];
+                        $("#dsom").empty();
+                        $("#dsom").append(dsom);
+                        $("#ddollar").empty();
+                        $("#ddollar").append(ddollar);
+                        $("#psom").empty();
+                        $("#psom").append(psom);
+                        $("#pdollar").empty();
+                        $("#pdollar").append(pdollar);
+                        $("#debt").empty();
+                        $("#pay").empty();
+                        var i = 1;
+                        for (dt of debts) {
+                            var tr = `<tr>
+                            <td><div>` + i + `</div></td>
+                            <td><div>` + String(dt.som) + `</div></td>
+                            <td><div>` + String(dt.dollar) + `</div></td>
+                            <td><div>` + String(dt.date) + `</div></td>
+                        </tr>`
+                            $('#debt').append(tr);
+                            i++;
+                        }
+                        var j = 1;
+                        for (dt of pays) {
+                            var tr = `<tr>
+                            <td><div>` + j + `</div></td>
+                            <td><div>` + String(dt.som) + `</div></td>
+                            <td><div>` + String(dt.dollar) + `</div></td>
+                            <td><div>` + String(dt.date) + `</div></td>
+                        </tr>`
+                            $('#pay').append(tr);
+                            j++;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock js %}

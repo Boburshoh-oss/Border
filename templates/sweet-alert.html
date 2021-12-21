@@ -1,0 +1,295 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title>Bordo </title>
+{% endblock title %}
+{% block css %}
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="{% static 'assets/css/scrollspyNav.css'%}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'plugins/animate/animate.css'%}" rel="stylesheet" type="text/css" />
+    <script src="{% static 'plugins/sweetalerts/promise-polyfill.js'%}"></script>
+    <link href="{% static 'plugins/sweetalerts/sweetalert2.min.css'%}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'plugins/sweetalerts/sweetalert.css'%}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/css/components/custom-sweetalert.css'%}" rel="stylesheet" type="text/css" />
+    <!-- END THEME GLOBAL STYLES -->
+{% endblock css %}
+{% block content %}
+        <!--  BEGIN CONTENT AREA  -->
+        <div id="content" class="main-content">
+            <div class="container">
+
+                <div class="container">
+
+                    <div id="navSection" data-spy="affix" class="nav  sidenav">
+                        <div class="sidenav-content">
+                            <a href="#saBasic" class="active nav-link">Basic</a>
+                            <a href="#saMessage" class="nav-link">Message</a>
+                            <a href="#saDynamic" class="nav-link">Dynamic</a>
+                            <a href="#satitle" class="nav-link">A title with text</a>
+                            <a href="#saChaining" class="nav-link">Chaining modals</a>
+                            <a href="#saAnimation" class="nav-link">Animation</a>
+                            <a href="#saAuto" class="nav-link">Auto close timer</a>
+                            <a href="#saImage" class="nav-link">Custom image</a>
+                            <a href="#saHTML" class="nav-link">Custom HTML</a>
+                            <a href="#saWarning" class="nav-link">Warning message</a>
+                            <a href="#saCancel" class="nav-link">Cancel</a>
+                            <a href="#saCustom" class="nav-link">Custom Style</a>
+                            <a href="#saFooter" class="nav-link">Footer</a>
+                            <a href="#saRTL" class="nav-link">RTL</a>
+                            <a href="#saMixin" class="nav-link">Mixin</a>
+                        </div>
+                    </div>
+
+                    <div class="row layout-top-spacing" id="cancel-row">
+
+                        <div id="saBasic" class="col-lg-12 col-12 layout-spacing">
+                            <div class="statbox widget box box-shadow">
+                                <div class="widget-header">                                
+                                    <div class="row">
+                                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                            <h4>Basic message</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="saMessage" class="col-lg-12 col-12 layout-spacing">
+                            <div class="statbox widget box box-shadow">
+                                <div class="widget-header">                                
+                                    <div class="row">
+                                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                            <h4>Success message</h4>
+                                        </div>
+                                    </div>
+                                </div>                            
+                                <div class="widget-content widget-content-area text-center">
+                                    <button class="mr-2 btn btn-primary success">Success message!</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="saDynamic" class="col-lg-12 col-12 layout-spacing">
+                            <div class="statbox widget box box-shadow">
+                                <div class="widget-header">                                
+                                    <div class="row">
+                                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                            <h4>Dynamic queue</h4>
+                                        </div>
+                                    </div>
+                                </div>                            
+                                <div class="widget-content widget-content-area text-center">
+                                    <button class="mr-2 btn btn-primary dynamic-queue">Dynamic queue</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="satitle" class="col-lg-12 col-12 layout-spacing">
+                            <div class="statbox widget box box-shadow">
+                                <div class="widget-header">                                
+                                    <div class="row">
+                                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                            <h4>A title with a text under</h4>
+                                        </div>
+                                    </div>
+                                </div>                            
+                                <div class="widget-content widget-content-area text-center">
+                                    <button class="mr-2 btn btn-primary  title-text">Title &amp; text</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="saChaining" class="col-lg-12 col-12 layout-spacing">
+                            <div class="statbox widget box box-shadow">
+                                <div class="widget-header">                                
+                                    <div class="row">
+                                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                            <h4>Chaining modals (queue)</h4>
+                                        </div>
+                                    </div>
+                                </div>                            
+                                <div class="widget-content widget-content-area text-center">
+                                    <button class="mr-2 btn btn-primary chaining-modals">Chaining modals (queue)</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="saAnimation" class="col-lg-12 col-12 layout-spacing">
+                            <div class="statbox widget box box-shadow">
+                                <div class="widget-header">                                
+                                    <div class="row">
+                                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                            <h4>Custom animation</h4>
+                                        </div>
+                                    </div>
+                                </div>                            
+                                <div class="widget-content widget-content-area text-center">
+                                    <button class="mr-2 btn btn-primary html-jquery">Custom animation</button>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="saAuto" class="col-lg-12 col-12 layout-spacing">
+                            <div class="statbox widget box box-shadow">
+                                <div class="widget-header">                                
+                                    <div class="row">
+                                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                            <h4>Message with auto close timer</h4>
+                                        </div>
+                                    </div>
+                                </div>                            
+                                <div class="widget-content widget-content-area text-center">
+                                    <button class="mr-2 btn btn-primary timer">Message timer</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="saImage" class="col-lg-12 col-12 layout-spacing">
+                            <div class="statbox widget box box-shadow">
+                                <div class="widget-header">                                
+                                    <div class="row">
+                                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                            <h4>Message with custom image</h4>
+                                        </div>
+                                    </div>
+                                </div>                            
+                                <div class="widget-content widget-content-area text-center">
+                                    <button class="mr-2 btn btn-primary custom-image">Message with custom image</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="saHTML" class="col-lg-12 col-12 layout-spacing">
+                            <div class="statbox widget box box-shadow">
+                                <div class="widget-header">                                
+                                    <div class="row">
+                                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                            <h4>Custom HTML description and buttons</h4>
+                                        </div>
+                                    </div>
+                                </div>                            
+                                <div class="widget-content widget-content-area text-center">
+                                    <button class="mr-2 btn btn-primary  html">Custom Description &amp; buttons</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="saWarning" class="col-lg-12 col-12 layout-spacing">
+                            <div class="statbox widget box box-shadow">
+                                <div class="widget-header">                                
+                                    <div class="row">
+                                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                            <h4>Warning message, with "Confirm" button</h4>
+                                        </div>
+                                    </div>
+                                </div>                            
+                                <div class="widget-content widget-content-area text-center">
+                                    <button class="mr-2 btn btn-primary  warning confirm">Confirm</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="saCancel" class="col-lg-12 col-12 layout-spacing">
+                            <div class="statbox widget box box-shadow">
+                                <div class="widget-header">                                
+                                    <div class="row">
+                                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                            <h4>Execute something else for "Cancel".</h4>
+                                        </div>
+                                    </div>
+                                </div>                            
+                                <div class="widget-content widget-content-area text-center">
+                                    <button class="mr-2 btn btn-primary  warning cancel">Addition else for "Cancel".</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="saCustom" class="col-lg-12 col-12 layout-spacing">
+                            <div class="statbox widget box box-shadow">
+                                <div class="widget-header">                                
+                                    <div class="row">
+                                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                            <h4>A message with custom width, padding and background</h4>
+                                        </div>
+                                    </div>
+                                </div>                            
+                                <div class="widget-content widget-content-area text-center">
+                                    <button class="mr-2 btn btn-primary  custom-width-padding-background">Custom Message</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="saFooter" class="col-lg-12 col-12 layout-spacing">
+                            <div class="statbox widget box box-shadow">
+                                <div class="widget-header">                                
+                                    <div class="row">
+                                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                            <h4>With Footer</h4>
+                                        </div>
+                                    </div>
+                                </div>                            
+                                <div class="widget-content widget-content-area text-center">
+                                    <button class="mr-2 btn btn-primary  footer">With Footer</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="saRTL" class="col-lg-12 col-12 layout-spacing">
+                            <div class="statbox widget box box-shadow">
+                                <div class="widget-header">                                
+                                    <div class="row">
+                                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                            <h4>RTL Support</h4>
+                                        </div>
+                                    </div>
+                                </div>                            
+                                <div class="widget-content widget-content-area text-center">
+                                    <button class="mr-2 btn btn-primary  RTL">RTL</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="saMixin" class="col-lg-12 col-12 layout-spacing">
+                            <div class="statbox widget box box-shadow">
+                                <div class="widget-header">                                
+                                    <div class="row">
+                                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                            <h4>Mixin</h4>
+                                        </div>
+                                    </div>
+                                </div>                            
+                                <div class="widget-content widget-content-area text-center">
+                                    <button class="mr-2 btn btn-primary  mixin">Mixin</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                </div>
+{% endblock content %}
+{% block js %}
+
+    <script src="{% static 'plugins/highlight/highlight.pack.js'%}"></script>
+    <!-- END GLOBAL MANDATORY STYLES -->
+    
+    <!-- BEGIN THEME GLOBAL STYLE -->
+    <script src="{% static 'assets/js/scrollspyNav.js'%}"></script>
+    <script src="{% static 'plugins/sweetalerts/sweetalert2.min.js'%}"></script>
+    <script src="{% static 'plugins/sweetalerts/custom-sweetalert.js'%}"></script>
+    <!-- END THEME GLOBAL STYLE -->    
+
+{% endblock js %}

@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title>Sotuvchi | Bordo</title>
+{% endblock title %}
+{% block css %}
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    <link href="{% static 'plugins/apex/apexcharts.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/widgets/modules-widgets.css' %}">
+    <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="{% static 'plugins/flatpickr/flatpickr.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/noUiSlider/nouislider.min.css' %}" rel="stylesheet" type="text/css">
+    <!-- END THEME GLOBAL STYLES -->
+
+    <!--  BEGIN CUSTOM STYLE FILE  -->
+    <link href="{% static 'assets/css/scrollspyNav.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'plugins/flatpickr/custom-flatpickr.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/noUiSlider/custom-nouiSlider.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/bootstrap-range-Slider/bootstrap-slider.css' %}" rel="stylesheet" type="text/css">
+    <!--  END CUSTOM STYLE FILE  -->
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/table/datatable/datatables.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/table/datatable/custom_dt_html5.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/table/datatable/dt-global_style.css' %}">
+{% endblock css %}
+{% block content %}
+    <!--  BEGIN CONTENT AREA  -->
+    <div id="content" class="main-content">
+
+        <div class="layout-px-spacing">
+            <div class="row sales layout-top-spacing">
+
+                <div class="col-12 layout-spacing">
+
+                    <div class="widget widget-table-two">
+                        <div class="widget-content pb-2">
+                            <div class="row">
+                                <div class="form-group mb-0 col-lg-6 col-md-8 col-12" style="padding-top: 5px;">
+                                    <input id="rangeCalendarFlatpickr"
+                                           class="form-control flatpickr flatpickr-input active" type="text"
+                                           placeholder="Sanani tanlang">
+                                </div>
+                                <div class="form-group mb-0 col-lg-3 col-md-4 col-12" style="padding-top: 5px;">
+                                    <span class="form-control text-center" id="som">Jami (so'm) : {{ som }} </span>
+                                </div>
+                                <div class="form-group mb-0 col-lg-3 col-md-4 col-12" style="padding-top: 5px;">
+                                    <span class="form-control text-center"
+                                          id="dollar">Jami (dollar) : {{ dollar }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="widget-content">
+                        <div class="table-responsive">
+                            <table class="table" id="html5-extension">
+                                <thead>
+                                <tr>
+                                    {#                                                <th><div class="th-content">№</div></th>#}
+                                    <th>
+                                        <div class="th-content">Sotuvchi</div>
+                                    </th>
+                                    <th>
+                                        <div class="th-content">Filial</div>
+                                    </th>
+                                    <th>
+                                        <div class="th-content">Naqd So`m</div>
+                                    </th>
+                                    <th>
+                                        <div class="th-content">Naqd Dollar</div>
+                                    </th>
+                                    <th>
+                                        <div class="th-content">Plastik</div>
+                                    </th>
+                                    <th>
+                                        <div class="th-content">Nasiya So`m</div>
+                                    </th>
+                                    <th>
+                                        <div class="th-content">Nasiya Dollar</div>
+                                    </th>
+                                    <th>
+                                        <div class="th-content">Transfer</div>
+                                    </th>
+                                    <th>
+                                        <div class="th-content">Skidka So`m</div>
+                                    </th>
+                                    <th>
+                                        <div class="th-content">Skidka Dollar</div>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody id="sel">
+                                {% for saler in salers %}
+                                    {% if saler.staff == 3 %}
+                                        <tr>
+                                            {#                                                        <td><div class="td-content">{{ forloop.counter }}</div></td>#}
+                                            <td>
+                                                <div class="td-content">{{ saler.first_name }} {{ saler.last_name }}</div>
+                                            </td>
+                                            <td>
+                                                <div class="td-content">{{ saler.filial }}</div>
+                                            </td>
+                                            <td>
+                                                <div class="td-content">{{ saler.naqd_som }}</div>
+                                            </td>
+                                            <td>
+                                                <div class="td-content">{{ saler.naqd_dollar }}</div>
+                                            </td>
+                                            <td>
+                                                <div class="td-content">{{ saler.plastik }}</div>
+                                            </td>
+                                            <td>
+                                                <div class="td-content">{{ saler.nasiya_som }}</div>
+                                            </td>
+                                            <td>
+                                                <div class="td-content">{{ saler.nasiya_dollar }}</div>
+                                            </td>
+                                            <td>
+                                                <div class="td-content">{{ saler.transfer }}</div>
+                                            </td>
+                                            <td>
+                                                <div class="td-content">{{ saler.skidka_som }}</div>
+                                            </td>
+                                            <td>
+                                                <div class="td-content">{{ saler.skidka_dollar }}</div>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}
+{% block js %}
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    <script src="{% static 'plugins/apex/apexcharts.min.js' %}"></script>
+    <script src="{% static 'assets/js/widgets/modules-widgets.js' %}"></script>
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    <script src="{% static 'plugins/highlight/highlight.pack.js' %}"></script>
+
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="{% static 'assets/js/scrollspyNav.js' %}"></script>
+    <script src="{% static 'plugins/flatpickr/flatpickr.js' %}"></script>
+    <script src="{% static 'plugins/noUiSlider/nouislider.min.js' %}"></script>
+
+    <script src="{% static 'plugins/flatpickr/custom-flatpickr.js' %}"></script>
+    <script src="{% static 'plugins/noUiSlider/custom-nouiSlider.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-range-Slider/bootstrap-rangeSlider.js' %}"></script>
+
+        <script src="{% static 'plugins/table/datatable/datatables.js'%}"></script>
+    <script src="{% static 'plugins/table/datatable/button-ext/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'plugins/table/datatable/button-ext/jszip.min.js' %}"></script>
+    <script src="{% static 'plugins/table/datatable/button-ext/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'plugins/table/datatable/button-ext/buttons.print.min.js' %}"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script>
+        $('#html5-extension').DataTable( {
+            dom: '<"row"<"col-md-12"<"row"<"col-md-6"B><"col-md-6"f> > ><"col-md-12"rt> <"col-md-12"<"row"<"col-md-5"i><"col-md-7"p>>> >',
+            buttons: {
+                buttons: [
+                    { extend: 'copy', className: 'btn' },
+                    { extend: 'csv', className: 'btn' },
+                    { extend: 'excel', className: 'btn' },
+                    { extend: 'print', className: 'btn' }
+                ]
+            },
+            "oLanguage": {
+                "oPaginate": { "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>', "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>' },
+                "sInfo": " _PAGE_ / _PAGES_",
+                "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                "sSearchPlaceholder": "Izlash",
+               "sLengthMenu": "Results :  _MENU_",
+            },
+            "stripeClasses": [],
+            "lengthMenu": [10, 20, 50, 100],
+            "pageLength": 15
+        } );
+        function getCSRFToken() {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    if (cookie.substring(0, 10) == ('csrftoken' + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(10));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        //$(document).ready(function(){
+        $('#rangeCalendarFlatpickr').on("change", function () {
+            {#console.log($('#rangeCalendarFlatpickr').val().slice(0, 10));#}
+            {#console.log($('#rangeCalendarFlatpickr').val().slice(14, 24));#}
+            var csrfToken = getCSRFToken();
+            var date1 = $('#rangeCalendarFlatpickr').val().slice(0, 10);
+            var date2 = $('#rangeCalendarFlatpickr').val().slice(14, 24);
+            var dt = JSON.stringify({
+                date1: date1,
+                date2: date2,
+            })
+            $.ajax({
+                headers: {"X-CSRFToken": csrfToken},
+                type: "POST",
+                url: "{% url 'datahome' %}",
+                data: dt,
+                success: function (data11) {
+                    var salers = data11['salers'];
+                    $("#sel").empty();
+                    var som = 0;
+                    var dollar = 0;
+                    for (dt of salers) {
+                        if (dt.staff == 3) {
+                            var tr = `<tr>
+                                <td><div class="td-content customer-name">` + dt.name + `</div></td>
+                                <td><div class="td-content pricing">` + dt.filial + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.naqd_som) + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.naqd_dollar) + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.plastik) + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.nasiya_som) + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.nasiya_dollar) + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.transfer) + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.skidka_som) + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.skidka_dollar) + `</div></td>
+                            </tr>`
+                            $('#sel').append(tr);
+
+                            som += dt.naqd_som + dt.plastik + dt.nasiya_som + dt.transfer + dt.skidka_som;
+                            dollar += dt.naqd_dollar + dt.skidka_dollar + dt.nasiya_dollar;
+                            {#console.log(jami)#}
+                        }
+                    }
+                    $('#som').empty();
+                    $('#som').append('Jami (so`m) : ', som);
+                    $('#dollar').empty();
+                    $('#dollar').append('Jami (dollar) : ', dollar);
+                }
+            });
+        });
+        //});
+    </script>
+{% endblock js %}

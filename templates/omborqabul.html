@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title>Ombor qabul | Bordo</title>
+{% endblock title %}
+{% block css %}
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    <link href="{% static 'plugins/apex/apexcharts.css'%}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/widgets/modules-widgets.css'%}">
+    <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="{% static 'plugins/flatpickr/flatpickr.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/noUiSlider/nouislider.min.css'%}" rel="stylesheet" type="text/css">
+    <!-- END THEME GLOBAL STYLES -->
+
+    <!--  BEGIN CUSTOM STYLE FILE  -->
+    <link href="{% static 'assets/css/scrollspyNav.css'%}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'plugins/flatpickr/custom-flatpickr.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/noUiSlider/custom-nouiSlider.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/bootstrap-range-Slider/bootstrap-slider.css'%}" rel="stylesheet" type="text/css">
+    <!--  END CUSTOM STYLE FILE  -->
+
+{% endblock css %}
+{% block content %}
+        <!--  BEGIN CONTENT AREA  -->
+        <div id="content" class="main-content">
+            <div class="layout-px-spacing">
+                <div class="row sales layout-top-spacing">
+                    <div class="col-6 layout-spacing">
+                        <div class="widget widget-table-two">
+                            <div class="widget-content pb-2">
+                                <div class="row">
+                                    <div class="form-group mb-0 col-12">
+                                        <input id="rangeCalendarFlatpickr" class="form-control flatpickr flatpickr-input active" type="text" placeholder="Sanani tanlang">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget-content">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th><div class="text-center">№</div></th>
+                                                <th><div class="text-center">Nomi</div></th>
+                                                <th><div class="text-center">Yetkazib beruvchi</div></th>
+                                                <th><div class="text-center">So`m</div></th>
+                                                <th><div class="text-center">Dollar</div></th>
+                                                <th><div class="text-center">Sana</div></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="war">
+                                            {% for w in wares %}
+                                                <tr onclick="Item({{ w.id }})">
+                                                    <td><div class="td-content">{{ forloop.counter }}</div></td>
+                                                    <td><div class="td-content">{{ w.name }}</div></td>
+                                                    <td><div class="td-content">{{ w.deliver }}</div></td>
+                                                    <td><div class="td-content">{{ w.som }}</div></td>
+                                                    <td><div class="td-content">{{ w.dollar }}</div></td>
+                                                    <td><div class="td-content">{{ w.date }}</div></td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 layout-spacing">
+                        <div class="widget widget-table-two">
+                            <div class="widget-content">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th><div>№</div></th>
+                                                <th><div>Product</div></th>
+                                                <th><div>So`m</div></th>
+                                                <th><div>Dollar</div></th>
+                                                <th><div>Kurs</div></th>
+                                                <th><div>Soni</div></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="waritem">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+{% endblock content %}
+{% block js %}
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    <script src="{% static 'plugins/apex/apexcharts.min.js'%}"></script>
+    <script src="{% static 'assets/js/widgets/modules-widgets.js'%}"></script>
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    <script src="{% static 'plugins/highlight/highlight.pack.js'%}"></script>
+
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="{% static 'assets/js/scrollspyNav.js'%}"></script>
+    <script src="{% static 'plugins/flatpickr/flatpickr.js'%}"></script>
+    <script src="{% static 'plugins/noUiSlider/nouislider.min.js'%}"></script>
+
+    <script src="{% static 'plugins/flatpickr/custom-flatpickr.js'%}"></script>
+    <script src="{% static 'plugins/noUiSlider/custom-nouiSlider.js'%}"></script>
+    <script src="{% static 'plugins/bootstrap-range-Slider/bootstrap-rangeSlider.js'%}"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script>
+
+    function getCSRFToken() {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            if (cookie.substring(0, 10) == ('csrftoken' + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(10));
+                break;
+            }
+            }
+        }
+      return cookieValue;
+    }
+    function Item(id){
+        var csrfToken = getCSRFToken();
+        var dt = JSON.stringify({
+                id:id,
+            })
+        $.ajax({
+            headers: { "X-CSRFToken": csrfToken },
+            type: "POST",
+            url: "{% url 'getitem' %}",
+            data: dt,
+            success: function(data) {
+                var wares = data['items'];
+
+                $("#waritem").empty();
+                var i = 1;
+                for(dt of wares){
+                        var tr = `<tr>
+                                        <td><div class="td-content">` + i + `</div></td>
+                                        <td><div class="td-content">` + dt.product + `</div></td>
+                                        <td><div class="td-content">` + String(dt.som) + `</div></td>
+                                        <td><div class="td-content">` + String(dt.dollar) + `</div></td>
+                                        <td><div class="td-content">` + String(dt.kurs) + `</div></td>
+                                        <td><div class="td-content">` + String(dt.quantity) + `</div></td>
+                                    </tr>`
+                        $('#waritem').append(tr);
+                        i++;
+                    }
+            }
+        });
+    }
+    $(document).ready(function(){
+        $('#rangeCalendarFlatpickr').on("change", function (){
+            var csrfToken = getCSRFToken();
+            var date1 = $('#rangeCalendarFlatpickr').val().slice(0, 10);
+            var date2 = $('#rangeCalendarFlatpickr').val().slice(14, 24);
+            var dt = JSON.stringify({
+                date1:date1,
+                date2:date2,
+            })
+            $.ajax({
+                headers: { "X-CSRFToken": csrfToken },
+                type: "POST",
+                url: "{% url 'dataware' %}",
+                data: dt,
+                success: function(data) {
+                    var wares = data['wares'];
+                    var i = 1;
+                    $("#war").empty();
+                    for(dt of wares){
+                        var tr = `<tr onclick="Item(` + dt.id +`)">
+                            <td><div class="td-content customer-name">` + i + `</div></td>
+                            <td><div class="td-content customer-name">` + String(dt.name) + `</div></td>
+                            <td><div class="td-content customer-name">` + String(dt.deliver) + `</div></td>
+                            <td><div class="td-content customer-name">` + String(dt.som) + `</div></td>
+                            <td><div class="td-content customer-name">` + String(dt.dollar) + `</div></td>
+                            <td><div class="td-content pricing">` + String(dt.date) + `</div></td>
+                        </tr>`
+                        $('#war').append(tr);
+                        i++;
+                    }
+                }
+            });
+        });
+    });
+    </script>
+{% endblock js %}
