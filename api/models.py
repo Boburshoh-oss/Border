@@ -170,8 +170,9 @@ class ProductFilial(models.Model):
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
     quantity = models.FloatField(default=0)
     image = models.ImageField(upload_to="products/", null=True, blank=True)
-    # def __str__(self):
-    #     return self.name
+    
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name_plural = '3.1) Product Filial'
@@ -273,7 +274,10 @@ class Shop(models.Model):
     skidka_som = models.FloatField(default=0)
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
     saler = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True)
-
+    
+    #qarzni qaytarish sanasi
+    debt_return = models.DateField(null=True, blank=True)
+    
     # discount = models.SmallIntegerField(default=0, verbose_name="Chegirma (skidka) foizi")
     debt_return = models.DateField(null=True, blank=True)
 
@@ -312,6 +316,9 @@ class Debtor(models.Model):
     som = models.FloatField(default=0)
     dollar = models.FloatField(default=0)
     difference = models.FloatField(default=0)
+
+    #new fields
+    debt_return = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return self.fio

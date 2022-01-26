@@ -10,7 +10,9 @@ from datetime import datetime
 from django.http.response import HttpResponse, JsonResponse
 import json
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+#SMS
+from django.conf import settings
+from .sms_sender import sendSmsOneContact
 
 def monthly():
     date = datetime.today()
@@ -1043,7 +1045,6 @@ class WareFakturas(LoginRequiredMixin, TemplateView):
 
         return context
 
-
 class WareFakturaTarix(LoginRequiredMixin, TemplateView):
     template_name = 'warefakturatarix.html'
 
@@ -1253,7 +1254,6 @@ class OmborQabul(LoginRequiredMixin, TemplateView):
         #     print(r.date)
         return context
 
-
 class OmborMinus(LoginRequiredMixin, TemplateView):
     template_name = 'omborminus.html'
 
@@ -1264,7 +1264,6 @@ class OmborMinus(LoginRequiredMixin, TemplateView):
         context['ombors'] = ProductFilial.objects.filter(quantity__lte=100)
 
         return context
-
 
 class Fakturas(LoginRequiredMixin, TemplateView):
     template_name = 'faktura.html'
@@ -1278,6 +1277,17 @@ class Fakturas(LoginRequiredMixin, TemplateView):
 
         return context
 
+class Recieves(LoginRequiredMixin, TemplateView):
+    template_name = 'recieves.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['ombor'] = 'active'
+        context['ombor_t'] = 'true'
+        context['recieves'] = Recieve.objects.all().order_by('-id')
+        context['recieveitems'] = RecieveItem.objects.all().order_by('-id')[:1000]
+
+        return context
 
 class FakturaTarix(LoginRequiredMixin, TemplateView):
     template_name = 'fakturatarix.html'
@@ -1332,7 +1342,6 @@ def GetFakturaItem(request):
     }
     return JsonResponse(dt1)
 
-
 class Table(TemplateView):
     template_name = 'table.html'
 
@@ -1342,7 +1351,6 @@ class Table(TemplateView):
         context['table_t'] = 'true'
 
         return context
-
 
 class DataTable(TemplateView):
     template_name = 'datatable.html'
@@ -1367,7 +1375,6 @@ class Hodim(LoginRequiredMixin, TemplateView):
 
         return context
 
-
 class Debtors(LoginRequiredMixin, TemplateView):
     template_name = 'debtor.html'
 
@@ -1391,7 +1398,6 @@ class Delivers(LoginRequiredMixin, TemplateView):
 
         return context
 
-
 class FakturaYoqlama(LoginRequiredMixin, TemplateView):
     template_name = 'fakturayoqlama.html'
 
@@ -1399,7 +1405,6 @@ class FakturaYoqlama(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['kamomads'] = Kamomad.objects.all()
         return context
-
 
 class Profile(TemplateView):
     template_name = 'profile.html'
@@ -1411,7 +1416,6 @@ class Profile(TemplateView):
 
         return context
 
-
 class ProfileSetting(TemplateView):
     template_name = 'profile-setting.html'
 
@@ -1420,7 +1424,6 @@ class ProfileSetting(TemplateView):
         context['home_t'] = 'true'
 
         return context
-
 
 class SweetAlert(TemplateView):
     template_name = 'sweet-alert.html'
@@ -1432,7 +1435,6 @@ class SweetAlert(TemplateView):
 
         return context
 
-
 class Date(TemplateView):
     template_name = 'date.html'
 
@@ -1442,7 +1444,6 @@ class Date(TemplateView):
         context['date_t'] = 'true'
 
         return context
-
 
 class Widget(TemplateView):
     template_name = 'widget.html'
@@ -1660,4 +1661,60 @@ def oylik_tolash(request):
         kassa_var.save()
 
         return redirect('/kassa/')
+
+
+
+#998997707572 len = 12
+def checkPhone(phone):
+    try:
+        int(phone)
+        return (True, phone) if len(phone) >= 12 else (False, None)
+    except:
+        return False, None
+
+
+#sms sender  if date today  
+def schedular_sms_send():
+    try:
+        success_send_count = 0
+        error_send_count = 0
+        text = settings.DEADLINE_SMS
+        vaqt = datetime.now().date()
+        debtors = Debtor.objects.filter(debt_return__day=vaqt.day, debt_return__month=vaqt.month)
+
+        for debtor in debtors:
+            can, phone = checkPhone(debtor.phone1)
+            if can:
+                result = sendSmsOneContact(debtor.phone1, text)
+                if result.status_code == 200:
+                    success_send_count += 1
+                else:
+                    error_send_count += 1
+            else:
+                error_send_count += 1
+    except Exception as e:
+        print(e)   
         
+        
+# old deptors 
+def schedular_sms_send_olds():
+    try:
+        success_send_count = 0
+        error_send_count = 0
+        text = settings.OLD_DEADLINE_SMS
+        vaqt = datetime.now().date()
+        
+        debtors = Debtor.objects.filter(debt_return__day__lt=vaqt.day, debt_return__month__lte=vaqt.month)
+
+        for debtor in debtors:
+            can, phone = checkPhone(debtor.phone1)
+            if can:
+                result = sendSmsOneContact(debtor.phone1, text)
+                if result.status_code == 200:
+                    success_send_count += 1
+                else:
+                    error_send_count += 1
+            else:
+                error_send_count += 1
+    except Exception as e:
+        print(e)   
