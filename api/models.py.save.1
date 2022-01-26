@@ -4,13 +4,13 @@ from django.db.models.fields import DateField
 
 
 
-class Filial(models.Model):
-    name = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
-    qarz_som = models.IntegerField(default=0)
-    qarz_dol = models.IntegerField(default=0)
-    savdo_puli_som = models.IntegerField(default=0)
-    savdo_puli_dol = models.IntegerField(default=0)
+#class Filial(models.Model):
+  #  name = models.CharField(max_length=255)
+ #   address = models.CharField(max_length=255)
+   # qarz_som = models.IntegerField(default=0)
+    #qarz_dol = models.IntegerField(default=0)
+    s#avdo_puli_som = models.IntegerField(default=0)
+    sa#vdo_puli_dol = models.IntegerField(default=0)
     
     def __str__(self):
         return self.name
@@ -275,7 +275,6 @@ class Shop(models.Model):
     saler = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True)
 
     # discount = models.SmallIntegerField(default=0, verbose_name="Chegirma (skidka) foizi")
-    debt_return = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return str(self.id)

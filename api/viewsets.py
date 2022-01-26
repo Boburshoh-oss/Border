@@ -1023,7 +1023,8 @@ class ShopViewset(viewsets.ModelViewSet):
             skidka_dollar = r["skidka_dollar"]
             filial = r["filial"]
             saler = r["saler"]
-            cart = r["cart"]
+            cart = r.get("cart")
+            debt_return = r.get("debt_return", None)
 
             filial_obj = Filial.objects.get(id=filial)
 
@@ -1071,7 +1072,8 @@ class ShopViewset(viewsets.ModelViewSet):
                     skidka_som=skidka_som,
                     skidka_dollar=skidka_dollar,
                     filial_id=filial,
-                    saler_id=saler
+                    saler_id=saler,
+                    debt_return=debt_return
                 )
                 phone = r["phone"]
                 d, created = Debtor.objects.get_or_create(fio=fio, phone1=phone)
@@ -1090,7 +1092,8 @@ class ShopViewset(viewsets.ModelViewSet):
                     skidka_som=skidka_som,
                     skidka_dollar=skidka_dollar,
                     filial_id=filial,
-                    saler_id=saler
+                    saler_id=saler,
+                    debt_return=debt_return
                 )
 
                 return Response({'message': 'Shop qo`shildi. {}'.format(er)}, status=201)
