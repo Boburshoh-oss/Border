@@ -29,6 +29,9 @@ INSTALLED_APPS = [
     'main',
     'rest_framework',
     'rest_framework.authtoken',
+    #sms send
+    'django_crontab',
+    
     'import_export',
     'django.contrib.humanize'
 ]
@@ -115,7 +118,35 @@ REST_FRAMEWORK = {
     'DATETIME_FORMAT': "%Y-%m-%d %H:%M:%S"
 }
 
+CRONJOBS = [
+    #0 12 * * 1-6
+    # ('0 12 * * 1-6', 'main.views.schedular_sms_send'), #At 12:00 on every day-of-week from Monday through Saturday. bir sms jo'natadi qarz kui kelganlarga
+    # ('0 14 * * 1-6', 'main.views.schedular_sms_send_olds'), #At 14:00 on every day-of-week from Monday through Saturday bir sms jo'natadi Qarzi utib ketganlarga
+    
+    ('0 */6 * * *', 'main.views.schedular_sms_send'), #6sotda. bir sms jo'natadi qarz kui kelganlarga
+    ('0 */7 * * *', 'main.views.schedular_sms_send_olds'), #7 sotda bir sms jo'natadi Qarzi utib ketganlarga
 
+    # ('*/1 * * * *', 'main.views.schedular_sms_send'),  # 1 min bir sms jo'natadi test qarz kui kelganlarga
+    # ('*/2 * * * *', 'main.views.schedular_sms_send_olds')  # 2 min bir sms jo'natadi test old
+   
+
+]
+
+#Qarzini  tulaganida    sms jo'natadi
+
+# RETURN_DEBTOR_SMS = "Qarzini berdi"
+RETURN_DEBTOR_SMS = "Salom {name} siz {som} sumlik qarzingizni tuladiz! Qoldiq: {qoldi} bu settingdan bordi"
+
+#Qarziniga olsa sms jo'natadi
+GET_DEBTOR_SMS = 'Salom {name} siz {som} sumlik qarzga savdo qildingiz! bu seetindan create'
+
+#Deadline sms
+DEADLINE_SMS = "Qarz vaqti keldi"
+# Qarz kunidan utib ketdi
+OLD_DEADLINE_SMS = "Qarz kunidan utib ketdi"
+
+
+# CRONTAB_COMMAND_SUFFIX = '2>&1'
 LANGUAGE_CODE = 'uz-uz'
 
 TIME_ZONE = 'Asia/Tashkent'
@@ -124,9 +155,9 @@ TIME_ZONE = 'Asia/Tashkent'
 
 USE_I18N = True
 
-USE_L10N = False
+USE_L10N = True
 
-USE_TZ = False
+USE_TZ = True
 
 LOGIN_URL = '/login'
 

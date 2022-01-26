@@ -1004,6 +1004,41 @@ class FakturaItemViewset(viewsets.ModelViewSet):
 
         return Response({'message': 'done'})
 
+from main.sms_sender import sendSmsOneContact
+
+def sms_text_replace(sms_text, nasiya_som, customer):
+    try:
+        sms_text = str(sms_text).format(name = customer.fio, som=nasiya_som)
+    except:
+        pass
+    
+    return sms_text
+
+#998997707572 len = 12
+def checkPhone(phone):
+    try:
+        int(phone)
+        return (True, phone) if len(phone) >= 12 else (False, None)
+    except:
+        return False, None
+
+
+from django.conf import settings
+
+#sms sender  if buy  
+def schedular_sms_send_oldi(nasiya_som, id):
+    try:
+        is_send = False
+        text = settings.GET_DEBTOR_SMS
+        debtor = Debtor.objects.get(id=id)
+        sms_text = sms_text_replace(text, nasiya_som, debtor)
+        can, phone = checkPhone(debtor.phone1)
+        if can:
+            result = sendSmsOneContact(debtor.phone1, sms_text)
+            if result.status_code == 200:
+                is_send = True
+    except Exception as e:
+        print(e)   
 
 class ShopViewset(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
@@ -1024,6 +1059,9 @@ class ShopViewset(viewsets.ModelViewSet):
             filial = r["filial"]
             saler = r["saler"]
             cart = r["cart"]
+            #new
+            debt_return = r.get("debt_return", None)
+            # debt_return = r["debt_return"]
 
             filial_obj = Filial.objects.get(id=filial)
 
@@ -1071,14 +1109,19 @@ class ShopViewset(viewsets.ModelViewSet):
                     skidka_som=skidka_som,
                     skidka_dollar=skidka_dollar,
                     filial_id=filial,
-                    saler_id=saler
+                    saler_id=saler,
+                    #new
+                    debt_return = debt_return
                 )
                 phone = r["phone"]
+                
                 d, created = Debtor.objects.get_or_create(fio=fio, phone1=phone)
                 d.som += float(nasiya_som)
                 d.dollar += float(nasiya_dollar)
+                #new sms
+                d.debt_return = debt_return
                 d.save()
-
+                schedular_sms_send_oldi(nasiya_som, d.id)
                 return Response({'message': 'Shop qo`shildi. Debtor yangilandi'}, status=201)
 
             except Exception as er:
@@ -1090,7 +1133,9 @@ class ShopViewset(viewsets.ModelViewSet):
                     skidka_som=skidka_som,
                     skidka_dollar=skidka_dollar,
                     filial_id=filial,
-                    saler_id=saler
+                    saler_id=saler,
+                    #new
+                    debt_return = debt_return
                 )
 
                 return Response({'message': 'Shop qo`shildi. {}'.format(er)}, status=201)
@@ -1179,9 +1224,12 @@ class CartViewset(viewsets.ModelViewSet):
         try:
             debtor = r['debtor']
             dollar = r['dollar']
+            debt_return = r.get("debt_return", None)
             d = Debtor.objects.get(id=debtor)
             d.debts += nasiya
             d.debts_dollar += dollar
+            #new sms
+            d.debt_return = debt_return
             d.save()
             Debt.objects.create(debtorr_id=debtor, shop=sh, return_date=r['return_date'], dollar=dollar)
         except:
@@ -1205,6 +1253,7 @@ class CartViewset(viewsets.ModelViewSet):
                 nasiya_som = r('nasiya_som')
                 nasiya_dollar = r('nasiya_dollar')
                 debtor = request.data['debtor']
+                debt_return = r.get("debt_return", None)
                 sh = Shop.objects.create(naqd_som=naqd_som, naqd_dollar=naqd_dollar, nasiya_som=nasiya_som,
                                          nasiya_dollar=nasiya_dollar, plastik=plastik, transfer=transfer,
                                          skidka_som=skidka_som, skidka_dollar=skidka_dollar, filial_id=filial,
@@ -1212,6 +1261,8 @@ class CartViewset(viewsets.ModelViewSet):
                 d = Debtor.objects.get(id=debtor)
                 d.som += float(nasiya_som)
                 d.dollar += float(nasiya_dollar)
+                #new sms
+                d.debt_return = debt_return
                 d.save()
 
                 return Response({'message': 'Shop qo`shildi. Debtor yangilandi'}, status=201)
@@ -1239,10 +1290,13 @@ class DebtorViewset(viewsets.ModelViewSet):
                 debts = float(r['debts'])
                 debts_dollar = float(r['debts_dollar'])
                 difference = float(r['difference'])
+                debt_return = r.get("debt_return", None)
                 d = Debtor.objects.get(fio=fio, phone1=phone1)
                 d.debts = debts
                 d.debts_dollar = debts_dollar
                 d.difference = difference
+                #new sms
+                d.debt_return = debt_return
                 d.save()
                 return Response({'message': 'Debtor update bo`ldi.'}, status=200)
             except:
@@ -1265,6 +1319,41 @@ class DebtViewset(viewsets.ModelViewSet):
         return Response(d.data)
 
 
+
+def sms_text_replace(sms_text,sum, customer):
+    try:
+        sms_text = str(sms_text).format(name = customer.fio, som=sum, qoldi =customer.som )
+    except:
+        pass
+    return sms_text
+
+#check number
+def checkPhone(phone):
+    try:
+        int(phone)
+        return (True, phone) if len(phone) >= 12 else (False, None)
+    except:
+        return False, None
+
+
+from django.conf import settings
+#sms sender   if qarz tulasa  
+def schedular_sms_send_qaytardi(id,som):
+    try:
+        is_send = False
+        debtor = Debtor.objects.get(id=id)
+        text = settings.RETURN_DEBTOR_SMS
+        sms_text = sms_text_replace(text, som, debtor)
+        
+        can, phone = checkPhone(debtor.phone1)
+        if can:
+            result = sendSmsOneContact(debtor.phone1, sms_text)
+            if result.status_code == 200:
+                is_send = True
+    except Exception as e:
+        print(e)   
+
+
 class PayHistoryViewset(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -1281,12 +1370,17 @@ class PayHistoryViewset(viewsets.ModelViewSet):
                 som = float(r['som'])
                 dollar = float(r['dollar'])
                 filial = int(r['filial'])
+                debt_return = r.get("debt_return", None)
                 d = Debtor.objects.get(fio=fio, phone1=phone1)
                 try:
                     PayHistory.objects.create(debtor=d, som=som, dollar=dollar, filial_id=filial)
                     d.som = d.som - som
                     d.dollar = d.dollar - dollar
+                    #new sms
+                    d.debt_return = debt_return
                     d.save()
+                    #new
+                    schedular_sms_send_qaytardi(d.id,som)
                     return Response({'message': 'To`lov qabul qilindi.'}, 200)
                 except:
                     return Response({'message': 'error'}, 401)
@@ -1303,6 +1397,8 @@ class PayHistoryViewset(viewsets.ModelViewSet):
         d.debts -= r['summa']
         d.debts_dollar -= r['dollar']
         d.save()
+        #new
+        # schedular_sms_send_qaytardi(fio, som, d.id, d.som)
         s = self.get_serializer_class()(p).data
         return Response(s)
 

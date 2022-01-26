@@ -10,6 +10,8 @@ urlpatterns = [
     path('omborqabul/', OmborQabul.as_view(), name='omborqabul'),
     path('omborminus/', OmborMinus.as_view(), name='omborminus'),
     path('faktura/', Fakturas.as_view(), name='faktura'),
+    # Recieve new
+    path('recieve/',  Recieves.as_view(), name='recieve'),
     path('fakturatarix/', FakturaTarix.as_view(), name='fakturatarix'),
     path('warefaktura/', WareFakturas.as_view(), name='warefaktura'),
     path('warefakturatarix/', WareFakturaTarix.as_view(), name='warefakturatarix'),
