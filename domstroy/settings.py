@@ -135,10 +135,10 @@ CRONJOBS = [
 #Qarzini  tulaganida    sms jo'natadi
 
 # RETURN_DEBTOR_SMS = "Qarzini berdi"
-RETURN_DEBTOR_SMS = "Salom {name} siz {som} sumlik qarzingizni tuladiz! Qoldiq: {qoldi} bu settingdan bordi"
+RETURN_DEBTOR_SMS = "Salom {name} siz {som} sumlik qarzingizni tuladiz! Qoldiq: {qoldi} !"
 
 #Qarziniga olsa sms jo'natadi
-GET_DEBTOR_SMS = 'Salom {name} siz {som} sumlik qarzga savdo qildingiz! bu seetindan create'
+GET_DEBTOR_SMS = 'Salom {name} siz {som} sumlik qarzga savdo qildingiz! '
 
 #Deadline sms
 DEADLINE_SMS = "Qarz vaqti keldi"
@@ -160,6 +160,12 @@ USE_L10N = True
 USE_TZ = True
 
 LOGIN_URL = '/login'
+
+#sms
+SMS_EMAIL = 'abdullox19990604@gmail.com'
+SMS_SECRET_KEY = 'dfSkYkW7ypJdJHUhTdNJbOA1EIIddzTToUoJ5blJ'
+SMS_BASE_URL = 'http://notify.eskiz.uz'
+SMS_TOKEN = ''
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

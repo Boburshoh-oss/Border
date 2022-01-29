@@ -547,7 +547,6 @@ class ProductFilialViewset(viewsets.ModelViewSet):
                         i.som = som
                         i.dollar = dollar
                         i.save()
-                        print('444')
         return Response({'message': 'done'}, status=200)
 
 
@@ -559,7 +558,6 @@ class RecieveViewset(viewsets.ModelViewSet):
        
     @action(methods=['post'], detail=False)
     def new(self, request):
-        print(request.POST['name'])
         filial_id = request.POST['filial_id']
         name = request.POST['name']
         deliver_id = request.POST['deliver_id']
@@ -1028,15 +1026,15 @@ from django.conf import settings
 #sms sender  if buy  
 def schedular_sms_send_oldi(nasiya_som, id):
     try:
-        is_send = False
         text = settings.GET_DEBTOR_SMS
         debtor = Debtor.objects.get(id=id)
         sms_text = sms_text_replace(text, nasiya_som, debtor)
         can, phone = checkPhone(debtor.phone1)
         if can:
             result = sendSmsOneContact(debtor.phone1, sms_text)
-            if result.status_code == 200:
-                is_send = True
+            print(result)
+            # if result.status_code == 200:
+            #     is_send = True
     except Exception as e:
         print(e)   
 
@@ -1061,12 +1059,10 @@ class ShopViewset(viewsets.ModelViewSet):
             cart = r["cart"]
             #new
             debt_return = r.get("debt_return", None)
-            # debt_return = r["debt_return"]
 
             filial_obj = Filial.objects.get(id=filial)
 
             if naqd_som:
-                print("naqd_som")
                 filial_obj.savdo_puli_som += naqd_som - skidka_som
             
             if plastik:
@@ -1340,7 +1336,6 @@ from django.conf import settings
 #sms sender   if qarz tulasa  
 def schedular_sms_send_qaytardi(id,som):
     try:
-        is_send = False
         debtor = Debtor.objects.get(id=id)
         text = settings.RETURN_DEBTOR_SMS
         sms_text = sms_text_replace(text, som, debtor)
@@ -1348,8 +1343,9 @@ def schedular_sms_send_qaytardi(id,som):
         can, phone = checkPhone(debtor.phone1)
         if can:
             result = sendSmsOneContact(debtor.phone1, sms_text)
-            if result.status_code == 200:
-                is_send = True
+            print(result)
+            # if result.status_code == 200:
+            #     is_send = True
     except Exception as e:
         print(e)   
 

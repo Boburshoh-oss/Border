@@ -9,3 +9,6 @@ media
 .idea
 /api/migrations
 /main/migrations
+evn
+env
+.gis
