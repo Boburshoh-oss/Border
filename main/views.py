@@ -1700,7 +1700,7 @@ def schedular_sms_send():
                 error_send_count += 1
     except Exception as e:
         print(e)   
-
+#d
 # old deptors 
 def schedular_sms_send_olds():
     try:

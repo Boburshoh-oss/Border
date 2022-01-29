@@ -147,8 +147,14 @@ Murojaat uchun: +998901254042
 GET_DEBTOR_SMS = 'Assalom alaykum xurmatli {name} siz Bordo jamoasi dokonidan {som} so\'m qarzdor bo\'lganingizni ma\'lum qilamiz. To\'lov muddati {kun} gacha belgilandi, tolovni kechiktirmaysiz degan umitdamiz. Siz bilan hamkorlik qilayotganimizidan hursandmiz. Xurmat bilan Bordo jamoasi dokoni Murojat uchun:  +998901254042 '
 
 #Deadline sms
-DEADLINE_SMS = "Qarz vaqti keldi"
+DEADLINE_SMS = '''
+Assalom alaykum xurmatli mijoz sizni Bordo jamoasi do'konidagi QARZ muomilangiz muddati kelgani  malum qilamiz, iltimos tulovni amalga oshiring.
+Bu orqali siz, hamkorligimizni uzoq davom etishini taminlagan bo'lasiz.
+Xurmat bilan Bordo jamoasi dokoni!
 
+Murojat uchun:
++998901254042
+'''
 # Qarz kunidan utib ketdi
 OLD_DEADLINE_SMS = '''
 Assalom alaykum xurmatli mijoz sizni Bordo jamoasi do'konidagi QARZ muomilangiz muddati utib ketganini malum qilamiz, iltimos tulovni amalga oshiring.

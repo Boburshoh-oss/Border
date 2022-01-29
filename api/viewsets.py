@@ -1340,8 +1340,6 @@ def schedular_sms_send_qaytardi(id,som):
         if can:
             result = sendSmsOneContact(debtor.phone1, sms_text)
             print(result)
-            # if result.status_code == 200:
-            #     is_send = True
     except Exception as e:
         print(e)   
 
