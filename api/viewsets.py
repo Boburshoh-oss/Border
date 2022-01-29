@@ -12,9 +12,12 @@ from django.db.models import Q, Sum
 from rest_framework.pagination import PageNumberPagination
 import json
 from django.conf import settings
+<<<<<<< HEAD
 from main.sms_sender import sendSmsOneContact
 
 
+=======
+>>>>>>> d8a865413934a3a6da4cc0d27e623caaac7b0885
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
@@ -1001,7 +1004,11 @@ class FakturaItemViewset(viewsets.ModelViewSet):
 # smsm replace
 def sms_text_replace(sms_text, nasiya_som, customer):
     try:
+<<<<<<< HEAD
         sms_texts = str(sms_text).format(name=customer.fio, som=nasiya_som, , kun = customer.debt_return)
+=======
+        sms_texts = str(sms_text).format(name = customer.fio, som = nasiya_som, kun = customer.debt_return)
+>>>>>>> d8a865413934a3a6da4cc0d27e623caaac7b0885
     except Exception as e:
         print(e)
     
@@ -1017,8 +1024,12 @@ def checkPhone(phone):
         return False, None
 
 
+<<<<<<< HEAD
 
 # sms sender  if buy  
+=======
+#sms sender  if buy  
+>>>>>>> d8a865413934a3a6da4cc0d27e623caaac7b0885
 def schedular_sms_send_oldi(nasiya_som, id):
     try:
         text = settings.GET_DEBTOR_SMS
@@ -1308,6 +1319,7 @@ class DebtViewset(viewsets.ModelViewSet):
         return Response(d.data)
 
 
+<<<<<<< HEAD
 def sms_text_replaces(sms_text, sum, customer):
     try:
         sms_texts = str(sms_text).format(name=customer.fio, som=sum, qoldi=customer.som)
@@ -1315,6 +1327,15 @@ def sms_text_replaces(sms_text, sum, customer):
         print(e)
     return sms_texts
 
+=======
+
+def sms_text_replaces(sms_text,sum, customer):
+    try:
+        sms_texts = str(sms_text).format(name = customer.fio, som=sum, qoldi =customer.som )
+    except Exception as e:
+        print(e)
+    return sms_texts
+>>>>>>> d8a865413934a3a6da4cc0d27e623caaac7b0885
 
 # check number
 def checkPhone(phone):
@@ -1325,13 +1346,23 @@ def checkPhone(phone):
         return False, None
 
 
+<<<<<<< HEAD
 # sms sender   if qarz tulasa  
 def schedular_sms_send_qaytardi(id, som):
+=======
+
+#sms sender   if qarz tulasa  
+def schedular_sms_send_qaytardi(id,som):
+>>>>>>> d8a865413934a3a6da4cc0d27e623caaac7b0885
     try:
         debtor = Debtor.objects.get(id=id)
         text = settings.RETURN_DEBTOR_SMS
         sms_text = sms_text_replaces(text, som, debtor)
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> d8a865413934a3a6da4cc0d27e623caaac7b0885
         can, phone = checkPhone(debtor.phone1)
         if can:
             result = sendSmsOneContact(debtor.phone1, sms_text)
@@ -1414,7 +1445,6 @@ class CartDebtViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = CartDebt.objects.all()
     serializer_class = CartDebtSerializer
-
 
 class ReturnProductViewset(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]

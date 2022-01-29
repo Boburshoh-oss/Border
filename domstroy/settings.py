@@ -119,7 +119,6 @@ REST_FRAMEWORK = {
 }
 
 CRONJOBS = [
-    #0 12 * * 1-6
     # ('0 12 * * 1-6', 'main.views.schedular_sms_send'), #At 12:00 on every day-of-week from Monday through Saturday. bir sms jo'natadi qarz kui kelganlarga
     # ('0 14 * * 1-6', 'main.views.schedular_sms_send_olds'), #At 14:00 on every day-of-week from Monday through Saturday bir sms jo'natadi Qarzi utib ketganlarga
     
@@ -163,8 +162,13 @@ Assalom alaykum xurmatli mijoz sizni Bordo jamoasi do'konidagi QARZ muomilangiz 
 Bu orqali siz, hamkorligimizni uzoq davom etishini taminlagan bo'lasiz.
 Xurmat bilan Bordo jamoasi dokoni!
 
+<<<<<<< HEAD
 Murojat uchun:
 +998901254042
+=======
+    Murojat uchun:
+    +998901254042
+>>>>>>> d8a865413934a3a6da4cc0d27e623caaac7b0885
 '''
 
 #3day ago alert sms
