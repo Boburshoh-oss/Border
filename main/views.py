@@ -1686,10 +1686,7 @@ def schedular_sms_send():
             can, phone = checkPhone(debtor.phone1)
             if can:
                 result = sendSmsOneContact(debtor.phone1, text)
-                if result.status_code == 200:
-                    success_send_count += 1
-                else:
-                    error_send_count += 1
+                success_send_count += 1
             else:
                 error_send_count += 1
     except Exception as e:
@@ -1710,10 +1707,7 @@ def schedular_sms_send_olds():
             can, phone = checkPhone(debtor.phone1)
             if can:
                 result = sendSmsOneContact(debtor.phone1, text)
-                if result.status_code == 200:
-                    success_send_count += 1
-                else:
-                    error_send_count += 1
+                success_send_count += 1
             else:
                 error_send_count += 1
     except Exception as e:

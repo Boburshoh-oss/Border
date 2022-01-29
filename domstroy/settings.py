@@ -145,6 +145,11 @@ DEADLINE_SMS = "Qarz vaqti keldi"
 # Qarz kunidan utib ketdi
 OLD_DEADLINE_SMS = "Qarz kunidan utib ketdi"
 
+#sms
+SMS_EMAIL = 'abdullox19990604@gmail.com'
+SMS_SECRET_KEY = 'dfSkYkW7ypJdJHUhTdNJbOA1EIIddzTToUoJ5blJ'
+SMS_BASE_URL = 'http://notify.eskiz.uz'
+SMS_TOKEN = ''
 
 # CRONTAB_COMMAND_SUFFIX = '2>&1'
 LANGUAGE_CODE = 'uz-uz'

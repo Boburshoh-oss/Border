@@ -1,67 +1,4 @@
-from django.db.models.fields.related import create_many_to_many_intermediary_model
-from rest_framework import viewsets
-from .serializers import *
-from rest_framework.response import Response
-from rest_framework.decorators import action
-from datetime import datetime
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.authtoken.models import Token
-import tablib
-from django.db.models import Q, Sum
-from rest_framework.pagination import PageNumberPagination
-import json
-
-
-class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 10
-    page_size_query_param = 'page_size'
-    max_page_size = 1000
-
-
-def month():
-    date = datetime.today()
-    year = date.year
-    if date.month == 12:
-        gte = datetime(year, date.month, 1, 0, 0, 0)
-        lte = datetime(year + 1, 1, 1, 0, 0, 0)
-    else:
-        gte = datetime(year, date.month, 1, 0, 0, 0)
-        lte = datetime(year, date.month + 1, 1, 0, 0, 0)
-
-    return gte, lte
-
-
-class TokenViewset(viewsets.ModelViewSet):
-    queryset = Token.objects.all()
-    serializer_class = TokenSerializer
-
-
-class UserProfileViewset(viewsets.ModelViewSet):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
-
-    @action(methods=['post'], detail=False)
-    def login1(self, request):
-        r = request.data
-        password = r['password']
-        try:
-            user = UserProfile.objects.get(password=password)
-            s = self.get_serializer_class()(user).data
-            # token, created = Token.objects.first()
-            token, created = Token.objects.get_or_create(user=user)
-            print(token)
-            return Response({
-                'user': s,
-                'token': token.key
-            })
-        except:
-            return Response({'message': 'Bunday foydalanuvchi yo`q'}, status=401)
-
-    @action(methods=['post'], detail=False)
-    def login(self, request):
+(self, request):
         r = request.data
         password = r['password']
         try:
@@ -154,7 +91,6 @@ class DeliverViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Deliver.objects.all()
     serializer_class = DeliverSerializer
-
 
 """
 class ProductViewset(viewsets.ModelViewSet):
@@ -268,15 +204,16 @@ class ProductViewset(viewsets.ModelViewSet):
 
 """
 
-
 class Product_FilialViewset(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = Filial.objects.all()
     serializer_class = ProductFilialSerializer
 
+
     @action(methods=['get'], detail=False)
     def filial_products(self, request):
+        
         filial_id = request.GET['filial_id']
         products = ProductFilial.objects.filter(filial_id=filial_id)
         data = self.get_serializer_class()(products, many=True)
@@ -289,6 +226,7 @@ class ProductFilialViewset(viewsets.ModelViewSet):
     queryset = ProductFilial.objects.all()
     serializer_class = ProductFilialSerializer
     pagination_class = StandardResultsSetPagination
+
 
     def create(self, request):
         data = request.data
@@ -314,6 +252,8 @@ class ProductFilialViewset(viewsets.ModelViewSet):
             return Response(serialized_product.data, status=201)
         except Exception as e:
             return Response({"message": "error {}".format(str(e))}, status=400)
+
+
 
     @action(methods=['post'], detail=False)
     def add_recive(self, request):
@@ -365,6 +305,7 @@ class ProductFilialViewset(viewsets.ModelViewSet):
 
         return Response({'message': 'done'}, status=200)
 
+
     @action(methods=['get'], detail=False)
     def by_filial(self, request):
         id = request.GET.get('f')
@@ -378,6 +319,7 @@ class ProductFilialViewset(viewsets.ModelViewSet):
         serializer = self.get_serializer(d, many=True)
         return Response(serializer.data)
 
+
     @action(methods=['post'], detail=False)
     def add(self, request):
         r = request.data
@@ -386,28 +328,28 @@ class ProductFilialViewset(viewsets.ModelViewSet):
         # difference = float(r['difference'])
         fakturaitems = FakturaItem.objects.filter(faktura_id=faktura)
         faktura_jonatilgan_filial = Filial.objects.get(id=filial)
-
+        
         dif_som = 0
         dif_dollar = 0
-
+        
         for fakturaitem in fakturaitems:
             product = ProductFilial.objects.filter(filial=filial, id=fakturaitem.product.id)
-
+        
             if len(product) > 0:
                 product = product.first()
-
+        
                 if product.som != fakturaitem.som:
                     dif_som += (fakturaitem.som - product.som) * product.quantity
                     product.som = fakturaitem.som
                     product.quantity = product.quantity + fakturaitem.quantity
                     product.save()
-
+        
                 elif product.dollar != fakturaitem.dollar:
                     dif_dollar += (fakturaitem.dollar - product.dollar) * product.quantity
                     product.dollar = fakturaitem.dollar
                     product.quantity = product.quantity + fakturaitem.quantity
                     product.save()
-
+        
                 else:
                     product.quantity = product.quantity + fakturaitem.quantity
                     product.save()
@@ -416,7 +358,7 @@ class ProductFilialViewset(viewsets.ModelViewSet):
                                              dollar=fakturaitem.dollar,
                                              quantity=fakturaitem.quantity, filial_id=filial,
                                              barcode=fakturaitem.barcode, group=fakturaitem.group)
-
+        
         faktur = Faktura.objects.get(id=faktura)
         faktur.difference_som = dif_som
         faktur.difference_dollar = dif_dollar
@@ -482,7 +424,7 @@ class ProductFilialViewset(viewsets.ModelViewSet):
         d = ProductFilialSerializerWithCourse(query_filtered, many=True).data
 
         return Response(d)
-
+       
         """
             @action(methods=['post'], detail=False)
             def xlsx(self, request):
@@ -506,6 +448,7 @@ class ProductFilialViewset(viewsets.ModelViewSet):
 
                 return Response({'message': 'done'})
         """
+
 
     @action(methods=['post'], detail=False)
     def up(self, request):
@@ -550,7 +493,7 @@ class RecieveViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Recieve.objects.all()
     serializer_class = RecieveSerializer
-
+       
     @action(methods=['post'], detail=False)
     def new(self, request):
         print(request.POST['name'])
@@ -561,16 +504,18 @@ class RecieveViewset(viewsets.ModelViewSet):
         created = Recieve.objects.create(filial_id=filial_id, name=name, deliver_id=deliver_id)
 
         recieve = self.get_serializer_class()(created)
-
+        
         return Response(recieve.data, status=201)
 
     @action(methods=['get'], detail=False)
     def get_status_1(self, request):
+
         recieve = Recieve.objects.filter(status=1)
 
         data = self.get_serializer_class()(recieve, many=True)
 
         return Response(data.data, status=200)
+
 
     @action(methods=['get'], detail=False)
     def recieve0(self, request):
@@ -667,11 +612,10 @@ class RecieveItemViewset(viewsets.ModelViewSet):
             except:
                 pass
             it.sotish_dollar = sotish_dollar
-            recieve.sum_sotish_dollar = recieve.sum_sotish_dollar - (
-                        it.sotish_dollar * it.quantity) + sotish_dollar * quantity
+            recieve.sum_sotish_dollar = recieve.sum_sotish_dollar - (it.sotish_dollar * it.quantity) + sotish_dollar * quantity
             recieve.save()
             it.save()
-
+        
         elif dollar == 0:
             recieve.som = recieve.som - (it.som * it.quantity) + som * quantity
             it.som = som
@@ -722,6 +666,7 @@ class FakturaViewset(viewsets.ModelViewSet):
             queryset = queryset.filter(status=int(status))
 
         return queryset
+
 
     @action(methods=['post'], detail=False)
     def st(self, request):
@@ -844,6 +789,7 @@ class FakturaItemViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = FakturaItem.objects.all()
     serializer_class = FakturaItemSerializer
+    
 
     @action(methods=['get'], detail=False)
     def by_faktura(self, request):
@@ -995,20 +941,17 @@ class FakturaItemViewset(viewsets.ModelViewSet):
 
         return Response({'message': 'done'})
 
-
 from main.sms_sender import sendSmsOneContact
-
 
 def sms_text_replace(sms_text, nasiya_som, customer):
     try:
-        sms_text = str(sms_text).format(name=customer.fio, som=nasiya_som)
+        sms_text = str(sms_text).format(name = customer.fio, som=nasiya_som)
     except:
         pass
-
+    
     return sms_text
 
-
-# 998997707572 len = 12
+#998997707572 len = 12
 def checkPhone(phone):
     try:
         int(phone)
@@ -1019,8 +962,7 @@ def checkPhone(phone):
 
 from django.conf import settings
 
-
-# sms sender  if buy  
+#sms sender  if buy  
 def schedular_sms_send_oldi(nasiya_som, id):
     try:
         is_send = False
@@ -1030,10 +972,10 @@ def schedular_sms_send_oldi(nasiya_som, id):
         can, phone = checkPhone(debtor.phone1)
         if can:
             result = sendSmsOneContact(debtor.phone1, sms_text)
-
+            if result.status_code == 200:
+                is_send = True
     except Exception as e:
-        print(e)
-
+        print(e)   
 
 class ShopViewset(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
@@ -1053,21 +995,26 @@ class ShopViewset(viewsets.ModelViewSet):
             skidka_dollar = r["skidka_dollar"]
             filial = r["filial"]
             saler = r["saler"]
+<<<<<<< HEAD
+            cart = r.get("cart")
+            debt_return = r.get("debt_return", None)
+=======
             cart = r["cart"]
-            # new
+            #new
             debt_return = r.get("debt_return", None)
             # debt_return = r["debt_return"]
+>>>>>>> ff7b42c98364935c1d0a8d7bb8da4d0681b1a324
 
             filial_obj = Filial.objects.get(id=filial)
 
             if naqd_som:
                 print("naqd_som")
                 filial_obj.savdo_puli_som += naqd_som - skidka_som
-
+            
             if plastik:
                 print("plastik")
                 filial_obj.savdo_puli_som += plastik
-
+            
             if transfer:
                 print("transfer")
                 filial_obj.savdo_puli_som += transfer
@@ -1079,7 +1026,7 @@ class ShopViewset(viewsets.ModelViewSet):
             filial_obj.save()
 
             for c in cart:
-
+               
                 product = ProductFilial.objects.get(barcode=c['barcode'])
 
                 if product.quantity > 0 and c['quantity'] <= product.quantity:
@@ -1089,6 +1036,7 @@ class ShopViewset(viewsets.ModelViewSet):
                     product.quantity = 0
                     product.save()
 
+        
             try:
                 nasiya_som = r["nasiya_som"]
                 nasiya_dollar = r["nasiya_dollar"]
@@ -1104,15 +1052,19 @@ class ShopViewset(viewsets.ModelViewSet):
                     skidka_dollar=skidka_dollar,
                     filial_id=filial,
                     saler_id=saler,
-                    # new
+<<<<<<< HEAD
                     debt_return=debt_return
+=======
+                    #new
+                    debt_return = debt_return
+>>>>>>> ff7b42c98364935c1d0a8d7bb8da4d0681b1a324
                 )
                 phone = r["phone"]
-
+                
                 d, created = Debtor.objects.get_or_create(fio=fio, phone1=phone)
                 d.som += float(nasiya_som)
                 d.dollar += float(nasiya_dollar)
-                # new sms
+                #new sms
                 d.debt_return = debt_return
                 d.save()
                 schedular_sms_send_oldi(nasiya_som, d.id)
@@ -1128,8 +1080,12 @@ class ShopViewset(viewsets.ModelViewSet):
                     skidka_dollar=skidka_dollar,
                     filial_id=filial,
                     saler_id=saler,
-                    # new
+<<<<<<< HEAD
                     debt_return=debt_return
+=======
+                    #new
+                    debt_return = debt_return
+>>>>>>> ff7b42c98364935c1d0a8d7bb8da4d0681b1a324
                 )
 
                 return Response({'message': 'Shop qo`shildi. {}'.format(er)}, status=201)
@@ -1222,7 +1178,7 @@ class CartViewset(viewsets.ModelViewSet):
             d = Debtor.objects.get(id=debtor)
             d.debts += nasiya
             d.debts_dollar += dollar
-            # new sms
+            #new sms
             d.debt_return = debt_return
             d.save()
             Debt.objects.create(debtorr_id=debtor, shop=sh, return_date=r['return_date'], dollar=dollar)
@@ -1255,7 +1211,7 @@ class CartViewset(viewsets.ModelViewSet):
                 d = Debtor.objects.get(id=debtor)
                 d.som += float(nasiya_som)
                 d.dollar += float(nasiya_dollar)
-                # new sms
+                #new sms
                 d.debt_return = debt_return
                 d.save()
 
@@ -1289,7 +1245,7 @@ class DebtorViewset(viewsets.ModelViewSet):
                 d.debts = debts
                 d.debts_dollar = debts_dollar
                 d.difference = difference
-                # new sms
+                #new sms
                 d.debt_return = debt_return
                 d.save()
                 return Response({'message': 'Debtor update bo`ldi.'}, status=200)
@@ -1313,15 +1269,15 @@ class DebtViewset(viewsets.ModelViewSet):
         return Response(d.data)
 
 
-def sms_text_replace(sms_text, sum, customer):
+
+def sms_text_replace(sms_text,sum, customer):
     try:
-        sms_text = str(sms_text).format(name=customer.fio, som=sum, qoldi=customer.som)
+        sms_text = str(sms_text).format(name = customer.fio, som=sum, qoldi =customer.som )
     except:
         pass
     return sms_text
 
-
-# check number
+#check number
 def checkPhone(phone):
     try:
         int(phone)
@@ -1331,21 +1287,21 @@ def checkPhone(phone):
 
 
 from django.conf import settings
-
-
-# sms sender   if qarz tulasa  
-def schedular_sms_send_qaytardi(id, som):
+#sms sender   if qarz tulasa  
+def schedular_sms_send_qaytardi(id,som):
     try:
         is_send = False
         debtor = Debtor.objects.get(id=id)
         text = settings.RETURN_DEBTOR_SMS
         sms_text = sms_text_replace(text, som, debtor)
-
+        
         can, phone = checkPhone(debtor.phone1)
         if can:
             result = sendSmsOneContact(debtor.phone1, sms_text)
+            if result.status_code == 200:
+                is_send = True
     except Exception as e:
-        print(e)
+        print(e)   
 
 
 class PayHistoryViewset(viewsets.ModelViewSet):
@@ -1370,11 +1326,11 @@ class PayHistoryViewset(viewsets.ModelViewSet):
                     PayHistory.objects.create(debtor=d, som=som, dollar=dollar, filial_id=filial)
                     d.som = d.som - som
                     d.dollar = d.dollar - dollar
-                    # new sms
+                    #new sms
                     d.debt_return = debt_return
                     d.save()
-                    # new
-                    schedular_sms_send_qaytardi(d.id, som)
+                    #new
+                    schedular_sms_send_qaytardi(d.id,som)
                     return Response({'message': 'To`lov qabul qilindi.'}, 200)
                 except:
                     return Response({'message': 'error'}, 401)
@@ -1391,7 +1347,7 @@ class PayHistoryViewset(viewsets.ModelViewSet):
         d.debts -= r['summa']
         d.debts_dollar -= r['dollar']
         d.save()
-        # new
+        #new
         # schedular_sms_send_qaytardi(fio, som, d.id, d.som)
         s = self.get_serializer_class()(p).data
         return Response(s)
