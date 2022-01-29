@@ -11,7 +11,7 @@ import tablib
 from django.db.models import Q, Sum
 from rest_framework.pagination import PageNumberPagination
 import json
-
+from django.conf import settings
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
@@ -1006,11 +1006,11 @@ from main.sms_sender import sendSmsOneContact
 
 def sms_text_replace(sms_text, nasiya_som, customer):
     try:
-        sms_text = str(sms_text).format(name = customer.fio, som=nasiya_som)
-    except:
-        pass
+        sms_texts = str(sms_text).format(name = customer.fio, som = nasiya_som, kun = customer.debt_return)
+    except Exception as e:
+        print(e)
     
-    return sms_text
+    return sms_texts
 
 #998997707572 len = 12
 def checkPhone(phone):
@@ -1020,8 +1020,6 @@ def checkPhone(phone):
     except:
         return False, None
 
-
-from django.conf import settings
 
 #sms sender  if buy  
 def schedular_sms_send_oldi(nasiya_som, id):
@@ -1033,8 +1031,6 @@ def schedular_sms_send_oldi(nasiya_som, id):
         if can:
             result = sendSmsOneContact(debtor.phone1, sms_text)
             print(result)
-            # if result.status_code == 200:
-            #     is_send = True
     except Exception as e:
         print(e)   
 
@@ -1316,12 +1312,12 @@ class DebtViewset(viewsets.ModelViewSet):
 
 
 
-def sms_text_replace(sms_text,sum, customer):
+def sms_text_replaces(sms_text,sum, customer):
     try:
-        sms_text = str(sms_text).format(name = customer.fio, som=sum, qoldi =customer.som )
-    except:
-        pass
-    return sms_text
+        sms_texts = str(sms_text).format(name = customer.fio, som=sum, qoldi =customer.som )
+    except Exception as e:
+        print(e)
+    return sms_texts
 
 #check number
 def checkPhone(phone):
@@ -1332,13 +1328,13 @@ def checkPhone(phone):
         return False, None
 
 
-from django.conf import settings
+
 #sms sender   if qarz tulasa  
 def schedular_sms_send_qaytardi(id,som):
     try:
         debtor = Debtor.objects.get(id=id)
         text = settings.RETURN_DEBTOR_SMS
-        sms_text = sms_text_replace(text, som, debtor)
+        sms_text = sms_text_replaces(text, som, debtor)
         
         can, phone = checkPhone(debtor.phone1)
         if can:
@@ -1424,7 +1420,6 @@ class CartDebtViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = CartDebt.objects.all()
     serializer_class = CartDebtSerializer
-
 
 class ReturnProductViewset(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
