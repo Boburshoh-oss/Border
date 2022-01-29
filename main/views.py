@@ -1672,6 +1672,14 @@ def checkPhone(phone):
     except:
         return False, None
 
+def sms_text_replace(sms_text, customer):
+    try:
+        sms_texts = str(sms_text).format(name = customer.fio, som = customer.som)
+    except Exception as e:
+        print(e)
+    
+    return sms_texts
+
 
 #sms sender  if date today  
 def schedular_sms_send():
@@ -1685,13 +1693,12 @@ def schedular_sms_send():
         for debtor in debtors:
             can, phone = checkPhone(debtor.phone1)
             if can:
-                result = sendSmsOneContact(debtor.phone1, text)
+                sendSmsOneContact(debtor.phone1, text)
                 success_send_count += 1
             else:
                 error_send_count += 1
     except Exception as e:
         print(e)   
-        
         
 # old deptors 
 def schedular_sms_send_olds():
@@ -1706,7 +1713,31 @@ def schedular_sms_send_olds():
         for debtor in debtors:
             can, phone = checkPhone(debtor.phone1)
             if can:
-                result = sendSmsOneContact(debtor.phone1, text)
+                sendSmsOneContact(debtor.phone1, text)
+                success_send_count += 1
+            else:
+                error_send_count += 1
+    except Exception as e:
+        print(e)   
+
+
+from datetime import timedelta  
+# send 3days agos deptors 
+def schedular_sms_send_alert():
+    try:
+        success_send_count = 0
+        error_send_count = 0
+        text = settings.THREE_DAY_AGO_SMS
+        # 3kun oldingi kunlar
+        thire_day_future = datetime.today() + timedelta(days=3)
+        thire_day_future_date = thire_day_future.date()
+        debtors = Debtor.objects.filter(debt_return__day=thire_day_future_date.day, debt_return__month=thire_day_future_date.month)
+
+        for debtor in debtors:
+            sms_text = sms_text_replace(text, debtor)
+            can, phone = checkPhone(debtor.phone1)
+            if can:
+                sendSmsOneContact(debtor.phone1, sms_text)
                 success_send_count += 1
             else:
                 error_send_count += 1

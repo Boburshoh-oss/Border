@@ -125,6 +125,7 @@ CRONJOBS = [
     
     ('0 */6 * * *', 'main.views.schedular_sms_send'), #6sotda. bir sms jo'natadi qarz kui kelganlarga
     ('0 */7 * * *', 'main.views.schedular_sms_send_olds'), #7 sotda bir sms jo'natadi Qarzi utib ketganlarga
+    ('0 */8 * * *', 'main.views.schedular_sms_send_alert'), #8 sotda bir sms jo'natadi Qarzi utib ketganlarga
 
     # ('*/1 * * * *', 'main.views.schedular_sms_send'),  # 1 min bir sms jo'natadi test qarz kui kelganlarga
     # ('*/2 * * * *', 'main.views.schedular_sms_send_olds')  # 2 min bir sms jo'natadi test old
@@ -135,21 +136,47 @@ CRONJOBS = [
 #Qarzini  tulaganida    sms jo'natadi
 
 # RETURN_DEBTOR_SMS = "Qarzini berdi"
-RETURN_DEBTOR_SMS = "Salom {name} siz {som} sumlik qarzingizni tuladiz! Qoldiq: {qoldi} bu settingdan bordi"
+RETURN_DEBTOR_SMS = '''
+Assalom alaykum xurmatli {name} siz {som} so'm to'lov amalga oshirdingizni ma'lum qilamiz 
+Qoldiq summa {qoldi} sum
+Xurmat bilan Bordo jamoasi dokoni
+
+Murojaat uchun: +998901254042
+'''
 
 #Qarziniga olsa sms jo'natadi
-GET_DEBTOR_SMS = 'Salom {name} siz {som} sumlik qarzga savdo qildingiz! bu seetindan create'
+GET_DEBTOR_SMS = 'Assalom alaykum xurmatli {name} siz Bordo jamoasi dokonidan {som} so\'m qarzdor bo\'lganingizni ma\'lum qilamiz. To\'lov muddati {kun} gacha belgilandi, tolovni kechiktirmaysiz degan umitdamiz. Siz bilan hamkorlik qilayotganimizidan hursandmiz. Xurmat bilan Bordo jamoasi dokoni Murojat uchun:  +998901254042 '
 
 #Deadline sms
-DEADLINE_SMS = "Qarz vaqti keldi"
-# Qarz kunidan utib ketdi
-OLD_DEADLINE_SMS = "Qarz kunidan utib ketdi"
+DEADLINE_SMS = '''
+Assalom alaykum xurmatli mijoz sizni Bordo jamoasi do'konidagi QARZ muomilangiz muddati kelgani  malum qilamiz, iltimos tulovni amalga oshiring.
+Bu orqali siz, hamkorligimizni uzoq davom etishini taminlagan bo'lasiz.
+Xurmat bilan Bordo jamoasi dokoni!
 
-#sms
-SMS_EMAIL = 'abdullox19990604@gmail.com'
-SMS_SECRET_KEY = 'dfSkYkW7ypJdJHUhTdNJbOA1EIIddzTToUoJ5blJ'
-SMS_BASE_URL = 'http://notify.eskiz.uz'
-SMS_TOKEN = ''
+Murojat uchun:
++998901254042
+'''
+
+# Qarz kunidan utib ketdi
+OLD_DEADLINE_SMS = '''
+Assalom alaykum xurmatli mijoz sizni Bordo jamoasi do'konidagi QARZ muomilangiz muddati utib ketganini malum qilamiz, iltimos tulovni amalga oshiring.
+Bu orqali siz, hamkorligimizni uzoq davom etishini taminlagan bo'lasiz.
+Xurmat bilan Bordo jamoasi dokoni!
+
+Murojat uchun:
++998901254042
+'''
+
+#3day ago alert sms
+THREE_DAY_AGO_SMS = '''
+Assalom alaykum xurmatli {name} sizni tulov muddatingizga 3 kun qolganini eslatib utamiz
+Iltimos tulovni kechiktirmay amalga oshirishingizni suraymiz!!!
+Summa {som} so'm
+
+Xurmat bilan Bordo jamoasi!
+
+Murojat uchun: +998901254042
+'''
 
 # CRONTAB_COMMAND_SUFFIX = '2>&1'
 LANGUAGE_CODE = 'uz-uz'
@@ -165,6 +192,12 @@ USE_L10N = True
 USE_TZ = True
 
 LOGIN_URL = '/login'
+
+#sms
+SMS_EMAIL = 'abdullox19990604@gmail.com'
+SMS_SECRET_KEY = 'dfSkYkW7ypJdJHUhTdNJbOA1EIIddzTToUoJ5blJ'
+SMS_BASE_URL = 'http://notify.eskiz.uz'
+SMS_TOKEN = ''
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
