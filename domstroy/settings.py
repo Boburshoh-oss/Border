@@ -136,21 +136,23 @@ CRONJOBS = [
 
 # RETURN_DEBTOR_SMS = "Qarzini berdi"
 RETURN_DEBTOR_SMS = '''
-Assalom alaykum xurmatli {name} siz {som} so'm to'lov amalga oshirdingizni ma'lum qilamiz 
-Qoldiq summa {qoldi} sum
-Xurmat bilan Bordo jamoasi dokoni
+Assalom alaykum xurmatli {name} siz {som} so'm to'lov amalga oshirganingizni ma'lum qilamiz.
+Qoldiq summa {qoldi} so'm
+
+Xurmat bilan Bordo jamoasi!
 
 Murojaat uchun: +998901254042
 '''
 
 #Qarziniga olsa sms jo'natadi
-GET_DEBTOR_SMS = 'Assalom alaykum xurmatli {name} siz Bordo jamoasi dokonidan {som} so\'m qarzdor bo\'lganingizni ma\'lum qilamiz. To\'lov muddati {kun} gacha belgilandi, tolovni kechiktirmaysiz degan umitdamiz. Siz bilan hamkorlik qilayotganimizidan hursandmiz. Xurmat bilan Bordo jamoasi dokoni Murojat uchun:  +998901254042 '
+GET_DEBTOR_SMS = 'Assalom alaykum xurmatli {name} siz Bordo jamoasi do\'konidan {som} so\'m qarzdor bo\'lganingizni ma\'lum qilamiz. To\'lov muddati {kun} gacha belgilandi, tolovni kechiktirmaysiz degan umitdamiz. Siz bilan hamkorlik qilayotganimizidan hursandmiz. Xurmat bilan Bordo jamoasi!  Murojat uchun:  +998901254042 '
 
 #Deadline sms
 DEADLINE_SMS = '''
-Assalom alaykum xurmatli mijoz sizni Bordo jamoasi do'konidagi QARZ muomilangiz muddati kelgani  malum qilamiz, iltimos tulovni amalga oshiring.
+Assalom alaykum xurmatli {name} sizni Bordo jamoasi do'konidagi QARZ muomilangiz muddati kelgani  malum qilamiz, iltimos tulovni amalga oshiring.
 Bu orqali siz, hamkorligimizni uzoq davom etishini taminlagan bo'lasiz.
-Xurmat bilan Bordo jamoasi dokoni!
+
+Xurmat bilan Bordo jamoasi!
 
 Murojat uchun:
 +998901254042
@@ -158,23 +160,19 @@ Murojat uchun:
 
 # Qarz kunidan utib ketdi
 OLD_DEADLINE_SMS = '''
-Assalom alaykum xurmatli mijoz sizni Bordo jamoasi do'konidagi QARZ muomilangiz muddati utib ketganini malum qilamiz, iltimos tulovni amalga oshiring.
+Assalom alaykum xurmatli {name} sizni Bordo jamoasi do'konidagi QARZ muomilangiz muddati o'tib ketganini ma'lum qilamiz, iltimos to'lovni amalga oshiring.
 Bu orqali siz, hamkorligimizni uzoq davom etishini taminlagan bo'lasiz.
-Xurmat bilan Bordo jamoasi dokoni!
 
-<<<<<<< HEAD
+Xurmat bilan Bordo jamoasi!
+
 Murojat uchun:
 +998901254042
-=======
-    Murojat uchun:
-    +998901254042
->>>>>>> d8a865413934a3a6da4cc0d27e623caaac7b0885
 '''
 
 #3day ago alert sms
 THREE_DAY_AGO_SMS = '''
-Assalom alaykum xurmatli {name} sizni tulov muddatingizga 3 kun qolganini eslatib utamiz
-Iltimos tulovni kechiktirmay amalga oshirishingizni suraymiz!!!
+Assalom alaykum xurmatli {name} sizni to'lov muddatingizga 3 kun qolganini eslatib o'tamiz
+Iltimos tulovni kechiktirmay amalga oshirishingizni so'raymiz!!!
 Summa {som} so'm
 
 Xurmat bilan Bordo jamoasi!

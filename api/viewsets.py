@@ -12,12 +12,9 @@ from django.db.models import Q, Sum
 from rest_framework.pagination import PageNumberPagination
 import json
 from django.conf import settings
-<<<<<<< HEAD
 from main.sms_sender import sendSmsOneContact
 
 
-=======
->>>>>>> d8a865413934a3a6da4cc0d27e623caaac7b0885
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
@@ -1001,17 +998,13 @@ class FakturaItemViewset(viewsets.ModelViewSet):
 
 
 
-# smsm replace
+# smm replace
 def sms_text_replace(sms_text, nasiya_som, customer):
     try:
-<<<<<<< HEAD
-        sms_texts = str(sms_text).format(name=customer.fio, som=nasiya_som, , kun = customer.debt_return)
-=======
-        sms_texts = str(sms_text).format(name = customer.fio, som = nasiya_som, kun = customer.debt_return)
->>>>>>> d8a865413934a3a6da4cc0d27e623caaac7b0885
+        format_nasiya_som = '{:,}'.format(int(nasiya_som))
+        sms_texts = str(sms_text).format(name=customer.fio, som=format_nasiya_som,  kun = customer.debt_return)
     except Exception as e:
         print(e)
-    
     return sms_texts
 
 
@@ -1024,12 +1017,7 @@ def checkPhone(phone):
         return False, None
 
 
-<<<<<<< HEAD
-
-# sms sender  if buy  
-=======
 #sms sender  if buy  
->>>>>>> d8a865413934a3a6da4cc0d27e623caaac7b0885
 def schedular_sms_send_oldi(nasiya_som, id):
     try:
         text = settings.GET_DEBTOR_SMS
@@ -1121,6 +1109,7 @@ class ShopViewset(viewsets.ModelViewSet):
                 # new sms
                 d.debt_return = debt_return
                 d.save()
+                #new sms
                 schedular_sms_send_oldi(nasiya_som, d.id)
                 return Response({'message': 'Shop qo`shildi. Debtor yangilandi'}, status=201)
 
@@ -1319,50 +1308,25 @@ class DebtViewset(viewsets.ModelViewSet):
         return Response(d.data)
 
 
-<<<<<<< HEAD
-def sms_text_replaces(sms_text, sum, customer):
-    try:
-        sms_texts = str(sms_text).format(name=customer.fio, som=sum, qoldi=customer.som)
-    except Exception as e:
-        print(e)
-    return sms_texts
-
-=======
 
 def sms_text_replaces(sms_text,sum, customer):
     try:
-        sms_texts = str(sms_text).format(name = customer.fio, som=sum, qoldi =customer.som )
+        format_tuladi_som = '{:,}'.format(int(sum))
+        format_qoldiq_som = '{:,}'.format(int(customer.som))
+        sms_texts = str(sms_text).format(name = customer.fio, som=format_tuladi_som, qoldi = format_qoldiq_som )
     except Exception as e:
         print(e)
     return sms_texts
->>>>>>> d8a865413934a3a6da4cc0d27e623caaac7b0885
-
-# check number
-def checkPhone(phone):
-    try:
-        int(phone)
-        return (True, phone) if len(phone) >= 12 else (False, None)
-    except:
-        return False, None
 
 
-<<<<<<< HEAD
-# sms sender   if qarz tulasa  
-def schedular_sms_send_qaytardi(id, som):
-=======
 
 #sms sender   if qarz tulasa  
 def schedular_sms_send_qaytardi(id,som):
->>>>>>> d8a865413934a3a6da4cc0d27e623caaac7b0885
     try:
         debtor = Debtor.objects.get(id=id)
         text = settings.RETURN_DEBTOR_SMS
         sms_text = sms_text_replaces(text, som, debtor)
-<<<<<<< HEAD
-
-=======
         
->>>>>>> d8a865413934a3a6da4cc0d27e623caaac7b0885
         can, phone = checkPhone(debtor.phone1)
         if can:
             result = sendSmsOneContact(debtor.phone1, sms_text)

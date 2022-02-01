@@ -88,15 +88,15 @@
                                                     <td><div class="td-content">{{ forloop.counter }}</div></td>
                                                     <th><a href="{% url  'filialinfo' filial.id %}"><div class="th-content">{{ filial.name }}</div></a></th>
                                                     <td><div class="td-content">{{ filial.naqd_som|intcomma  }}</div></td>
-                                                    <td><div class="td-content">{{ filial.naqd_dollar }}</div></td>
-                                                    <td><div class="td-content">{{ filial.plastik }}</div></td>
-                                                    <td><div class="td-content">{{ filial.nasiya_som }}</div></td>
-                                                    <td><div class="td-content">{{ filial.nasiya_dollar }}</div></td>
-                                                    <td><div class="td-content">{{ filial.transfer }}</div></td>
-                                                    <td><div class="td-content">{{ filial.skidka_som }}</div></td>
-                                                    <td><div class="td-content">{{ filial.skidka_dollar }}</div></td>
-                                                    <td><div class="td-content">{{ filial.pay_som }}</div></td>
-                                            	        <td><div class="td-content">{{ filial.pay_dollar }}</div></td>
+                                                    <td><div class="td-content">{{ filial.naqd_dollar|intcomma  }}</div></td>
+                                                    <td><div class="td-content">{{ filial.plastik|intcomma  }}</div></td>
+                                                    <td><div class="td-content">{{ filial.nasiya_som|intcomma  }}</div></td>
+                                                    <td><div class="td-content">{{ filial.nasiya_dollar|intcomma  }}</div></td>
+                                                    <td><div class="td-content">{{ filial.transfer|intcomma  }}</div></td>
+                                                    <td><div class="td-content">{{ filial.skidka_som|intcomma  }}</div></td>
+                                                    <td><div class="td-content">{{ filial.skidka_dollar|intcomma  }}</div></td>
+                                                    <td><div class="td-content">{{ filial.pay_som|intcomma  }}</div></td>
+                                            	        <td><div class="td-content">{{ filial.pay_dollar|intcomma  }}</div></td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>

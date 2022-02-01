@@ -4,7 +4,6 @@ import json
 
 import requests
 
-# from domstroy import settings
 from django.conf import settings
 
 def sms_login():

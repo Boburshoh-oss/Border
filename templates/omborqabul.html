@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
+{% load humanize %}
     <title>Ombor qabul | Bordo</title>
 {% endblock title %}
 {% block css %}
@@ -55,8 +56,8 @@
                                                     <td><div class="td-content">{{ forloop.counter }}</div></td>
                                                     <td><div class="td-content">{{ w.name }}</div></td>
                                                     <td><div class="td-content">{{ w.deliver }}</div></td>
-                                                    <td><div class="td-content">{{ w.som }}</div></td>
-                                                    <td><div class="td-content">{{ w.dollar }}</div></td>
+                                                    <td><div class="td-content">{{ w.som|intcomma }}</div></td>
+                                                    <td><div class="td-content">{{ w.dollar|intcomma }}</div></td>
                                                     <td><div class="td-content">{{ w.date }}</div></td>
                                                 </tr>
                                             {% endfor %}

@@ -1671,7 +1671,23 @@ def checkPhone(phone):
         return (True, phone) if len(phone) >= 12 else (False, None)
     except:
         return False, None
-
+#for fio and qarz som
+def sms_text_replace(sms_text, customer):
+    try:
+        format_som = '{:,}'.format(int(customer.som))
+        sms_texts = str(sms_text).format(name = customer.fio, som = format_som)
+    except Exception as e:
+        print(e)
+    
+    return sms_texts
+#for fio
+def sms_text_replaces(sms_text, customer):
+    try:
+        sms_texts = str(sms_text).format(name = customer.fio)
+    except Exception as e:
+        print(e)
+    
+    return sms_texts
 
 #sms sender  if date today  
 def schedular_sms_send():
@@ -1683,14 +1699,11 @@ def schedular_sms_send():
         debtors = Debtor.objects.filter(debt_return__day=vaqt.day, debt_return__month=vaqt.month)
 
         for debtor in debtors:
+            sms_text = sms_text_replaces(text, debtor)
             can, phone = checkPhone(debtor.phone1)
             if can:
-                result = sendSmsOneContact(debtor.phone1, text)
+                sendSmsOneContact(debtor.phone1, sms_text)
                 success_send_count += 1
-                # if result.status_code == 200:
-                #     success_send_count += 1
-                # else:
-                #     error_send_count += 1
             else:
                 error_send_count += 1
     except Exception as e:
@@ -1708,15 +1721,35 @@ def schedular_sms_send_olds():
         debtors = Debtor.objects.filter(debt_return__day__lt=vaqt.day, debt_return__month__lte=vaqt.month)
 
         for debtor in debtors:
+            sms_text = sms_text_replaces(text, debtor)
             can, phone = checkPhone(debtor.phone1)
             if can:
-                result = sendSmsOneContact(debtor.phone1, text)
+                result = sendSmsOneContact(debtor.phone1, sms_text)
                 success_send_count += 1
-                # if result.status_code == 200:
-                #     success_send_count += 1
-                # else:
-                #     error_send_count += 1
             else:
                 error_send_count += 1
     except Exception as e:
         print(e)   
+
+from datetime import timedelta  
+# send 3days agos deptors 
+def schedular_sms_send_alert():
+    try:
+        success_send_count = 0
+        error_send_count = 0
+        text = settings.THREE_DAY_AGO_SMS
+        # 3kun oldingi kunlar
+        thire_day_future = datetime.today() + timedelta(days=3)
+        thire_day_future_date = thire_day_future.date()
+        debtors = Debtor.objects.filter(debt_return__day=thire_day_future_date.day, debt_return__month=thire_day_future_date.month)
+
+        for debtor in debtors:
+            sms_text = sms_text_replace(text, debtor)
+            can, phone = checkPhone(debtor.phone1)
+            if can:
+                sendSmsOneContact(debtor.phone1, sms_text)
+                success_send_count += 1
+            else:
+                error_send_count += 1
+    except Exception as e:
+        print(e)
