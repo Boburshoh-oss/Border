@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title>Nasiyachi | Eramax</title>
+{% endblock title %}
+{% block css %}
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/forms/theme-checkbox-radio.css'%}">
+    <link href="{% static 'plugins/jquery-ui/jquery-ui.min.css'%}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/css/apps/contacts.css'%}" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL STYLES -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="{% static 'assets/css/scrollspyNav.css'%}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'plugins/animate/animate.css'%}" rel="stylesheet" type="text/css" />
+    <script src="{% static 'plugins/sweetalerts/promise-polyfill.js'%}"></script>
+    <link href="{% static 'plugins/sweetalerts/sweetalert2.min.css'%}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'plugins/sweetalerts/sweetalert.css'%}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/css/components/custom-sweetalert.css'%}" rel="stylesheet" type="text/css" />
+    <!-- END THEME GLOBAL STYLES -->
+{% endblock css %}
+{% block content %}
+        <!--  BEGIN CONTENT AREA  -->
+        <div id="content" class="main-content">
+            <div class="layout-px-spacing">                
+                <div class="row layout-spacing layout-top-spacing" id="cancel-row">
+                    <div class="col-lg-12">
+                        <div class="widget-content searchable-container list">
+
+                            <div class="row">
+                                <div class="col-12 filtered-list-search layout-spacing align-self-center">
+                                    <form class="form-inline my-2 my-lg-0">
+                                        <div class="">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                            <input type="text" class="form-control product-search" id="input-search" placeholder="Nasiyachilardan izlash">
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+
+                            <div class="searchable-items list">
+                                <div class="items items-header-section">
+                                    <div class="item-content">
+                                        <div class="row" style="width: 100%;">
+                                            <div class="col-2">
+                                                <div class="">
+                                                    <h4>№</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="">
+                                                    <h4>FI</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-location">
+                                                    <h4 style="margin-left: 0;">Telefon 1</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-phone">
+                                                    <h4 style="margin-left: 3px;">Telefon 2</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-phone">
+                                                    <h4 style="margin-left: 3px;">So'm</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-phone">
+                                                    <h4 style="margin-left: 3px;">Dollar</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% for debtor in delivers %}
+                                    <div class="items">
+                                    <div class="item-content">
+                                        <div class="row" style="width: 100%;">
+                                            <div class="col-2">
+                                                <div class="user-profile">
+                                                    <div class="user-meta-info">
+                                                        <p class="user-name">{{ forloop.counter }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-profile">
+                                                    <div class="user-meta-info">
+                                                        <a href="{% url 'deliverhistory' %}?d={{ debtor.id }}">
+                                                            <p class="user-name">{{ debtor.name }}</p>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-profile">
+                                                    <!-- <p class="info-title">Telefon 1: </p> -->
+                                                    <p class="user-name">{{ debtor.phone1 }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-profile">
+                                                    <!-- <p class="info-title">Telefon 2: </p> -->
+                                                    <p class="user-name">{{ debtor.phone2 }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-profile">
+                                                    <!-- <p class="info-title">Telefon 2: </p> -->
+                                                    <p class="user-name">{{ debtor.som }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-profile">
+                                                    <!-- <p class="info-title">Telefon 2: </p> -->
+                                                    <p class="user-name">{{ debtor.dollar }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}
+{% block js %}
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+    <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js'%}"></script>
+    <script src="{% static 'assets/js/apps/contact.js'%}"></script>
+    <script src="{% static 'plugins/highlight/highlight.pack.js'%}"></script>
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+    <!-- BEGIN THEME GLOBAL STYLE -->
+    <script src="{% static 'assets/js/scrollspyNav.js'%}"></script>
+    <script src="{% static 'plugins/sweetalerts/sweetalert2.min.js'%}"></script>
+    <script src="{% static 'plugins/sweetalerts/custom-sweetalert.js'%}"></script>
+    <!-- END THEME GLOBAL STYLE -->
+{% endblock js %}

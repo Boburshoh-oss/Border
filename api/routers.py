@@ -1,0 +1,28 @@
+from rest_framework.fields import ReadOnlyField
+from rest_framework.routers import DefaultRouter
+from .viewsets import *
+
+router = DefaultRouter()
+# router.register('token', TokenViewset)
+router.register('userprofile', UserProfileViewset)
+router.register('filial', FilialViewset)
+router.register('groups', GroupsViewset)
+router.register('deliver', DeliverViewset)
+router.register('products', Product_FilialViewset)
+router.register('productfilial', ProductFilialViewset)
+router.register('recieve', RecieveViewset)
+router.register('recieveitem', RecieveItemViewset)
+router.register('faktura', FakturaViewset)
+router.register('fakturaitem', FakturaItemViewset)
+router.register('shop', ShopViewset)
+router.register('cart', CartViewset)
+router.register('debtor', DebtorViewset)
+# router.register('debthistory', DebtHistoryViewset)
+router.register('debt', DebtViewset)
+router.register('payhistory', PayHistoryViewset)
+router.register('cartdebt', CartDebtViewset)
+router.register('returnproduct', ReturnProductViewset)
+router.register('changeprice', ChangePriceViewset)
+router.register('changepriceitem', ChangePriceItemViewset)
+router.register('returnproducttodeliver', ReturnProductToDeliverViewset)
+router.register('returnproducttodeliveritem', ReturnProductToDeliverItemViewset)

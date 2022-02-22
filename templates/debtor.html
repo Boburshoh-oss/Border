@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}
+    <title>Nasiyachi | Eramax</title>
+{% endblock title %}
+{% block css %}
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/forms/theme-checkbox-radio.css'%}">
+    <link href="{% static 'plugins/jquery-ui/jquery-ui.min.css'%}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/css/apps/contacts.css'%}" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL STYLES -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="{% static 'assets/css/scrollspyNav.css'%}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'plugins/animate/animate.css'%}" rel="stylesheet" type="text/css" />
+    <script src="{% static 'plugins/sweetalerts/promise-polyfill.js'%}"></script>
+    <link href="{% static 'plugins/sweetalerts/sweetalert2.min.css'%}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'plugins/sweetalerts/sweetalert.css'%}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/css/components/custom-sweetalert.css'%}" rel="stylesheet" type="text/css" />
+    <!-- END THEME GLOBAL STYLES -->
+{% endblock css %}
+{% block content %}
+
+
+        <!--  BEGIN CONTENT AREA  -->
+        <div id="content" class="main-content">
+            <div class="layout-px-spacing" >
+                <div class="row layout-spacing layout-top-spacing" id="cancel-row">
+                    <div class="col-lg-12">
+                        <div class="widget-content searchable-container list" >
+
+                            <div class="row">
+                                <div class="col-12 filtered-list-search layout-spacing align-self-center">
+                                    <form class="form-inline my-2 my-lg-0">
+                                        <div class="">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                            <input type="text" class="form-control product-search" id="input-search" placeholder="Nasiyachilardan izlash">
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                            <div class="searchable-items list" >
+                                <div class="items items-header-section">
+                                    <div class="item-content" >
+                                        <div class="row" style="width: 100%;">
+                                            <div class="col-2" >
+                                                <div class="">
+{#                                                    <div class="n-chk align-self-center text-center">#}
+{#                                                        <label class="new-control new-checkbox checkbox-primary">#}
+{#                                                          <input type="checkbox" class="new-control-input" id="contact-check-all">#}
+{#                                                          <span class="new-control-indicator"></span>#}
+{#                                                        </label>#}
+{#                                                    </div>#}
+                                                    <h4>FISH</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-location">
+                                                    <h4 style="margin-left: 0;">Telefon 1</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-phone">
+                                                    <h4 style="margin-left: 3px;">Telefon 2</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-phone">
+                                                    <h4 style="margin-left: 3px;">Qarz So'm</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-phone">
+                                                    <h4 style="margin-left: 3px;">Qarz Dollar</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% for debtor in debtors %}
+
+                                    <div class="items">
+                                    <div class="item-content"> 
+                                        <div class="row" style="width: 100%;">
+                                            <div class="col-2">
+                                                <div class="user-profile">
+{#                                                    <div class="n-chk align-self-center text-center">#}
+{#                                                        <label class="new-control new-checkbox checkbox-primary">#}
+{#                                                          <input type="checkbox" class="new-control-input contact-chkbox">#}
+{#                                                          <span class="new-control-indicator"></span>#}
+{#                                                        </label>#}
+{#                                                    </div>#}
+                                                    <div class="user-meta-info">
+                                                        <a href="{% url 'debtorhistory' %}?d={{ debtor.id }}">
+                                                            <p class="user-name">{{ debtor.fio }}</p>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-profile">
+                                                    <!-- <p class="info-title">Telefon 1: </p> -->
+                                                    <p class="user-name">{{ debtor.phone1 }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-profile">
+                                                    <!-- <p class="info-title">Telefon 2: </p> -->
+                                                    <p class="user-name">{{ debtor.phone2 }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-profile">
+                                                    <!-- <p class="info-title">Telefon 2: </p> -->
+                                                    <p class="user-name">{{ debtor.som|intcomma }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-profile">
+                                                    <!-- <p class="info-title">Telefon 2: </p> -->
+                                                    <p class="user-name">{{ debtor.dollar|intcomma }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <div class="items items-header-section">
+                                    <div class="item-content" >
+                                        <div class="row" style="width: 100%;">
+                                            <div class="col-2" >
+                                                <div>
+                                                    <h4>Jami</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-location">
+                                                    <h4 style="margin-left: 0;">Telefon 1</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-phone">
+                                                    <h4 style="margin-left: 3px;">Telefon 2</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-phone">
+                                                    <h4 style="margin-left: 3px;">{{ total_som|floatformat:2 }}</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-phone">
+                                                    <h4 style="margin-left: 3px;">{{ total_dollar|floatformat:2 }}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            
+<!--                             <table id="html5-extension" class="table table-hover">-->
+<!--                                        <thead>-->
+<!--                                            <tr class="">-->
+<!--                                                <th class="">№</th>-->
+<!--                                                <th>FI</th>-->
+<!--                                                <th>Telefon 1</th>-->
+<!--                                                <th>Telefon 2</th>-->
+<!--                                                <th>Qarz so'm</th>-->
+<!--                                                <th>Qarz dollor</th>-->
+<!--                                            </tr>-->
+<!--                                        </thead>-->
+<!--                                        <tbody>-->
+<!--                                            {% for debtor in debtors %}-->
+<!--                                                <tr class="">-->
+<!--                                                    <td class="">{{ forloop.counter }}</td>-->
+<!--                                                    <td>{{ debtor.fio }}</td>-->
+<!--                                                    <td>{{ debtor.phone1 }}</td>-->
+<!--                                                    <td>{{ ombor.som }}</td>-->
+<!--                                                    <td>{{ ombor.dollar }}</td>-->
+<!--                                                    <td>{{ ombor.quantity|floatformat:0 }}</td>-->
+<!--                                                    <td>{{ ombor.barcode }}</td>-->
+<!--                                                    <td>{{ ombor.group }}</td>-->
+<!--                                                </tr>-->
+<!--                                            {% endfor %}-->
+<!--                                        </tbody>-->
+
+<!--                            </table>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}
+{% block js %}
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+    <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js'%}"></script>
+    <script src="{% static 'assets/js/apps/contact.js'%}"></script>
+    <script src="{% static 'plugins/highlight/highlight.pack.js'%}"></script>
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+    <!-- BEGIN THEME GLOBAL STYLE -->
+    <script src="{% static 'assets/js/scrollspyNav.js'%}"></script>
+    <script src="{% static 'plugins/sweetalerts/sweetalert2.min.js'%}"></script>
+    <script src="{% static 'plugins/sweetalerts/custom-sweetalert.js'%}"></script>
+            <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="{% static 'plugins/table/datatable/datatables.js'%}"></script>
+    <script src="{% static 'plugins/table/datatable/custom_miscellaneous.js'%}"></script>
+        <script src="{% static 'plugins/table/datatable/datatables.js'%}"></script>
+    <!-- NOTE TO Use Copy CSV Excel PDF Print Options You Must Include These Files  -->
+    <script src="{% static 'plugins/table/datatable/button-ext/dataTables.buttons.min.js'%}"></script>
+    <script src="{% static 'plugins/table/datatable/button-ext/jszip.min.js'%}"></script>
+    <script src="{% static 'plugins/table/datatable/button-ext/buttons.html5.min.js'%}"></script>
+    <script src="{% static 'plugins/table/datatable/button-ext/buttons.print.min.js'%}"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+        <script>
+        $('#html5-extension').DataTable( {
+            dom: '<"row"<"col-md-12"<"row"<"col-md-6"B><"col-md-6"f> > ><"col-md-12"rt> <"col-md-12"<"row"<"col-md-5"i><"col-md-7"p>>> >',
+            buttons: {
+                buttons: [
+                    { extend: 'copy', className: 'btn' },
+                    { extend: 'csv', className: 'btn' },
+                    { extend: 'excel', className: 'btn' },
+                    { extend: 'print', className: 'btn' }
+                ]
+            },
+            "oLanguage": {
+                "oPaginate": { "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>', "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>' },
+                "sInfo": " _PAGE_ / _PAGES_",
+                "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                "sSearchPlaceholder": "Izlash",
+               "sLengthMenu": "Results :  _MENU_",
+            },
+            "stripeClasses": [],
+            "lengthMenu": [10, 20, 50, 100],
+            "pageLength": 15
+        } );
+    </script>
+    <!-- END THEME GLOBAL STYLE -->
+{% endblock js %}

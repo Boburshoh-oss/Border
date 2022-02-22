@@ -1,0 +1,403 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize  %}
+{% block title %}
+    <title>Bosh Sahifa | Eramax</title>
+{% endblock title %}
+{% block css %}
+    <link href="{% static 'plugins/apex/apexcharts.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/dashboard/dash_2.css'%}" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="{% static 'plugins/flatpickr/flatpickr.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/noUiSlider/nouislider.min.css'%}" rel="stylesheet" type="text/css">
+    <!-- END THEME GLOBAL STYLES -->
+
+    <!--  BEGIN CUSTOM STYLE FILE  -->
+    <link href="{% static 'assets/css/scrollspyNav.css'%}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'plugins/flatpickr/custom-flatpickr.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/noUiSlider/custom-nouiSlider.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/bootstrap-range-Slider/bootstrap-slider.css'%}" rel="stylesheet" type="text/css">
+    <!--  END CUSTOM STYLE FILE  -->
+
+{% endblock css %}
+{% block content %}
+        <!--  BEGIN CONTENT AREA  -->
+        <div id="content" class="main-content">
+            <div class="layout-px-spacing">
+                <div class="row layout-top-spacing">
+
+                    <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-chart-one">
+                            <div class="widget-heading">
+                                <h5 class="">Kirim - Chiqim</h5>
+
+                            </div>
+
+                            <div class="widget-content">
+                                <div class="tabs tab-content">
+                                    <div id="content_1" class="tabcontent">
+                                        <div id="revenueMonthly"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-chart-two">
+                            <div class="widget-heading">
+                                <h5 class="">Oylik grafik</h5>
+                            </div>
+                            <div class="widget-content">
+                                <div id="chart-2" class=""></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8 layout-spacing">
+                        <div class="statbox widget box box-shadow p-0">
+                            <div class="row">
+                                <div class="form-group mb-0 col-12">
+                                    <input id="rangeCalendarFlatpickr" class="form-control flatpickr flatpickr-input active" type="text" placeholder="Sanani tanlang">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 layout-spacing">
+                        <div class="statbox widget box box-shadow p-0">
+                            <div class="row">
+                                <div class="form-group mb-0 col-12">
+                                    <span class="form-control flatpickr flatpickr-input active text-center" id="jami">Jami : {{ jami }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-12 col-lg-6 col-md-6 col-sm-12 layout-spacing">
+                        <div class="widget widget-table-two">
+
+                            <div class="widget-heading">
+                                <h5 class="">Filiallar</h5>
+                            </div>
+
+                            <div class="widget-content">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th><div class="th-content">№</div></th>
+                                                <th><div class="th-content">Filial</div></th>
+                                                <th><div class="th-content">Naqd Som</div></th>
+                                                <th><div class="th-content">Naqd Dollar</div></th>
+                                                <th><div class="th-content">Plastik</div></th>
+                                                <th><div class="th-content">Nasiya Som</div></th>
+                                                <th><div class="th-content">Nasiya Dollar</div></th>
+                                                <th><div class="th-content">Transfer</div></th>
+                                                <th><div class="th-content">Skidka Som</div></th>
+                                                <th><div class="th-content">Skidka Dollar</div></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="fil">
+                                        {% for filial in filials %}
+                                            <tr>
+                                                <td><div class="td-content customer-name">{{ forloop.counter }}</div></td>
+                                                <td><div class="td-content customer-name">{{ filial.name }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.naqd_som|intcomma }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.naqd_dollar|intcomma }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.plastik|intcomma }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.nasiya_som|intcomma }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.nasiya_dollar|floatformat:2|intcomma }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.transfer|floatformat:2|intcomma }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.skidka_som|floatformat:2|intcomma }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.skidka_dollar|floatformat:2|intcomma }}</div></td>
+
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-12 col-lg-6 col-md-6 col-sm-12 layout-spacing">
+                        <div class="widget widget-table-two">
+
+                            <div class="widget-heading">
+                                <h5 class="">Sotuvchilar</h5>
+                            </div>
+
+                            <div class="widget-content">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+{#                                                <th><div class="th-content">№</div></th>#}
+                                                <th><div class="th-content">Sotuvchi</div></th>
+                                                <th><div class="th-content">Filial</div></th>
+                                                <th><div class="th-content">Naqd Som</div></th>
+                                                <th><div class="th-content">Naqd Dollar</div></th>
+                                                <th><div class="th-content">Plastik</div></th>
+                                                <th><div class="th-content">Nasiya Som</div></th>
+                                                <th><div class="th-content">Nasiya Dollar</div></th>
+                                                <th><div class="th-content">Transfer</div></th>
+                                                <th><div class="th-content">Skidka Som</div></th>
+                                                <th><div class="th-content">Skidka Dollar</div></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="sel">
+                                            {% for saler in salers %}
+                                                {% if saler.staff == 3 %}
+                                                    <tr>
+{#                                                        <td><div class="td-content customer-name">{{ forloop.counter0 }}</div></td>#}
+                                                        <td><div class="td-content customer-name">{{ saler.first_name }} {{ saler.last_name }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.filial.name }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.naqd_som|intcomma }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.naqd_dollar|intcomma }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.plastik|intcomma }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.nasiya_som|intcomma }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.nasiya_dollar|intcomma }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.transfer|intcomma }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.skidka_som|floatformat:2|intcomma }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.skidka_dollar|intcomma }}</div></td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+{% endblock content %}
+{% block js %}
+
+    <script src="{% static 'plugins/apex/apexcharts.min.js'%}"></script>
+    <script src="{% static 'assets/js/dashboard/dash_2.js'%}"></script>
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    <script src="{% static 'plugins/highlight/highlight.pack.js'%}"></script>
+
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="{% static 'assets/js/scrollspyNav.js'%}"></script>
+    <script src="{% static 'plugins/flatpickr/flatpickr.js'%}"></script>
+    <script src="{% static 'plugins/noUiSlider/nouislider.min.js'%}"></script>
+
+    <script src="{% static 'plugins/flatpickr/custom-flatpickr.js'%}"></script>
+    <script src="{% static 'plugins/noUiSlider/custom-nouiSlider.js'%}"></script>
+    <script src="{% static 'plugins/bootstrap-range-Slider/bootstrap-rangeSlider.js'%}"></script>
+    <script>
+    $(document).ready(function () {
+        $.ajax({
+            type: 'get',
+            url: '/summa/',
+            success: function (data) {
+                var naqd_som = data['naqd_som'];
+                var naqd_dollar = data['naqd_dollar'];
+                var plastik = data['plastik'];
+                var nasiya_som = data['nasiya_som'];
+                var nasiya_dollar = data['nasiya_dollar'];
+                var transfer = data['transfer'];
+                var skidka_som = data['skidka_som'];
+                var skidka_dollar = data['skidka_dollar'];
+                
+                var options = {
+                    chart: {
+                        type: 'donut',
+                        width: 380
+                    },
+                    colors: ['#5c1ac3', '#e2a03f', '#e7515a', '#e2a03f', '#5c1ac3', '#e2a03f', '#e7515a', '#e2a03f'],
+                    dataLabels: {
+                        enabled: false
+                    },
+                    legend: {
+                        position: 'bottom',
+                        horizontalAlign: 'center',
+                        fontSize: '14px',
+                        markers: {
+                            width: 10,
+                            height: 10,
+                        },
+                        itemMargin: {
+                            horizontal: 0,
+                            vertical: 8
+                        }
+                    },
+                    plotOptions: {
+                        pie: {
+                            donut: {
+                                size: '65%',
+                                background: 'transparent',
+                                labels: {
+                                    show: true,
+                                    name: {
+                                        show: true,
+                                        fontSize: '14px',
+                                        fontFamily: 'Nunito, sans-serif',
+                                        color: undefined,
+                                        offsetY: -10
+                                    },
+                                    value: {
+                                        show: true,
+                                        fontSize: '14px',
+                                        fontFamily: 'Nunito, sans-serif',
+                                        color: '20',
+                                        offsetY: 16,
+                                        formatter: function (val) {
+                                            // val = val / 1000000 + "M"
+                                            return val
+                                        }
+                                    },
+                                    total: {
+                                        show: true,
+                                        showAlways: true,
+                                        label: 'Total',
+                                        color: '#888ea8',
+                                        formatter: function (w) {
+                                            return w.globals.seriesTotals.reduce(function (a, b) {
+                                                // su = (a + b) / 1000000 + "M";
+                                                return a + b
+                                            }, 0)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    stroke: {
+                        show: true,
+                        width: 25,
+                    },
+                    series: [naqd_som, naqd_dollar, plastik, nasiya_som, nasiya_dollar, transfer, skidka_som, skidka_dollar],
+                    labels: ['Naqd Som', 'Naqd Dollar', 'Plastik', 'Nasiya Som', 'Nasiya Dollar', 'Transfer', 'Skidka Som', 'Skidka Dollar'],
+                    responsive: [{
+                        breakpoint: 1599,
+                        options: {
+                            chart: {
+                                width: '350px',
+                                height: '400px'
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        },
+
+                        breakpoint: 1439,
+                        options: {
+                            chart: {
+                                width: '250px',
+                                height: '390px'
+                            },
+                            legend: {
+                                position: 'bottom'
+                            },
+                            plotOptions: {
+                                pie: {
+                                    donut: {
+                                        size: '65%',
+                                    }
+                                }
+                            }
+                        },
+                    }]
+                }
+                var chart = new ApexCharts(
+                    document.querySelector("#chart-2"),
+                    options
+                );
+                chart.render();
+            }
+        });
+    });
+    
+    function getCSRFToken() {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            if (cookie.substring(0, 10) == ('csrftoken' + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(10));
+                break;
+            }
+            }
+        }
+      return cookieValue;
+    }
+    $(document).ready(function(){
+        $('#rangeCalendarFlatpickr').on("change", function (){
+            var csrfToken = getCSRFToken();
+            var date1 = $('#rangeCalendarFlatpickr').val().slice(0, 10);
+            var date2 = $('#rangeCalendarFlatpickr').val().slice(14, 24);
+            var dt = JSON.stringify({
+                date1:date1,
+                date2:date2,
+            })
+            $.ajax({
+                headers: { "X-CSRFToken": csrfToken },
+                type: "POST",
+                url: "{% url 'datahome' %}",
+                data: dt,
+                success: function(data11) {
+                    console.log(data11);
+                    var filials = data11['filials'];
+                    var salers = data11['salers'];
+                    var naqd_som = data11['naqd_som'];
+                    var naqd_dollar = data11['naqd_dollar'];
+                    var plastik = data11['plastik'];
+                    var nasiya_som = data11['nasiya_som'];
+                    var nasiya_dollar = data11['nasiya_dollar'];
+                    var transfer = data11['transfer'];
+                    var skidka_som = data11['skidka_som'];
+                    var skidka_dollar = data11['skidka_dollar'];
+                    $("#fil").empty();
+                    var summ = 0;
+                    var i = 1;
+                    for(dt of filials){
+                        var tr = `<tr>
+                                    <td><div class="td-content customer-name">`+i+`</div></td>
+                                    <td><div class="td-content customer-name">`+dt.name+`</div></td>
+                                    <td><div class="td-content pricing">`+String(dt.naqd_som)+`</div></td>
+                                    <td><div class="td-content pricing">`+String(dt.naqd_dollar)+`</div></td>
+                                    <td><div class="td-content pricing">`+String(dt.plastik)+`</div></td>
+                                    <td><div class="td-content pricing">`+String(dt.nasiya_som)+`</div></td>
+                                    <td><div class="td-content pricing">`+String(dt.nasiya_dollar)+`</div></td>
+                                    <td><div class="td-content pricing">`+String(dt.transfer)+`</div></td>
+                                    <td><div class="td-content pricing">`+String(dt.skidka_som)+`</div></td>
+                                    <td><div class="td-content pricing">`+String(dt.skidka_dollar)+`</div></td>
+                                </tr>`;
+                        i++;
+                        $("#fil").append(tr);
+                        summ = summ + dt.naqd + dt.plastik + dt.nasiya;
+                    }
+                    $('#jami').empty();
+                    $('#jami').append('Jami : ', summ);
+                    $("#sel").empty();
+                    for(dt of salers){
+                        if(dt.staff == 3) {
+                            
+                            var tr = `<tr>
+                                <td><div class="td-content customer-name">` + dt.name + `</div></td>
+                                <td><div class="td-content pricing">` + dt.filial + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.naqd_som) +`</div></td>
+                                <td><div class="td-content pricing">` + String(dt.naqd_dollar) + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.plastik) + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.nasiya_som) + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.nasiya_dollar) + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.transfer) + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.skidka_som) + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.skidka_dollar) + `</div></td>
+                            </tr>`;
+                            $('#sel').append(tr);
+
+                        }
+                    }
+                    }
+            });
+        });
+    });
+    </script>
+{% endblock %}
