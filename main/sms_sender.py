@@ -32,3 +32,5 @@ def sendSmsOneContact(phone_number, text):
     except Exception as e:
         print(e)
         return None
+
+
