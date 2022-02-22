@@ -246,3 +246,17 @@ cython_debug/
 .git_old
 /api/migrations
 /main/migrations
+__pycache__/
+/venv
+/env
+/.vscode
+db.sqlite3
+db.sqlite3-journal
+media
+*.mo
+.idea
+/api/migrations
+/main/migrations
+evn
+env
+.gis
