@@ -182,14 +182,14 @@ def Summa(request):
     skidka_som = 0
     skidka_dollar = 0
     for shop in shops:
-        naqd_som = naqd_som + shop.naqd_som
-        naqd_dollar = naqd_dollar + shop.naqd_dollar
-        plastik = plastik + shop.plastik
-        nasiya_som = nasiya_som + shop.nasiya_som
-        nasiya_dollar = nasiya_dollar + shop.nasiya_dollar
-        transfer = transfer + shop.transfer
-        skidka_som = skidka_som + shop.skidka_som
-        skidka_dollar = skidka_dollar + shop.skidka_dollar
+        naqd_som += shop.naqd_som
+        naqd_dollar += shop.naqd_dollar
+        plastik += shop.plastik
+        nasiya_som += shop.nasiya_som
+        nasiya_dollar += shop.nasiya_dollar
+        transfer += shop.transfer
+        skidka_som += shop.skidka_som
+        skidka_dollar += shop.skidka_dollar
     som = naqd_som + plastik + nasiya_som + transfer + skidka_som
     dollar = naqd_dollar + plastik + nasiya_dollar + transfer + skidka_dollar
 
@@ -291,18 +291,18 @@ def DataHome(request):
     skidka_som = 0
     skidka_dollar = 0
     for shop in shops:
-        naqd_som = naqd_som + shop.naqd_som
-        naqd_dollar = naqd_dollar + shop.naqd_dollar
-        plastik = plastik + shop.plastik
-        nasiya_som = nasiya_som + shop.nasiya_som
-        nasiya_dollar = nasiya_dollar + shop.nasiya_dollar
-        transfer = transfer + shop.transfer
-        skidka_som = skidka_som + shop.skidka_som
-        skidka_dollar = skidka_dollar + shop.skidka_dollar
+        naqd_som += shop.naqd_som
+        naqd_dollar += shop.naqd_dollar
+        plastik += shop.plastik
+        nasiya_som += shop.nasiya_som
+        nasiya_dollar += shop.nasiya_dollar
+        transfer += shop.transfer
+        skidka_som += shop.skidka_som
+        skidka_dollar += shop.skidka_dollar
     som = naqd_som + plastik + nasiya_som + transfer + skidka_som
     dollar = naqd_dollar + plastik + nasiya_dollar + transfer + skidka_dollar
 
-    if som > 0:
+    if som >= 0:
         se = []
         for saler in salers:
             s = {
@@ -332,8 +332,6 @@ def DataHome(request):
                 'transfer': filial.transfer,
                 'skidka_som': filial.skidka_som,
                 'skidka_dollar': filial.skidka_dollar,
-                'pay_som': filial.pay_som,
-                'pay_dollar': filial.pay_dollar,
             }
             fl.append(t)
         dt1 = {
@@ -593,11 +591,11 @@ def kurs_page(request):
 def add_tolov(request):
     deliver_id = request.POST.get('deliver_id')
     som = request.POST.get('som')
+    izoh = request.POST.get('izoh')
     dollor = request.POST.get('dollor')
     turi = request.POST.get('turi')
-    ht = DeliverPayHistory.objects.create(
-        deliver_id=deliver_id, som=som, dollar=dollor, turi=turi
-    )
+    ht = DeliverPayHistory.objects.create(deliver_id=deliver_id, som=som, dollar=dollor, turi=turi, izoh=izoh)
+    
     url = "/deliverhistory/?d=" + str(deliver_id)
     return redirect(url)
 
@@ -731,6 +729,126 @@ class Home(LoginRequiredMixin, TemplateView):
             context['skidka_dollar'] = 0
         return context
 
+
+class LTV(LoginRequiredMixin, TemplateView):
+    template_name = 'LTV.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['ltv'] = 'active'
+        context['ltv_t'] = 'true'
+        
+        return context
+# get ajax LTV datas 
+def get_ltv_data(request):
+    try:
+        #time
+        day = datetime.now()
+        month = day.month
+        year = day.year
+
+        date_start = request.GET.get('start')
+        date_end = request.GET.get('end')
+
+        if month == 12:
+            month2 = 1
+            year2 = year + 1
+        else:
+            month2 = month + 1
+            year2 = year
+        gte = datetime(year, month, 1)
+        lte = datetime(year2, month2, 1)
+
+        ll = []
+        if date_start is not None and date_end is not None:
+            debrors = Debtor.objects.filter(date__gte=date_start, date__lte=date_end)
+            debtor_pay_history = PayHistory.objects.filter(date__gte=date_start, date__lte=date_end)
+        else:
+            debrors = Debtor.objects.filter(date__month=month)
+            debtor_pay_history = PayHistory.objects.filter(date__month=month)
+        productfilials=ProductFilial.objects.all()
+        all_clint_qarz_som = 0
+        all_clint_qarz_dollar = 0
+        all_clint_tulagan_som = 0
+        all_clint_tulagan_dollar = 0
+        all_clint_qarz_qoldiq_som = 0
+        all_clint_qarz_qoldiq_dollar = 0
+        all_clint_daromad_som = 0
+        all_clint_daromad_dollar = 0
+        for debror in debrors:
+            #qarz
+            qarz_sum = debrors.filter(id=debror.id,).aggregate(Sum('som'))['som__sum']
+            qarz_dollar = debrors.filter(id=debror.id).aggregate(Sum('dollar'))['dollar__sum']
+            
+            # mijoz olgan avarlar total sotish summasi
+            total_olgan_tavar_sum = productfilials.filter(filial__filial_pay__debtor_id=debror.id).aggregate(Sum('sotish_som'))['sotish_som__sum']
+            total_olgan_tavar_dollar = productfilials.filter(filial__filial_pay__debtor_id=debror.id).aggregate(Sum('sotish_dollar'))['sotish_dollar__sum']
+            #mijoz olgan avarlar total kelish summasi
+            total_olgan_tavar_kelish_sum = productfilials.filter(filial__filial_pay__debtor_id=debror.id).aggregate(Sum('som'))['som__sum']
+            total_olgan_tavar_kelish_dollar = productfilials.filter(filial__filial_pay__debtor_id=debror.id).aggregate(Sum('dollar'))['dollar__sum']
+            #tulanganlari
+            total_tulagan_som = debtor_pay_history.filter(debtor_id=debror.id).aggregate(Sum('som'))['som__sum']
+            total_tulagan_dollar = debtor_pay_history.filter(debtor_id=debror.id).aggregate(Sum('dollar'))['dollar__sum']
+            
+            if qarz_sum is None or qarz_dollar is None or total_tulagan_som is None or total_olgan_tavar_sum is None or total_olgan_tavar_dollar is None or total_tulagan_dollar is None or total_olgan_tavar_kelish_sum is None or total_olgan_tavar_kelish_dollar is None:
+                qoldiq_qarz_sum = 0
+                qoldiq_qarz_dollar = 0
+                mijozdan_daromad_sum = 0
+                mijozdan_daromad_dollar = 0
+                
+                all_clint_qarz_som += qarz_sum
+                all_clint_qarz_dollar += qarz_dollar
+                all_clint_tulagan_som += 0
+                all_clint_tulagan_dollar += 0
+                
+                
+            else:
+                #qarz
+                qoldiq_qarz_sum = float(qarz_sum) - float(total_tulagan_som)
+                qoldiq_qarz_dollar = float(qarz_dollar) - float(total_tulagan_dollar)
+                #foyda
+                mijozdan_daromad_sum = float(total_olgan_tavar_sum) - float(total_olgan_tavar_kelish_sum)
+                mijozdan_daromad_dollar = float(total_olgan_tavar_dollar) - float(total_olgan_tavar_kelish_dollar)
+                #sum
+                all_clint_tulagan_som += total_tulagan_som
+                all_clint_tulagan_dollar += total_tulagan_dollar
+            #qarz sum
+            all_clint_qarz_qoldiq_som += qoldiq_qarz_sum
+            all_clint_qarz_qoldiq_dollar += qoldiq_qarz_dollar
+            all_clint_daromad_som += mijozdan_daromad_sum
+            all_clint_daromad_dollar += mijozdan_daromad_dollar
+                
+            dt = { 
+                'fio': debror.fio,
+                'total_tulagan_som': total_tulagan_som,
+                'total_tulagan_dollar': total_tulagan_dollar,
+                'qarz_sum': qarz_sum,
+                'qarz_dollar': qarz_dollar,
+                'total_olgan_tavar_sum': total_olgan_tavar_sum,
+                'total_olgan_tavar_dollar': total_olgan_tavar_dollar,
+                'qoldiq_qarz_sum': qoldiq_qarz_sum,
+                'qoldiq_qarz_dollar': qoldiq_qarz_dollar,
+                'mijozdan_daromad_sum': mijozdan_daromad_sum,
+                'mijozdan_daromad_dollar': mijozdan_daromad_dollar,
+                }
+            ll.append(dt)
+        context = {
+            'malumotlar': ll,
+            'all_clint_qarz_som': all_clint_qarz_som,
+            'all_clint_qarz_dollar': all_clint_qarz_dollar,
+            'all_clint_tulagan_som': all_clint_tulagan_som,
+            'all_clint_tulagan_dollar': all_clint_tulagan_dollar,
+            'all_clint_qarz_qoldiq_som': all_clint_qarz_qoldiq_som,
+            'all_clint_qarz_qoldiq_dollar': all_clint_qarz_qoldiq_dollar,
+            'all_clint_daromad_som': all_clint_daromad_som,
+            'all_clint_daromad_dollar': all_clint_daromad_dollar,
+        }
+        return render(request, 'get_ltv_data.html', context)
+    
+    except Exception as e:
+        print(e)
+        return JsonResponse({'error': 'error'})
+        
 
 class Products(LoginRequiredMixin, TemplateView):
     template_name = 'product.html'
@@ -1237,6 +1355,9 @@ class Ombor(LoginRequiredMixin, TemplateView):
         context['ombor'] = 'active'
         context['ombor_t'] = 'true'
         context['ombors'] = ProductFilial.objects.all()
+        context['total_som'] = ProductFilial.objects.aggregate(Sum('som'))['som__sum']
+        context['total_dollar'] = ProductFilial.objects.aggregate(Sum('dollar'))['dollar__sum']
+        context['total_quantity'] = ProductFilial.objects.aggregate(Sum('quantity'))['quantity__sum']
 
         return context
 
@@ -1262,6 +1383,9 @@ class OmborMinus(LoginRequiredMixin, TemplateView):
         context['ombor'] = 'active'
         context['ombor_t'] = 'true'
         context['ombors'] = ProductFilial.objects.filter(quantity__lte=100)
+        context['total_som'] = ProductFilial.objects.filter(quantity__lte=100).aggregate(Sum('som'))['som__sum']
+        context['total_dollar'] = ProductFilial.objects.filter(quantity__lte=100).aggregate(Sum('dollar'))['dollar__sum']
+        context['total_soni'] = ProductFilial.objects.aggregate(Sum('quantity'))['quantity__sum']
 
         return context
 
@@ -1383,6 +1507,8 @@ class Debtors(LoginRequiredMixin, TemplateView):
         context['debtor'] = 'active'
         context['debtor_t'] = 'true'
         context['debtors'] = Debtor.objects.all()
+        context['total_som'] = Debtor.objects.aggregate(Sum('som'))['som__sum']
+        context['total_dollar'] = Debtor.objects.aggregate(Sum('dollar'))['dollar__sum']
 
         return context
 

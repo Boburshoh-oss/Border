@@ -1,7 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
-from django.db.models.fields import DateField
-
+from django.utils import timezone
 
 
 class Filial(models.Model):
@@ -142,6 +140,8 @@ class DeliverPayHistory(models.Model):
     turi = models.CharField(max_length=50, choices=type_pay, default="Naqd")
     date = models.DateTimeField(auto_now_add=True)
 
+    #new
+    izoh = models.TextField(null=True, blank=True)
     def __str__(self):
         return self.deliver.name
 
@@ -167,7 +167,7 @@ class ProductFilial(models.Model):
     group = models.ForeignKey(Groups, on_delete=models.CASCADE)
     measurement = models.CharField(choices=measure, default='dona', max_length=4)
     min_count = models.FloatField(default=0)
-    filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
+    filial = models.ForeignKey(Filial, on_delete=models.CASCADE, related_name='filial_product')
     quantity = models.FloatField(default=0)
     image = models.ImageField(upload_to="products/", null=True, blank=True)
     
@@ -319,7 +319,7 @@ class Debtor(models.Model):
 
     #new fields
     debt_return = models.DateField(null=True, blank=True)
-
+    date = models.DateField(default=timezone.now)
     def __str__(self):
         return self.fio
 
@@ -360,7 +360,7 @@ class Debt(models.Model):
 
 class PayHistory(models.Model):
     debtor = models.ForeignKey(Debtor, on_delete=models.CASCADE)
-    filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
+    filial = models.ForeignKey(Filial, on_delete=models.CASCADE,related_name='filial_pay')
     som = models.FloatField()
     dollar = models.FloatField()
     date = models.DateTimeField(auto_now_add=True)

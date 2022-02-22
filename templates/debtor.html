@@ -2,7 +2,7 @@
 {% load static %}
 {% load humanize %}
 {% block title %}
-    <title>Nasiyachi | Bordo</title>
+    <title>Nasiyachi | Eramax</title>
 {% endblock title %}
 {% block css %}
     <!-- BEGIN PAGE LEVEL STYLES -->
@@ -52,7 +52,7 @@
 {#                                                          <span class="new-control-indicator"></span>#}
 {#                                                        </label>#}
 {#                                                    </div>#}
-                                                    <h4>FI</h4>
+                                                    <h4>FISH</h4>
                                                 </div>
                                             </div>
                                             <div class="col-2">
@@ -126,7 +126,41 @@
                                     </div>
                                 </div>
                                 {% endfor %}
+                                <div class="items items-header-section">
+                                    <div class="item-content" >
+                                        <div class="row" style="width: 100%;">
+                                            <div class="col-2" >
+                                                <div>
+                                                    <h4>Jami</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-location">
+                                                    <h4 style="margin-left: 0;">Telefon 1</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-phone">
+                                                    <h4 style="margin-left: 3px;">Telefon 2</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-phone">
+                                                    <h4 style="margin-left: 3px;">{{ total_som|floatformat:2 }}</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="user-phone">
+                                                    <h4 style="margin-left: 3px;">{{ total_dollar|floatformat:2 }}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
+
+                            
 <!--                             <table id="html5-extension" class="table table-hover">-->
 <!--                                        <thead>-->
 <!--                                            <tr class="">-->

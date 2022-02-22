@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize  %}
 {% block title %}
-    <title>Bosh Sahifa | Bordo</title>
+    <title>Bosh Sahifa | Eramax</title>
 {% endblock title %}
 {% block css %}
     <link href="{% static 'plugins/apex/apexcharts.css'%}" rel="stylesheet" type="text/css">
@@ -30,7 +31,7 @@
                         <div class="widget widget-chart-one">
                             <div class="widget-heading">
                                 <h5 class="">Kirim - Chiqim</h5>
-{#
+
                             </div>
 
                             <div class="widget-content">
@@ -100,14 +101,14 @@
                                             <tr>
                                                 <td><div class="td-content customer-name">{{ forloop.counter }}</div></td>
                                                 <td><div class="td-content customer-name">{{ filial.name }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.naqd_som }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.naqd_dollar }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.plastik }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.nasiya_som }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.nasiya_dollar }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.transfer }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.skidka_som }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.skidka_dollar }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.naqd_som|intcomma }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.naqd_dollar|intcomma }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.plastik|intcomma }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.nasiya_som|intcomma }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.nasiya_dollar|floatformat:2|intcomma }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.transfer|floatformat:2|intcomma }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.skidka_som|floatformat:2|intcomma }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.skidka_dollar|floatformat:2|intcomma }}</div></td>
 
                                             </tr>
                                         {% endfor %}
@@ -150,14 +151,14 @@
 {#                                                        <td><div class="td-content customer-name">{{ forloop.counter0 }}</div></td>#}
                                                         <td><div class="td-content customer-name">{{ saler.first_name }} {{ saler.last_name }}</div></td>
                                                         <td><div class="td-content pricing">{{ saler.filial.name }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.naqd_som }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.naqd_dollar }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.plastik }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.nasiya_som }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.nasiya_dollar }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.transfer }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.skidka_som }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.skidka_dollar }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.naqd_som|intcomma }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.naqd_dollar|intcomma }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.plastik|intcomma }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.nasiya_som|intcomma }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.nasiya_dollar|intcomma }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.transfer|intcomma }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.skidka_som|floatformat:2|intcomma }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.skidka_dollar|intcomma }}</div></td>
                                                     </tr>
                                                 {% endif %}
                                             {% endfor %}
@@ -202,7 +203,7 @@
                 var transfer = data['transfer'];
                 var skidka_som = data['skidka_som'];
                 var skidka_dollar = data['skidka_dollar'];
-                {#console.log(naqd, plastik, nasiya, summ)#}
+                
                 var options = {
                     chart: {
                         type: 'donut',
@@ -311,6 +312,7 @@
             }
         });
     });
+    
     function getCSRFToken() {
         var cookieValue = null;
         if (document.cookie && document.cookie != '') {
@@ -325,14 +327,11 @@
         }
       return cookieValue;
     }
-    //$(document).ready(function(){
+    $(document).ready(function(){
         $('#rangeCalendarFlatpickr').on("change", function (){
-            {#console.log($('#rangeCalendarFlatpickr').val().slice(0, 10));#}
-            {#console.log($('#rangeCalendarFlatpickr').val().slice(14, 24));#}
             var csrfToken = getCSRFToken();
             var date1 = $('#rangeCalendarFlatpickr').val().slice(0, 10);
             var date2 = $('#rangeCalendarFlatpickr').val().slice(14, 24);
-            {#console.log(date1, date2)#}
             var dt = JSON.stringify({
                 date1:date1,
                 date2:date2,
@@ -343,7 +342,7 @@
                 url: "{% url 'datahome' %}",
                 data: dt,
                 success: function(data11) {
-                    {#console.log(data11)#}
+                    console.log(data11);
                     var filials = data11['filials'];
                     var salers = data11['salers'];
                     var naqd_som = data11['naqd_som'];
@@ -355,7 +354,6 @@
                     var skidka_som = data11['skidka_som'];
                     var skidka_dollar = data11['skidka_dollar'];
                     $("#fil").empty();
-                    {#console.log(salers)#}
                     var summ = 0;
                     var i = 1;
                     for(dt of filials){
@@ -370,8 +368,6 @@
                                     <td><div class="td-content pricing">`+String(dt.transfer)+`</div></td>
                                     <td><div class="td-content pricing">`+String(dt.skidka_som)+`</div></td>
                                     <td><div class="td-content pricing">`+String(dt.skidka_dollar)+`</div></td>
-                                    <td><div class="td-content pricing">`+String(dt.pay_som)+`</div></td>
-                                    <td><div class="td-content pricing">`+String(dt.pay_dollar)+`</div></td>
                                 </tr>`;
                         i++;
                         $("#fil").append(tr);
@@ -382,7 +378,7 @@
                     $("#sel").empty();
                     for(dt of salers){
                         if(dt.staff == 3) {
-                            {#console.log(dt.name)#}
+                            
                             var tr = `<tr>
                                 <td><div class="td-content customer-name">` + dt.name + `</div></td>
                                 <td><div class="td-content pricing">` + dt.filial + `</div></td>
@@ -402,6 +398,6 @@
                     }
             });
         });
-    //});
+    });
     </script>
 {% endblock %}

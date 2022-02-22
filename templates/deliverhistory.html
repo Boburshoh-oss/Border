@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-    <title>Bosh Sahifa | Bordo</title>
+    <title>Bosh Sahifa | Eramax</title>
 {% endblock title %}
 {% block css %}
     <link href="{% static 'assets/css/scrollspyNav.css' %}" rel="stylesheet" type="text/css"/>
@@ -107,6 +107,7 @@
                                             <th>So'm</th>
                                             <th>Dollar</th>
                                             <th>To'lov usuli</th>
+                                            <th>Izoh</th>
                                             <th>Sana</th>
                                         </tr>
                                         </thead>
@@ -117,6 +118,7 @@
                                                 <td>{{ p.som }}</td>
                                                 <td>{{ p.dollar }}</td>
                                                 <td>{{ p.turi }}</td>
+                                                <td>{{ p.izoh }}</td>
                                                 <td>{{ p.date }}</td>
                                             </tr>
                                         {% endfor %}
@@ -160,6 +162,11 @@
                                     <option value="Plastik">Plastik</option>
                                     <option value="Pul o'tkazish">Pul o'tkazish</option>
                                 </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-group-float-label">Izoh</label>
+                                <textarea class="form-control" name="izoh" id="" cols="10" rows="2"></textarea>
                             </div>
 
                             <button type="button" class="btn btn-rounded btn-secondary" data-dismiss="modal">Yopish

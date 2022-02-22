@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-    <title>Ombor | Bordo</title>
+    <title>Ombor | Eramax</title>
 {% endblock title %}
 {% block css %}
 
@@ -28,7 +28,7 @@
                             </div>
                             <div class="widget-content widget-content-area">
                                 <div class="table-responsive mb-4">
-                                    <table id="individual-col-search" class="table table-hover">
+                                    <table id="column-filter" class="table table-hover">
                                         <thead>
                                         <tr class="">
                                             {#                                                <th class="">#</th>#}
@@ -60,12 +60,12 @@
                                         <tfoot>
                                         <tr>
                                             {#                                                <th class="">#</th>#}
-                                            <th>Mahsulot</th>
+                                            <th>Jam:</th>
                                             <th>Ishlab chiqaruvchi</th>
-                                            <th>So`m</th>
-                                            <th>Dollar</th>
+                                            <th>{{ total_som|floatformat:2 }}</th>
+                                            <th>{{ total_dollar|floatformat:2 }}</th>
                                             <th>Kurs</th>
-                                            <th>Soni</th>
+                                            <th>{{ total_soni }}</th>
                                             <th>Barcode</th>
                                             <th>Guruh</th>
                                         </tr>

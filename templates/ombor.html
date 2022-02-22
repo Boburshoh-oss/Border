@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-    <title>Ombor | Bordo</title>
+    <title>Ombor | Eramax</title>
 {% endblock title %}
 {% block css %}
 
@@ -64,12 +64,12 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th class="">#</th>
+                                                <th class="">Jami:</th>
                                                 <th>Mahsulot</th>
                                                 <th>Ishlab chiqaruvchi</th>
-                                                <th>So`m</th>
-                                                <th>Dollar</th>
-                                                <th>Soni</th>
+                                                <th>{{ total_som|floatformat:2 }}</th>
+                                                <th>{{ total_dollar|floatformat:2 }}</th>
+                                                <th>{{ total_quantity }}</th>
                                                 <th>Barcode</th>
                                                 <th>Guruh</th>
                                             </tr>
