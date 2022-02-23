@@ -302,7 +302,7 @@ def DataHome(request):
     som = naqd_som + plastik + nasiya_som + transfer + skidka_som
     dollar = naqd_dollar + plastik + nasiya_dollar + transfer + skidka_dollar
 
-    if som >= 0:
+    if som > 0:
         se = []
         for saler in salers:
             s = {

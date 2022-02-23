@@ -73,7 +73,7 @@ WSGI_APPLICATION = "domstroy.wsgi.application"
 #    'default': {
 #        'ENGINE': 'django.db.backends.mysql',
 #        'OPTIONS': {
-#            'read_default_file':'/var/www/Eramax/auth/mysql.cnf'
+#            'read_default_file':'/var/www/Bordo/auth/mysql.cnf'
 #        }
 #    }
 # }
@@ -129,7 +129,7 @@ CRONJOBS = [
     (
         "0 */8 * * *",
         "main.views.schedular_sms_send_alert",
-    ),  # 8 sotda bir sms jo'natadi Qarzi utib ketganlarga
+    ),  # 8 sotda bir sms 3kun qolganida jo'natadi Qarzi utib ketganlarga
     # ('*/1 * * * *', 'main.views.schedular_sms_send'),  # 1 min bir sms jo'natadi test qarz kui kelganlarga
     # ('*/2 * * * *', 'main.views.schedular_sms_send_olds')  # 2 min bir sms jo'natadi test old
 ]
@@ -141,34 +141,34 @@ RETURN_DEBTOR_SMS = """
 Assalom alaykum xurmatli {name} siz {som} so'm to'lov amalga oshirganingizni ma'lum qilamiz.
 Qoldiq summa {qoldi} so'm
 
-Xurmat bilan Eramax jamoasi!
+Xurmat bilan Bordo  jamoasi!
 
-Murojaat uchun: +998901234567
+Murojaat uchun: +998901254042
 """
 
 # Qarziniga olsa sms jo'natadi
-GET_DEBTOR_SMS = "Assalom alaykum xurmatli {name} siz Eramax jamoasi do'konidan {som} so'm qarzdor bo'lganingizni ma'lum qilamiz. To'lov muddati {kun} gacha belgilandi, tolovni kechiktirmaysiz degan umitdamiz. Siz bilan hamkorlik qilayotganimizidan hursandmiz. Xurmat bilan Eramax jamoasi!  Murojat uchun:  +998901234567 "
+GET_DEBTOR_SMS = "Assalom alaykum xurmatli {name} siz Bordo jamoasi do'konidan {som} so'm qarzdor bo'lganingizni ma'lum qilamiz. To'lov muddati {kun} gacha belgilandi, tolovni kechiktirmaysiz degan umitdamiz. Siz bilan hamkorlik qilayotganimizidan hursandmiz. Xurmat bilan Bordo jamoasi!  Murojat uchun:  +998901254042 "
 
 # Deadline sms
 DEADLINE_SMS = """
-Assalom alaykum xurmatli {name} sizni Eramax jamoasi do'konidagi QARZ muomilangiz muddati kelgani  malum qilamiz, iltimos tulovni amalga oshiring.
+Assalom alaykum xurmatli {name} sizni Bordo jamoasi do'konidagi QARZ muomilangiz muddati kelgani  malum qilamiz, iltimos tulovni amalga oshiring.
 Bu orqali siz, hamkorligimizni uzoq davom etishini taminlagan bo'lasiz.
 
-Xurmat bilan Eramax jamoasi!
+Xurmat bilan Bordo jamoasi!
 
 Murojat uchun:
-+998901234567
++998901254042
 """
 
 # Qarz kunidan utib ketdi
 OLD_DEADLINE_SMS = """
-Assalom alaykum xurmatli {name} sizni Eramax jamoasi do'konidagi QARZ muomilangiz muddati o'tib ketganini ma'lum qilamiz, iltimos to'lovni amalga oshiring.
+Assalom alaykum xurmatli {name} sizni Bordo jamoasi do'konidagi QARZ muomilangiz muddati o'tib ketganini ma'lum qilamiz, iltimos to'lovni amalga oshiring.
 Bu orqali siz, hamkorligimizni uzoq davom etishini taminlagan bo'lasiz.
 
-Xurmat bilan Eramax jamoasi!
+Xurmat bilan Bordo jamoasi!
 
 Murojat uchun:
-+998901234567
++998901254042
 """
 
 # 3day ago alert sms
@@ -177,9 +177,9 @@ Assalom alaykum xurmatli {name} sizni to'lov muddatingizga 3 kun qolganini eslat
 Iltimos tulovni kechiktirmay amalga oshirishingizni so'raymiz!!!
 Summa {som} so'm
 
-Xurmat bilan Eramax jamoasi!
+Xurmat bilan Bordo jamoasi!
 
-Murojat uchun: +998901234567
+Murojat uchun: +998901254042
 """
 
 # CRONTAB_COMMAND_SUFFIX = '2>&1'
@@ -197,6 +197,11 @@ USE_TZ = True
 
 LOGIN_URL = "/login"
 
+#sms
+SMS_EMAIL = 'abdullox19990604@gmail.com'
+SMS_SECRET_KEY = 'dfSkYkW7ypJdJHUhTdNJbOA1EIIddzTToUoJ5blJ'
+SMS_BASE_URL = 'http://notify.eskiz.uz'
+SMS_TOKEN = ''
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
