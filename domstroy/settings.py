@@ -119,16 +119,13 @@ CRONJOBS = [
     # ('0 12 * * 1-6', 'main.views.schedular_sms_send'), #At 12:00 on every day-of-week from Monday through Saturday. bir sms jo'natadi qarz kui kelganlarga
     # ('0 14 * * 1-6', 'main.views.schedular_sms_send_olds'), #At 14:00 on every day-of-week from Monday through Saturday bir sms jo'natadi Qarzi utib ketganlarga
     (
-        "0 */6 * * *",
-        "main.views.schedular_sms_send",
+        "0 0 * * *","main.views.schedular_sms_send",
     ),  # 6sotda. bir sms jo'natadi qarz kui kelganlarga
     (
-        "0 */7 * * *",
-        "main.views.schedular_sms_send_olds",
+        "0 1 * * *","main.views.schedular_sms_send_olds",
     ),  # 7 sotda bir sms jo'natadi Qarzi utib ketganlarga
     (
-        "0 */8 * * *",
-        "main.views.schedular_sms_send_alert",
+        "0 2 * * *","main.views.schedular_sms_send_alert",
     ),  # 8 sotda bir sms 3kun qolganida jo'natadi Qarzi utib ketganlarga
     # ('*/1 * * * *', 'main.views.schedular_sms_send'),  # 1 min bir sms jo'natadi test qarz kui kelganlarga
     # ('*/2 * * * *', 'main.views.schedular_sms_send_olds')  # 2 min bir sms jo'natadi test old
