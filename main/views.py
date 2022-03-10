@@ -1,8 +1,7 @@
-from django.db.models.expressions import Exists, ExpressionList
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.db.models import Sum, F, Value
+from django.db.models import Sum
 from django.views.generic import TemplateView
 from api.models import *
 from django.db.models import Q
@@ -15,7 +14,7 @@ from django.conf import settings
 from .sms_sender import sendSmsOneContact
 
 def monthly():
-    date = datetime.today()
+    date = datetime.now()
     year = date.year
     if date.month == 12:
         gte = datetime(year, date.month, 1, 0, 0, 0)
@@ -33,7 +32,7 @@ def ChartHome(request):
     chiqims = []
     chiqimd = []
     for i in range(1, 13):
-        date = datetime.today()
+        date = datetime.now().date()
         year = date.year
         if i == 12:
             month2 = 1
@@ -41,8 +40,8 @@ def ChartHome(request):
         else:
             month2 = i + 1
             year2 = year
-        gte = str(year) + '-' + str(i) + '-01 00:01:00'
-        lte = str(year2) + '-' + str(month2) + '-01 00:01:00'
+        gte = f'{str(year)}-{str(i)}-01 00:01:00'
+        lte = f'{str(year2)}-{str(month2)}-01 00:01:00'
         # kirr = Shop.objects.filter(date__gte=gte, date__lte=lte).aggregate(kir = Sum('naqd')+Sum('plastik')+Sum('nasiya'))
         kirr = Shop.objects.filter(date__gte=gte, date__lte=lte)
         ks = 0
@@ -58,11 +57,10 @@ def ChartHome(request):
             chd += chiq.dollar
         kirims.append(ks)
         kirimd.append(kd)
+
         chiqims.append(chs)
         chiqimd.append(chd)
-    # data = [kirim, chiqim]
     dt = {
-        # 'data': data,
         'kirims': kirims,
         'kirimd': kirimd,
         'chiqims': chiqims,
@@ -78,7 +76,7 @@ def FilialKirim(request):
     fil4 = []
     fil5 = []
     for i in range(1, 13):
-        date = datetime.today()
+        date = datetime.now()
         year = date.year
         if i == 12:
             month2 = 1
@@ -86,35 +84,31 @@ def FilialKirim(request):
         else:
             month2 = i + 1
             year2 = year
-        gte = str(year) + '-' + str(i) + '-01 00:01:00'
-        lte = str(year2) + '-' + str(month2) + '-01 00:01:00'
+        gte = f'{str(year)}-{str(i)}-01 00:01:00'
+        lte = f'{str(year2)}-{str(month2)}-01 00:01:00'
+        # lte = datetime.now()
+        # gte = lte - timedelta(days=1)
         a = Shop.objects.filter(date__gte=gte, date__lte=lte).values('filial').annotate(
             som=Sum('naqd_som') + Sum('plastik') + Sum('nasiya_som') + Sum('transfer') + Sum('skidka_som'),
             dollar=Sum('naqd_dollar') + Sum('nasiya_dollar') + Sum('skidka_dollar'))
         try:
-            fil1.append(a[0]['som'])
-            fil1.append(a[0]['dollar'])
-        #            print(fil1)
+            fil1.extend((a[0]['som'], a[0]['dollar']))
         except:
             fil1.append('0')
         try:
-            fil2.append(a[1]['som'])
-            fil2.append(a[1]['dollar'])
+            fil2.extend((a[1]['som'], a[1]['dollar']))
         except:
             fil2.append('0')
         try:
-            fil3.append(a[2]['som'])
-            fil3.append(a[2]['dollar'])
+            fil3.extend((a[2]['som'], a[2]['dollar']))
         except:
             fil3.append('0')
         try:
-            fil4.append(a[3]['som'])
-            fil4.append(a[3]['dollar'])
+            fil4.extend((a[3]['som'], a[3]['dollar']))
         except:
             fil4.append('0')
         try:
-            fil5.append(a[4]['som'])
-            fil5.append(a[4]['dollar'])
+            fil5.extend((a[4]['som'], a[4]['dollar']))
         except:
             fil5.append('0')
 
@@ -135,7 +129,7 @@ def SalerKirim(request):
     saler2 = []
     saler3 = []
     for i in range(1, 13):
-        date = datetime.today()
+        date = datetime.now()
         year = date.year
         if i == 12:
             month2 = 1
@@ -143,8 +137,8 @@ def SalerKirim(request):
         else:
             month2 = i + 1
             year2 = year
-        gte = str(year) + '-' + str(i) + '-01 00:01:00'
-        lte = str(year2) + '-' + str(month2) + '-01 00:01:00'
+        gte = f'{str(year)}-{str(i)}-01 00:01:00'
+        lte = f'{str(year2)}-{str(month2)}-01 00:01:00'
         a = Shop.objects.filter(date__gte=gte, date__lte=lte).values('saler').annotate(
             som=Sum('naqd_som') + Sum('plastik') + Sum('nasiya_som') + Sum('transfer') + Sum('skidka_som'),
             dollar=Sum('naqd_dollar') + Sum('nasiya_dollar') + Sum('skidka_dollar'))
@@ -237,6 +231,9 @@ def DataHome(request):
     data = json.loads(request.body)
     gte = data['date1']
     lte = data['date2']
+    gte = f'{gte} 00:01:00'
+    lte = f'{lte} 00:01:00'
+    print(data)
     salers = UserProfile.objects.extra(
         select={
             'naqd_som': 'select sum(api_shop.naqd_som) from api_shop where api_shop.saler_id = api_userprofile.id and api_shop.date > "{}" and api_shop.date < "{}"'.format(
@@ -625,8 +622,9 @@ class Home(LoginRequiredMixin, TemplateView):
     template_name = 'home.html'
 
     def get_context_data(self, **kwargs):
-        gte, lte = monthly()
-
+        # gte, lte = monthly()
+        lte = datetime.now()
+        gte = lte - timedelta(days=1)
         try:
             salers = UserProfile.objects.extra(
                 select={
@@ -685,14 +683,14 @@ class Home(LoginRequiredMixin, TemplateView):
         skidka_som = 0
         skidka_dollar = 0
         for shop in shops:
-            naqd_som = naqd_som + shop.naqd_som
-            naqd_dollar = naqd_dollar + shop.naqd_dollar
-            plastik = plastik + shop.plastik
-            nasiya_som = nasiya_som + shop.nasiya_som
-            nasiya_dollar = nasiya_dollar + shop.nasiya_dollar
-            transfer = transfer + shop.transfer
-            skidka_som = skidka_som + shop.skidka_som
-            skidka_dollar = skidka_dollar + shop.skidka_dollar
+            naqd_som += shop.naqd_som
+            naqd_dollar += shop.naqd_dollar
+            plastik += shop.plastik
+            nasiya_som += shop.nasiya_som
+            nasiya_dollar += shop.nasiya_dollar
+            transfer += shop.transfer
+            skidka_som += shop.skidka_som
+            skidka_dollar += shop.skidka_dollar
         som = naqd_som + plastik + nasiya_som + transfer + skidka_som
         dollar = naqd_dollar + plastik + nasiya_dollar + transfer + skidka_dollar
 
@@ -707,7 +705,7 @@ class Home(LoginRequiredMixin, TemplateView):
         context['home_t'] = 'true'
         context['salers'] = salers
         context['filials'] = filials
-        context['jami'] = jami
+        context['jamisum'] = jami
 
         if som != 0:
             context['naqd_som'] = naqd_som
@@ -856,6 +854,12 @@ class Products(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['productfilials'] = ProductFilial.objects.all()
+        context['productfilials_total_som'] = ProductFilial.objects.aggregate(Sum('som'))['som__sum']
+        context['productfilials_total_dollar'] = ProductFilial.objects.aggregate(Sum('dollar'))['dollar__sum']
+        context['productfilials_total_quantity'] = ProductFilial.objects.aggregate(Sum('quantity'))['quantity__sum']
+        context['productfilials_total_min_count'] = ProductFilial.objects.aggregate(Sum('min_count'))['min_count__sum']
+        product_filial = ProductFilial.objects.all()
+        context['total_product_sum'] = sum(i.som * i.quantity for i in product_filial)
         context['product'] = 'active'
         context['product_t'] = 'true'
 
@@ -866,7 +870,9 @@ class Filials(LoginRequiredMixin, TemplateView):
     template_name = 'filial.html'
 
     def get_context_data(self, **kwargs):
-        gte, lte = monthly()
+        # gte, lte = monthly()
+        lte = datetime.now()
+        gte = lte - timedelta(days=1)
         som = 0
         dollar = 0
         

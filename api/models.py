@@ -27,10 +27,10 @@ class HodimModel(models.Model):
         verbose_name_plural = 'Hodimlar'
 
     def __str__(self) -> str:
-        return self.ism + " " + self.familya
+        return f'{self.ism} {self.familya}'
 
     def toliq_ism_ol(self):
-        return self.ism + " " + self.familya
+        return f'{self.ism} {self.familya}'
 
     
 class HodimQarz(models.Model):
@@ -278,7 +278,6 @@ class Shop(models.Model):
     #qarzni qaytarish sanasi
     debt_return = models.DateField(null=True, blank=True)
     
-    # discount = models.SmallIntegerField(default=0, verbose_name="Chegirma (skidka) foizi")
     debt_return = models.DateField(null=True, blank=True)
 
     def __str__(self):
@@ -385,7 +384,7 @@ class CartDebt(models.Model):
     difference = models.FloatField(default=0)
 
     def __str__(self):
-        return self.debtor.fio + " / " + self.product.name
+        return f'{self.debtor.fio} / {self.product.name}'
 
     class Meta:
         verbose_name_plural = 'CartDebt'
@@ -518,7 +517,7 @@ class Chiqim(models.Model):
     qachon  = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return self.qayerga.nomi + " " + str(self.qachon)
+        return f'{self.qayerga.nomi} {str(self.qachon)}'
 
 
 class MobilUser(models.Model):
