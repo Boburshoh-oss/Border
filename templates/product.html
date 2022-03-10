@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% block title %}
     <title>Product | Bordo</title>
 {% endblock title %}
@@ -25,6 +26,7 @@
 
 
                         <div class="widget-content widget-content-area br-6">
+                            Necha pullik maxsulotim bor: {{ total_product_sum|intcomma }}
                             <div class="table-responsive mb-4 mt-4">
                                 <table id="html5-extension" class="table table-hover non-hover" style="width:100%">
                                     <thead>
@@ -55,6 +57,19 @@
                                             </tr>
                                         {% endfor %}
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th class="">Jami:</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th>{{ productfilials_total_som|intcomma }} | </th>
+                                            <th>{{ productfilials_total_dollar|intcomma }} | </th>
+                                            <th>{{ productfilials_total_quantity|intcomma }}</th>
+                                            <!-- <th>{{ productfilials_total_min_count|intcomma }}</th> -->
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>

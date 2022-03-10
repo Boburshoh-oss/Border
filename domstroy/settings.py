@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.humanize",
     "api",
     "main",
     "rest_framework",
@@ -32,7 +33,6 @@ INSTALLED_APPS = [
     # sms send
     "django_crontab",
     "import_export",
-    "django.contrib.humanize",
 ]
 
 MIDDLEWARE = [

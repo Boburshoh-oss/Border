@@ -66,7 +66,7 @@
                         <div class="statbox widget box box-shadow p-0">
                             <div class="row">
                                 <div class="form-group mb-0 col-12">
-                                    <span class="form-control flatpickr flatpickr-input active text-center" id="jami">Jami : {{ jami }}</span>
+                                    <span class="form-control flatpickr flatpickr-input active text-center" id="jami">Jami : {{ jamisum }}</span>
                                 </div>
                             </div>
                         </div>
@@ -99,16 +99,15 @@
                                         <tbody id="fil">
                                         {% for filial in filials %}
                                             <tr>
-                                                <td><div class="td-content customer-name">{{ forloop.counter }}</div></td>
                                                 <td><div class="td-content customer-name">{{ filial.name }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.naqd_som|intcomma }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.naqd_dollar|intcomma }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.plastik|intcomma }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.nasiya_som|intcomma }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.nasiya_dollar|floatformat:2|intcomma }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.transfer|floatformat:2|intcomma }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.skidka_som|floatformat:2|intcomma }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.skidka_dollar|floatformat:2|intcomma }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.naqd_som|default_if_none:'0.0' }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.naqd_dollar|default_if_none:'0.0' }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.plastik|default_if_none:'0.0' }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.nasiya_som|default_if_none:'0.0' }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.nasiya_dollar|default_if_none:'0.0' }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.transfer|default_if_none:'0.0' }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.skidka_som|default_if_none:'0.0' }}</div></td>
+                                                <td><div class="td-content pricing">{{ filial.skidka_dollar|default_if_none:'0.0' }}</div></td>
 
                                             </tr>
                                         {% endfor %}
@@ -131,7 +130,6 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-{#                                                <th><div class="th-content">№</div></th>#}
                                                 <th><div class="th-content">Sotuvchi</div></th>
                                                 <th><div class="th-content">Filial</div></th>
                                                 <th><div class="th-content">Naqd Som</div></th>
@@ -148,17 +146,16 @@
                                             {% for saler in salers %}
                                                 {% if saler.staff == 3 %}
                                                     <tr>
-{#                                                        <td><div class="td-content customer-name">{{ forloop.counter0 }}</div></td>#}
-                                                        <td><div class="td-content customer-name">{{ saler.first_name }} {{ saler.last_name }}</div></td>
+                                                        <td><div class="td-content customer-name">{{ saler.first_name }}</div></td>
                                                         <td><div class="td-content pricing">{{ saler.filial.name }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.naqd_som|intcomma }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.naqd_dollar|intcomma }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.plastik|intcomma }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.nasiya_som|intcomma }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.nasiya_dollar|intcomma }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.transfer|intcomma }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.skidka_som|floatformat:2|intcomma }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.skidka_dollar|intcomma }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.naqd_som|default_if_none:'0.0' }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.naqd_dollar|default_if_none:'0.0' }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.plastik|default_if_none:'0.0' }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.nasiya_som|default_if_none:'0.0' }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.nasiya_dollar|default_if_none:'0.0' }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.transfer|default_if_none:'0.0' }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.skidka_som|default_if_none:'0.0' }}</div></td>
+                                                        <td><div class="td-content pricing">{{ saler.skidka_dollar|default_if_none:'0.0' }}</div></td>
                                                     </tr>
                                                 {% endif %}
                                             {% endfor %}
@@ -258,7 +255,6 @@
                                         color: '#888ea8',
                                         formatter: function (w) {
                                             return w.globals.seriesTotals.reduce(function (a, b) {
-                                                // su = (a + b) / 1000000 + "M";
                                                 return a + b
                                             }, 0)
                                         }
@@ -371,7 +367,7 @@
                                 </tr>`;
                         i++;
                         $("#fil").append(tr);
-                        summ = summ + dt.naqd + dt.plastik + dt.nasiya;
+                        summ = summ + dt.naqd_som + dt.plastik + dt.nasiya_som;
                     }
                     $('#jami').empty();
                     $('#jami').append('Jami : ', summ);

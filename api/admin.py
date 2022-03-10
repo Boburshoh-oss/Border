@@ -79,7 +79,6 @@ class ProductFilialAdmin(ExportActionMixin, admin.ModelAdmin):
 class ShopAdmin(admin.ModelAdmin):
     list_display = ('id', 'naqd_som', 'naqd_dollar', 'plastik', 'nasiya_som', 'nasiya_dollar', 'transfer', 'skidka_som', 'skidka_dollar', 'date', 'saler', 'filial')
     search_fields = ('id', 'naqd_som', 'naqd_dollar', 'plastik', 'nasiya_som', 'nasiya_dollar', 'transfer', 'skidka_som', 'skidka_dollar', 'saler', 'filial__name')
-    date_hierarchy = 'date'
     list_filter = ('filial', 'saler')
 
 
