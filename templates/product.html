@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load humanize %}
+{% load mathfilters %}
 {% block title %}
     <title>Product | Bordo</title>
 {% endblock title %}
@@ -26,7 +27,6 @@
 
 
                         <div class="widget-content widget-content-area br-6">
-                            Necha pullik maxsulotim bor: {{ total_product_sum|intcomma }}
                             <div class="table-responsive mb-4 mt-4">
                                 <table id="html5-extension" class="table table-hover non-hover" style="width:100%">
                                     <thead>
@@ -35,8 +35,9 @@
                                             <th>Mahsulot</th>
                                             <th>Ishlab chiqaruvchi</th>
                                             <th>So`m</th>
-                                            <th>Dollar</th>
                                             <th>Soni</th>
+                                            <th>So`m * Soni</th>
+                                            <th>Dollar</th>
                                             <th>Min. Soni</th>
                                             <th>Filial</th>
                                             <th>Guruh</th>
@@ -48,11 +49,12 @@
                                                 <td class="">{{ forloop.counter }}</td>
                                                 <td>{{ productfilial.name }}</td>
                                                 <td>{% if productfilial.product.preparer %}{{ productfilial.product.preparer }}{% else %}-{% endif %}</td>
-                                                <td>{{ productfilial.som }}</td>
-                                                <td>{{ productfilial.dollar }}</td>
-                                                <td>{{ productfilial.quantity|floatformat:0 }}</td>
-                                                <td>{{ productfilial.product.min_count|floatformat:0 }}</td>
-                                                <td>{{ productfilial.filial.id }}</td>
+                                                <td>{{ productfilial.som|intcomma }}</td>
+                                                <td>{{ productfilial.quantity|floatformat:0|intcomma }}</td>
+                                                <td>{{ productfilial.som|mul:productfilial.quantity|floatformat:0|intcomma }}</td>
+                                                <td>{{ productfilial.dollar|intcomma }}</td>
+                                                <td>{{ productfilial.product.min_count|floatformat:0|intcomma }}</td>
+                                                <td>{{ productfilial.filial }}</td>
                                                 <td>{{ productfilial.barcode }}</td>
                                             </tr>
                                         {% endfor %}
@@ -62,9 +64,10 @@
                                             <th class="">Jami:</th>
                                             <th></th>
                                             <th></th>
-                                            <th>{{ productfilials_total_som|intcomma }} | </th>
-                                            <th>{{ productfilials_total_dollar|intcomma }} | </th>
-                                            <th>{{ productfilials_total_quantity|intcomma }}</th>
+                                            <th>{{ productfilials_total_som|intcomma }}|</th>
+                                            <th>{{ productfilials_total_quantity|intcomma }}| </th>
+                                            <th>{{ total_product_sum|intcomma }}| </th>
+                                            <th>{{ productfilials_total_dollar|intcomma }}  </th>
                                             <!-- <th>{{ productfilials_total_min_count|intcomma }}</th> -->
                                             <th></th>
                                             <th></th>

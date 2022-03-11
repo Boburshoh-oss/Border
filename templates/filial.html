@@ -417,15 +417,15 @@
                         var tr = `<tr>
                                     <td><div class="td-content customer-name">` + i + `</div></td>
                                     <td><div class="td-content customer-name">` + dt.name + `</div></td>
-                                    <td><div class="td-content pricing">` + String(dt.naqd_som|intcomma ) + `</div></td>
-                                    <td><div class="td-content pricing">` + String(dt.naqd_dollar) + `</div></td>
-                                    <td><div class="td-content pricing">` + String(dt.plastik) + `</div></td>
-                                    <td><div class="td-content pricing">` + String(dt.nasiya_som|intcomma ) + `</div></td>
-                                    <td><div class="td-content pricing">` + String(dt.nasiya_dollar) + `</div></td>
-                                    <td><div class="td-content pricing">` + String(dt.transfer) + `</div></td>
-                                    <td><div class="td-content pricing">` + String(dt.skidka_som|intcomma ) + `</div></td>
-                                    <td><div class="td-content pricing">` + String(dt.skidka_dollar) + `</div></td>
-                                    <td><div class="td-content pricing">` + String(dt.pay_som|intcomma ) + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.naqd_som ).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.naqd_dollar).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.plastik).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.nasiya_som ).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.nasiya_dollar).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.transfer).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.skidka_som ).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.skidka_dollar).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + `</div></td>
+                                    <td><div class="td-content pricing">` + String(dt.pay_som ) + `</div></td>
                                     <td><div class="td-content pricing">` + String(dt.pay_dollar) + `</div></td>
                                 </tr>`;
                         i++;
@@ -434,9 +434,9 @@
                         dollar += dt.naqd_dollar+dt.nasiya_dollar+dt.skidka_dollar
                     }
                     $('#som').empty();
-                    $('#som').append('Jami (so`m) : ', som|intcomma );
+                    $('#som').append('Jami (so`m) : ', som ).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                     $('#dollar').empty();
-                    $('#dollar').append('Jami (dollar) : ', dollar);
+                    $('#dollar').append('Jami (dollar) : ', dollar).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                 }
             });
         });
