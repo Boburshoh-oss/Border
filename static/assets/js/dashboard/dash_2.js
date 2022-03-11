@@ -7,7 +7,7 @@ try {
             url: '/charthome/',
             success: function (data) {
                 var kirims = data['kirims'];
-                var chiqims = data['chiqims'];
+                // var chiqims = data['chiqims'];
                
                 var options1 = {
                     chart: {
@@ -102,7 +102,7 @@ try {
                         }]
                     },
                     subtitle: {
-                      text: 'Ummumiy savdo',
+                      text: 'Savdo',
                       align: 'left',
                       margin: 0,
                       offsetX: -10,
@@ -134,10 +134,12 @@ try {
                     series: [{
                         name: 'Kirim Som',
                         data: kirims
-                    }, {
-                        name: 'Chiqim So`mda',
-                        data: chiqims
-                    },],
+                    }, 
+                    // {
+                    //     name: 'Chiqim So`mda',
+                    //     data: chiqims
+                    // },
+                ],
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                     xaxis: {
                         axisBorder: {

@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     # sms send
     "django_crontab",
     "import_export",
+    "mathfilters", #pip install django-mathfilters
 ]
 
 MIDDLEWARE = [
@@ -190,7 +191,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 LOGIN_URL = "/login"
 

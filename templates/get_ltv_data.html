@@ -9,10 +9,8 @@
         <tr>
             <th rowspan="2" class="checkborder">№</th>
             <th rowspan="2" class="checkborder">Mijoz ismi</th>
-            <!-- <th colspan="2" class="checkborder">Mijoz olgan tavarlar jami summasi </th> -->
             <th colspan="2" class="checkborder">Mijoz jami qarzdorlik summasi </th>
             <th colspan="2" class="checkborder">Mijoz to'lagan</th>
-            <!-- <th colspan="2" class="checkborder">Mijoz tulagan summmaga nisbatan daromad</th> -->
             <th colspan="2" class="checkborder">Mijoz qarzdorligi qoldiq</th>
             <th colspan="2" class="checkborder">Mijozdan olgan jami summa daromad</th>
         </tr>
@@ -34,11 +32,16 @@
             <tr>
                 <td class="checkborder">{{ forloop.counter }}</td>
                 <td class="checkborder">{{ productfilial.fio }}</td>
-                <td class="checkborder">{{ productfilial.qarz_sum|floatformat:2|default_if_none:'Yuq' }}</td>
+                <td class="checkborder">{{ productfilial.qarz_sum|floatformat:2|default_if_none:'Yo\'q' }}</td>
                 <td class="checkborder">{{ productfilial.qarz_dollar|floatformat:2 }}</td>
                 <td class="checkborder">{{ productfilial.total_tulagan_som|floatformat:2|default:'To\'lanmagan' }}</td>
                 <td class="checkborder">{{ productfilial.total_tulagan_dollar|floatformat:2|default:'To\'lanmagan'  }}</td>
-                <td class="checkborder">{{ productfilial.qoldiq_qarz_sum|floatformat:2|default:'To\'lanmagan'  }}</td>
+                {% if productfilial.qoldiq_qarz_sum >= 0 %}
+                    <td class="checkborder">{{ productfilial.qoldiq_qarz_sum|floatformat:2|default:'To\'lanmagan'  }}</td>
+                {% else %}
+                    <td class="checkborder">0</td>
+                {% endif %}
+                    
                 <td class="checkborder">{{ productfilial.qoldiq_qarz_dollar|floatformat:2|default:'To\'lanmagan'  }}</td>
                 <td class="checkborder">{{ productfilial.mijozdan_daromad_sum|floatformat:2|default:'To\'lanmagan'  }}</td>
                 <td class="checkborder">{{ productfilial.mijozdan_daromad_dollar|floatformat:2|default:'To\'lanmagan'  }}</td>

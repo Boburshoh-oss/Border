@@ -16,6 +16,21 @@ from .sms_sender import sendSmsOneContact
 def monthly():
     date = datetime.now()
     year = date.year
+    
+    if date.month == 12:
+        gte = datetime(year, date.month, 1, 0, 0, 0)
+        lte = datetime(year + 1, 1, 1, 0, 0, 0)
+    else:
+        gte = datetime(year, date.month, 1, 0, 0, 0) #2022-03-01 00:00:00
+        lte = datetime(year, date.month + 1, 1, 0, 0, 0) #2022-04-01 00:00:00
+
+    return gte, lte
+
+def daily_data():
+    # lte = datetime.now() 2022-03-10 11:31:17.107452  
+    # gte = lte - timedelta(days=1) 2022-03-11 11:31:17.107452
+    date = datetime.now()
+    year = date.year
     if date.month == 12:
         gte = datetime(year, date.month, 1, 0, 0, 0)
         lte = datetime(year + 1, 1, 1, 0, 0, 0)
@@ -229,11 +244,10 @@ def Summa(request):
 
 def DataHome(request):
     data = json.loads(request.body)
-    gte = data['date1']
-    lte = data['date2']
-    gte = f'{gte} 00:01:00'
-    lte = f'{lte} 00:01:00'
-    print(data)
+    gtes = data['date1']
+    ltes = data['date2']
+    gte = f'{gtes} 00:01:00'
+    lte = f'{ltes} 00:01:00'
     salers = UserProfile.objects.extra(
         select={
             'naqd_som': 'select sum(api_shop.naqd_som) from api_shop where api_shop.saler_id = api_userprofile.id and api_shop.date > "{}" and api_shop.date < "{}"'.format(
@@ -278,6 +292,7 @@ def DataHome(request):
                 gte, lte)
         }
     )
+    
     shops = Shop.objects.filter(date__gte=gte, date__lte=lte)
     naqd_som = 0
     naqd_dollar = 0
@@ -622,9 +637,11 @@ class Home(LoginRequiredMixin, TemplateView):
     template_name = 'home.html'
 
     def get_context_data(self, **kwargs):
-        # gte, lte = monthly()
-        lte = datetime.now()
-        gte = lte - timedelta(days=1)
+        # gte, lte = monthly() 2022-03-01 00:00:00 2022-04-01 00:00:00
+        lte = datetime.now() #2022-03-11 11:43:51.290605
+        gte = lte - timedelta(days=1) #2022-03-10 11:43:51.290605 
+        lte = lte.date()
+        gte = gte.date()
         try:
             salers = UserProfile.objects.extra(
                 select={
@@ -754,8 +771,7 @@ def get_ltv_data(request):
         else:
             month2 = month + 1
             year2 = year
-        gte = datetime(year, month, 1)
-        lte = datetime(year2, month2, 1)
+       
 
         ll = []
         if date_start is not None and date_end is not None:
@@ -778,7 +794,7 @@ def get_ltv_data(request):
             qarz_sum = debrors.filter(id=debror.id,).aggregate(Sum('som'))['som__sum']
             qarz_dollar = debrors.filter(id=debror.id).aggregate(Sum('dollar'))['dollar__sum']
             
-            # mijoz olgan avarlar total sotish summasi
+            # mijoz olgan tavarlar total sotish summasi
             total_olgan_tavar_sum = productfilials.filter(filial__filial_pay__debtor_id=debror.id).aggregate(Sum('sotish_som'))['sotish_som__sum']
             total_olgan_tavar_dollar = productfilials.filter(filial__filial_pay__debtor_id=debror.id).aggregate(Sum('sotish_dollar'))['sotish_dollar__sum']
             #mijoz olgan avarlar total kelish summasi
