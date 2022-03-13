@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% block title %}
     <title>Sotuvchi | Bordo</title>
 {% endblock title %}
@@ -103,28 +104,28 @@
                                                 <div class="td-content">{{ saler.filial }}</div>
                                             </td>
                                             <td>
-                                                <div class="td-content">{{ saler.naqd_som }}</div>
+                                                <div class="td-content">{{ saler.naqd_som|intcomma }}</div>
                                             </td>
                                             <td>
-                                                <div class="td-content">{{ saler.naqd_dollar }}</div>
+                                                <div class="td-content">{{ saler.naqd_dollar|intcomma }}</div>
                                             </td>
                                             <td>
-                                                <div class="td-content">{{ saler.plastik }}</div>
+                                                <div class="td-content">{{ saler.plastik|intcomma }}</div>
                                             </td>
                                             <td>
-                                                <div class="td-content">{{ saler.nasiya_som }}</div>
+                                                <div class="td-content">{{ saler.nasiya_som|intcomma }}</div>
                                             </td>
                                             <td>
-                                                <div class="td-content">{{ saler.nasiya_dollar }}</div>
+                                                <div class="td-content">{{ saler.nasiya_dollar|intcomma }}</div>
                                             </td>
                                             <td>
-                                                <div class="td-content">{{ saler.transfer }}</div>
+                                                <div class="td-content">{{ saler.transfer|intcomma }}</div>
                                             </td>
                                             <td>
-                                                <div class="td-content">{{ saler.skidka_som }}</div>
+                                                <div class="td-content">{{ saler.skidka_som|intcomma}}</div>
                                             </td>
                                             <td>
-                                                <div class="td-content">{{ saler.skidka_dollar }}</div>
+                                                <div class="td-content">{{ saler.skidka_dollar|intcomma }}</div>
                                             </td>
                                         </tr>
                                     {% endif %}

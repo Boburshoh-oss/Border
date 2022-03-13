@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% block title %}
     <title>Ombor | Bordo</title>
 {% endblock title %}
@@ -48,10 +49,10 @@
                                                 {#                                                    <td class="">{{ ombor.id }}</td>#}
                                                 <td>{{ ombor.name }}</td>
                                                 <td>{{ ombor.preparer }}</td>
-                                                <td>{{ ombor.som }}</td>
-                                                <td>{{ ombor.dollar }}</td>
+                                                <td>{{ ombor.som|intcomma }}</td>
+                                                <td>{{ ombor.dollar|intcomma }}</td>
                                                 <td>{{ ombor.kurs }}</td>
-                                                <td>{{ ombor.quantity|floatformat:0 }}</td>
+                                                <td>{{ ombor.quantity|floatformat:0|intcomma }}</td>
                                                 <td>{{ ombor.barcode }}</td>
                                                 <td>{{ ombor.group }}</td>
                                             </tr>
@@ -62,10 +63,10 @@
                                             {#                                                <th class="">#</th>#}
                                             <th>Jam:</th>
                                             <th>Ishlab chiqaruvchi</th>
-                                            <th>{{ total_som|floatformat:2 }}</th>
-                                            <th>{{ total_dollar|floatformat:2 }}</th>
+                                            <th>{{ total_som|floatformat|intcomma }}</th>
+                                            <th>{{ total_dollar|floatformat|intcomma }}</th>
                                             <th>Kurs</th>
-                                            <th>{{ total_soni }}</th>
+                                            <th>{{ total_soni|intcomma }}</th>
                                             <th>Barcode</th>
                                             <th>Guruh</th>
                                         </tr>

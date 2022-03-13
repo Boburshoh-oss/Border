@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <style>
   .checkborder{
     border: 1px solid #ccc !important;
@@ -32,19 +33,19 @@
             <tr>
                 <td class="checkborder">{{ forloop.counter }}</td>
                 <td class="checkborder">{{ productfilial.fio }}</td>
-                <td class="checkborder">{{ productfilial.qarz_sum|floatformat:2|default_if_none:'Yo\'q' }}</td>
-                <td class="checkborder">{{ productfilial.qarz_dollar|floatformat:2 }}</td>
-                <td class="checkborder">{{ productfilial.total_tulagan_som|floatformat:2|default:'To\'lanmagan' }}</td>
-                <td class="checkborder">{{ productfilial.total_tulagan_dollar|floatformat:2|default:'To\'lanmagan'  }}</td>
+                <td class="checkborder">{{ productfilial.qarz_sum|floatformat|intcomma|default_if_none:'Yo\'q' }}</td>
+                <td class="checkborder">{{ productfilial.qarz_dollar|floatformat|intcomma }}</td>
+                <td class="checkborder">{{ productfilial.total_tulagan_som|floatformat|intcomma|default:'To\'lanmagan' }}</td>
+                <td class="checkborder">{{ productfilial.total_tulagan_dollar|floatformat|intcomma|default:'To\'lanmagan'  }}</td>
                 {% if productfilial.qoldiq_qarz_sum >= 0 %}
-                    <td class="checkborder">{{ productfilial.qoldiq_qarz_sum|floatformat:2|default:'To\'lanmagan'  }}</td>
+                    <td class="checkborder">{{ productfilial.qoldiq_qarz_sum|floatformat|intcomma|default:'To\'lanmagan'  }}</td>
                 {% else %}
                     <td class="checkborder">0</td>
                 {% endif %}
                     
-                <td class="checkborder">{{ productfilial.qoldiq_qarz_dollar|floatformat:2|default:'To\'lanmagan'  }}</td>
-                <td class="checkborder">{{ productfilial.mijozdan_daromad_sum|floatformat:2|default:'To\'lanmagan'  }}</td>
-                <td class="checkborder">{{ productfilial.mijozdan_daromad_dollar|floatformat:2|default:'To\'lanmagan'  }}</td>
+                <td class="checkborder">{{ productfilial.qoldiq_qarz_dollar|floatformat|intcomma|default:'To\'lanmagan'  }}</td>
+                <td class="checkborder">{{ productfilial.mijozdan_daromad_sum|floatformat|intcomma|default:'To\'lanmagan'  }}</td>
+                <td class="checkborder">{{ productfilial.mijozdan_daromad_dollar|floatformat|intcomma|default:'To\'lanmagan'  }}</td>
                 
             </tr>
             {% endfor %}
@@ -55,14 +56,14 @@
         <tr>
             <td>#</td>
             <td>Jami:</td>
-            <td>{{ all_clint_qarz_som|floatformat:2 }}</td>
-            <td>{{ all_clint_qarz_dollar|floatformat:2 }}</td>
-            <td>{{ all_clint_tulagan_som|floatformat:2 }}</td>
-            <td>{{ all_clint_tulagan_dollar|floatformat:2 }}</td>
-            <td>{{ all_clint_qarz_qoldiq_som|floatformat:2 }}</td>
-            <td>{{ all_clint_qarz_qoldiq_dollar|floatformat:2 }}</td>
-            <td>{{ all_clint_daromad_som|floatformat:2 }}</td>
-            <td>{{ all_clint_daromad_dollar|floatformat:2 }}</td>
+            <td>{{ all_clint_qarz_som|floatformat|intcomma }}</td>
+            <td>{{ all_clint_qarz_dollar|floatformat|intcomma }}</td>
+            <td>{{ all_clint_tulagan_som|floatformat|intcomma }}</td>
+            <td>{{ all_clint_tulagan_dollar|floatformat|intcomma }}</td>
+            <td>{{ all_clint_qarz_qoldiq_som|floatformat|intcomma }}</td>
+            <td>{{ all_clint_qarz_qoldiq_dollar|floatformat|intcomma }}</td>
+            <td>{{ all_clint_daromad_som|floatformat|intcomma }}</td>
+            <td>{{ all_clint_daromad_dollar|floatformat|intcomma }}</td>
             
             
         </tr>
