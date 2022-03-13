@@ -827,7 +827,8 @@ def get_ltv_data(request):
                 all_clint_tulagan_som += total_tulagan_som
                 all_clint_tulagan_dollar += total_tulagan_dollar
             #qarz sum
-            all_clint_qarz_qoldiq_som += qoldiq_qarz_sum
+            if qoldiq_qarz_sum > 0:
+                all_clint_qarz_qoldiq_som += qoldiq_qarz_sum
             all_clint_qarz_qoldiq_dollar += qoldiq_qarz_dollar
             all_clint_daromad_som += mijozdan_daromad_sum
             all_clint_daromad_dollar += mijozdan_daromad_dollar
