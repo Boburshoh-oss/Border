@@ -781,18 +781,25 @@ def get_ltv_data(request):
             debrors = Debtor.objects.filter(date__month=month)
             debtor_pay_history = PayHistory.objects.filter(date__month=month)
         productfilials=ProductFilial.objects.all()
+
         all_clint_qarz_som = 0
         all_clint_qarz_dollar = 0
+
         all_clint_tulagan_som = 0
         all_clint_tulagan_dollar = 0
+
         all_clint_qarz_qoldiq_som = 0
         all_clint_qarz_qoldiq_dollar = 0
+
         all_clint_daromad_som = 0
         all_clint_daromad_dollar = 0
         for debror in debrors:
             #qarz
             qarz_sum = debrors.filter(id=debror.id,).aggregate(Sum('som'))['som__sum']
             qarz_dollar = debrors.filter(id=debror.id).aggregate(Sum('dollar'))['dollar__sum']
+            #tulanganlari
+            total_tulagan_som = debtor_pay_history.filter(debtor_id=debror.id).aggregate(Sum('som'))['som__sum']
+            total_tulagan_dollar = debtor_pay_history.filter(debtor_id=debror.id).aggregate(Sum('dollar'))['dollar__sum']
             
             # mijoz olgan tavarlar total sotish summasi
             total_olgan_tavar_sum = productfilials.filter(filial__filial_pay__debtor_id=debror.id).aggregate(Sum('sotish_som'))['sotish_som__sum']
@@ -800,10 +807,6 @@ def get_ltv_data(request):
             #mijoz olgan avarlar total kelish summasi
             total_olgan_tavar_kelish_sum = productfilials.filter(filial__filial_pay__debtor_id=debror.id).aggregate(Sum('som'))['som__sum']
             total_olgan_tavar_kelish_dollar = productfilials.filter(filial__filial_pay__debtor_id=debror.id).aggregate(Sum('dollar'))['dollar__sum']
-            #tulanganlari
-            total_tulagan_som = debtor_pay_history.filter(debtor_id=debror.id).aggregate(Sum('som'))['som__sum']
-            total_tulagan_dollar = debtor_pay_history.filter(debtor_id=debror.id).aggregate(Sum('dollar'))['dollar__sum']
-            
             if qarz_sum is None or qarz_dollar is None or total_tulagan_som is None or total_olgan_tavar_sum is None or total_olgan_tavar_dollar is None or total_tulagan_dollar is None or total_olgan_tavar_kelish_sum is None or total_olgan_tavar_kelish_dollar is None:
                 qoldiq_qarz_sum = 0
                 qoldiq_qarz_dollar = 0
@@ -847,6 +850,7 @@ def get_ltv_data(request):
                 'mijozdan_daromad_dollar': mijozdan_daromad_dollar,
                 }
             ll.append(dt)
+
         context = {
             'malumotlar': ll,
             'all_clint_qarz_som': all_clint_qarz_som,
@@ -1890,7 +1894,7 @@ def schedular_sms_send_alert():
         # 3kun oldingi kunlar
         thire_day_future = datetime.today() + timedelta(days=3)
         thire_day_future_date = thire_day_future.date()
-        debtors = Debtor.objects.filter(debt_return__day=thire_day_future_date.day, debt_return__month=thire_day_future_date.month)
+        debtors = Debtor.objects.filter(debt_return__day=thire_day_future_date.day, debt_return__month=thire_day_future_date.month, som__gt = 0 , dollar__gt = 0)
 
         for debtor in debtors:
             sms_text = sms_text_replace(text, debtor)
