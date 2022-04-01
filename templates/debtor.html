@@ -119,7 +119,7 @@
                                             <div class="col-2">
                                                 <div class="user-profile">
                                                     <!-- <p class="info-title">Telefon 2: </p> -->
-                                                    <p class="user-name">{{ debtor.dollar|intcomma }}</p>
+                                                    <p class="user-name ">{{ debtor.dollar|intcomma }}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -236,6 +236,15 @@
             "lengthMenu": [10, 20, 50, 100],
             "pageLength": 15
         } );
+    </script>
+    <script>
+
+        for (let i = 0; i < document.querySelectorAll('.naqd_som_money').length; i++) {
+            let cash_number = document.querySelectorAll('.naqd_som_money')[i];
+            let cash = Number(cash_number.innerText).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ');
+            cash_number.innerText = cash.slice(0,cash.length-2);
+        }
+        
     </script>
     <!-- END THEME GLOBAL STYLE -->
 {% endblock js %}

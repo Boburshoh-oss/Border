@@ -46,6 +46,7 @@ def ChartHome(request):
     kirimd = []
     chiqims = []
     chiqimd = []
+    yalpi = []
     for i in range(1, 13):
         date = datetime.now().date()
         year = date.year
@@ -67,6 +68,11 @@ def ChartHome(request):
         chs = 0
         chd = 0
         chiqq = Recieve.objects.filter(date__gte=gte, date__lte=lte)
+        yalpi_mahsulot = Yalpi_savdo.objects.filter(date__gte=gte, date__lte=lte)
+        yalpi_sum = 0
+        for item in yalpi_mahsulot:
+            yalpi_sum += item.total_sum
+        # print(yalpi_sum,"yalpi mahsulot keldi")
         for chiq in chiqq:
             chs += chiq.som
             chd += chiq.dollar
@@ -75,11 +81,13 @@ def ChartHome(request):
 
         chiqims.append(chs)
         chiqimd.append(chd)
+        yalpi.append(yalpi_sum)
     dt = {
         'kirims': kirims,
         'kirimd': kirimd,
         'chiqims': chiqims,
         'chiqimd': chiqimd,
+        'yalpi':yalpi
     }
     return JsonResponse(dt)
 
@@ -289,10 +297,11 @@ def DataHome(request):
             'pay_som': 'select sum(api_payhistory.som) from api_payhistory where api_payhistory.filial_id = api_filial.id and api_payhistory.date > "{}" and api_payhistory.date < "{}"'.format(
                 gte, lte),
             'pay_dollar': 'select sum(api_payhistory.dollar) from api_payhistory where api_payhistory.filial_id = api_filial.id and api_payhistory.date > "{}" and api_payhistory.date < "{}"'.format(
-                gte, lte)
+                gte, lte),
+            'yalpi_daromad': 'select sum(api_yalpi_savdo.total_sum) from api_yalpi_savdo where api_yalpi_savdo.filial_id = api_filial.id and api_yalpi_savdo.date > "{}" and api_yalpi_savdo.date < "{}"'.format(
+                gte, lte),
         }
     )
-    
     shops = Shop.objects.filter(date__gte=gte, date__lte=lte)
     naqd_som = 0
     naqd_dollar = 0
@@ -344,8 +353,10 @@ def DataHome(request):
                 'transfer': filial.transfer,
                 'skidka_som': filial.skidka_som,
                 'skidka_dollar': filial.skidka_dollar,
+                'yalpi_daromad': filial.yalpi_daromad,
             }
             fl.append(t)
+        # print(fl,"fl")
         dt1 = {
             'salers': se,
             'filials': fl,
@@ -356,7 +367,7 @@ def DataHome(request):
             'nasiya_dollar': nasiya_dollar,
             'transfer': transfer,
             'skidka_som': skidka_som,
-            'skidka_dollar': skidka_dollar
+            'skidka_dollar': skidka_dollar,
         }
     else:
         se = []
@@ -661,6 +672,7 @@ class Home(LoginRequiredMixin, TemplateView):
                         gte, lte),
                     'skidka_dollar': 'select sum(api_shop.skidka_dollar) from api_shop where api_shop.saler_id = api_userprofile.id and api_shop.date > "{}" and api_shop.date < "{}"'.format(
                         gte, lte),
+                    
                 }
             )
             filials = Filial.objects.extra(
@@ -684,11 +696,13 @@ class Home(LoginRequiredMixin, TemplateView):
                     'pay_som': 'select sum(api_payhistory.som) from api_payhistory where api_payhistory.filial_id = api_filial.id and api_payhistory.date > "{}" and api_payhistory.date < "{}"'.format(
                         gte, lte),
                     'pay_dollar': 'select sum(api_payhistory.dollar) from api_payhistory where api_payhistory.filial_id = api_filial.id and api_payhistory.date > "{}" and api_payhistory.date < "{}"'.format(
-                        gte, lte)
+                        gte, lte),
+                    'yalpi_daromad': 'select sum(api_yalpi_savdo.total_sum) from api_yalpi_savdo where api_yalpi_savdo.filial_id = api_filial.id and api_yalpi_savdo.date > "{}" and api_yalpi_savdo.date < "{}"'.format(
+                        gte, lte),
                 }
             )
         except Exception as e:
-            return HttpResponse(str(e))
+            return HttpResponse(str(e),"nima bu")
 
         shops = Shop.objects.filter(date__gte=gte, date__lte=lte)
         naqd_som = 0
@@ -714,9 +728,16 @@ class Home(LoginRequiredMixin, TemplateView):
         jami = 0
         try:
             for f in filials:
-                jami += f.naqd + f.plastik + f.nasiya
-        except:
-            jami = 0
+                
+                if f.naqd_som == "":
+                    f.naqd_som = 0
+                if f.plastik == "":
+                    f.plastik = 0
+                if f.nasiya_som == "":
+                    f.nasiya = 0
+                jami += int(f.naqd_som) + int(f.plastik) + int(f.nasiya_som)
+        except Exception as e:
+            print(e,"nonemi bu")
         context = super().get_context_data(**kwargs)
         context['home'] = 'active'
         context['home_t'] = 'true'
@@ -1525,6 +1546,12 @@ class Hodim(LoginRequiredMixin, TemplateView):
         context['filials'] = Filial.objects.all()
 
         return context
+
+def delete_hodim(request, id):
+    bad_hodim = UserProfile.objects.get(id=id)
+    bad_hodim.staff=1
+    bad_hodim.save()
+    return redirect('hodim')
 
 class Debtors(LoginRequiredMixin, TemplateView):
     template_name = 'debtor.html'

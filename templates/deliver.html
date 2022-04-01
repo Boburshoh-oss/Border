@@ -110,7 +110,7 @@
                                             <div class="col-2">
                                                 <div class="user-profile">
                                                     <!-- <p class="info-title">Telefon 2: </p> -->
-                                                    <p class="user-name">{{ debtor.som }}</p>
+                                                    <p class="user-name naqd_som_money">{{ debtor.som }}</p>
                                                 </div>
                                             </div>
                                             <div class="col-2">
@@ -129,6 +129,16 @@
                     </div>
                 </div>
             </div>
+            <script>
+                var classic = document.querySelectorAll('.naqd_som_money').length
+                console.log(classic)
+                for (let i = 0; i < document.querySelectorAll('.naqd_som_money').length; i++) {
+                    let cash_number = document.querySelectorAll('.naqd_som_money')[i];
+                    let cash = Number(cash_number.innerText).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ');
+                    cash_number.innerText = cash.slice(0,cash.length-2);
+                }
+        
+            </script>
 {% endblock content %}
 {% block js %}
     <!-- END GLOBAL MANDATORY SCRIPTS -->
@@ -141,5 +151,7 @@
     <script src="{% static 'assets/js/scrollspyNav.js'%}"></script>
     <script src="{% static 'plugins/sweetalerts/sweetalert2.min.js'%}"></script>
     <script src="{% static 'plugins/sweetalerts/custom-sweetalert.js'%}"></script>
+    
+
     <!-- END THEME GLOBAL STYLE -->
 {% endblock js %}

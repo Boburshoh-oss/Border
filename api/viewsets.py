@@ -1032,8 +1032,8 @@ def schedular_sms_send_oldi(nasiya_som, id):
 
 
 class ShopViewset(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
 
@@ -1071,11 +1071,18 @@ class ShopViewset(viewsets.ModelViewSet):
                 filial_obj.savdo_puli_dol += naqd_dollar - skidka_dollar
 
             filial_obj.save()
-
+            print(cart,"nimabu cart")
             for c in cart:
-
                 product = ProductFilial.objects.get(barcode=c['barcode'])
-
+                total_sum = (product.sotish_som - product.som) * c['quantity']
+                
+                yalpi = Yalpi_savdo()
+                yalpi.filial = filial_obj
+                yalpi.total_sum = total_sum
+                yalpi.products=product
+                yalpi.save()
+                
+                
                 if product.quantity > 0 and c['quantity'] <= product.quantity:
                     product.quantity -= c['quantity']
                     product.save()

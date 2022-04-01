@@ -249,8 +249,7 @@ __pycache__/
 /venv
 /env
 /.vscode
-db.sqlite3
-db.sqlite3-journal
+
 media
 *.mo
 .idea

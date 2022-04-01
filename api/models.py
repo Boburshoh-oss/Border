@@ -2,6 +2,16 @@ from django.db import models
 from django.utils import timezone
 
 
+class Yalpi_savdo(models.Model):
+    products = models.ForeignKey("api.ProductFilial",on_delete=models.SET_NULL,null=True)
+    filial = models.ForeignKey("api.Filial",on_delete=models.SET_NULL,null=True)
+    total_sum = models.IntegerField(default=0)
+    date = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.products} - yalpi:{self.total_sum}"
+    
+
 class Filial(models.Model):
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
@@ -104,9 +114,9 @@ class Deliver(models.Model):
     name = models.CharField(max_length=255)
     phone1 = models.CharField(max_length=13)
     phone2 = models.CharField(max_length=13, blank=True, null=True)
-    som = models.FloatField(default=0)
-    dollar = models.FloatField(default=0)
-    difference = models.FloatField(default=0)
+    som = models.IntegerField(default=0)
+    dollar = models.IntegerField(default=0)
+    difference = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -118,8 +128,8 @@ class Deliver(models.Model):
 class DebtDeliver(models.Model):
     deliver = models.ForeignKey(Deliver, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
-    som = models.FloatField(default=0)
-    dollar = models.FloatField(default=0)
+    som = models.IntegerField(default=0)
+    dollar = models.IntegerField(default=0)
 
     def __str__(self):
         return self.deliver.name
@@ -135,8 +145,8 @@ class DeliverPayHistory(models.Model):
         ("Pul o'tkazish", "Pul o'tkazish")
     )
     deliver = models.ForeignKey(Deliver, on_delete=models.CASCADE)
-    som = models.FloatField()
-    dollar = models.FloatField()
+    som = models.IntegerField()
+    dollar = models.IntegerField()
     turi = models.CharField(max_length=50, choices=type_pay, default="Naqd")
     date = models.DateTimeField(auto_now_add=True)
 
@@ -158,22 +168,22 @@ class ProductFilial(models.Model):
     ]
     name = models.CharField(max_length=255)
     preparer = models.CharField(max_length=255, default="")
-    som = models.FloatField(default=0)
-    sotish_som = models.FloatField(default=0)
-    dollar = models.FloatField(default=0)
-    sotish_dollar = models.FloatField(default=0)
-    kurs = models.FloatField(default=0)
+    som = models.IntegerField(default=0) #kelish narxi
+    sotish_som = models.IntegerField(default=0) #sotish narxi
+    dollar = models.IntegerField(default=0)
+    sotish_dollar = models.IntegerField(default=0)
+    kurs = models.IntegerField(default=0)
     barcode = models.CharField(max_length=255)
     group = models.ForeignKey(Groups, on_delete=models.CASCADE)
     measurement = models.CharField(choices=measure, default='dona', max_length=4)
-    min_count = models.FloatField(default=0)
+    min_count = models.IntegerField(default=0)
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE, related_name='filial_product')
-    quantity = models.FloatField(default=0)
+    quantity = models.IntegerField(default=0)
     image = models.ImageField(upload_to="products/", null=True, blank=True)
     
     def __str__(self):
         return self.name
-
+    
     class Meta:
         verbose_name_plural = '3.1) Product Filial'
 
@@ -182,10 +192,10 @@ class Recieve(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
     deliver = models.ForeignKey(Deliver, on_delete=models.CASCADE, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
-    som = models.FloatField(default=0)
-    sum_sotish_som = models.FloatField(default=0)
-    dollar = models.FloatField(default=0)
-    sum_sotish_dollar = models.FloatField(default=0)
+    som = models.IntegerField(default=0)
+    sum_sotish_som = models.IntegerField(default=0)
+    dollar = models.IntegerField(default=0)
+    sum_sotish_dollar = models.IntegerField(default=0)
     status = models.IntegerField(default=0)
     farq_dollar = models.IntegerField(default=0)
     farq_som = models.IntegerField(default=0)
@@ -203,12 +213,12 @@ class Recieve(models.Model):
 class RecieveItem(models.Model):
     recieve = models.ForeignKey(Recieve, on_delete=models.CASCADE)
     product = models.ForeignKey(ProductFilial, on_delete=models.CASCADE)
-    som = models.FloatField(default=0)
-    sotish_som = models.FloatField(default=0)
-    dollar = models.FloatField(default=0)
-    sotish_dollar = models.FloatField(default=0)
-    kurs = models.FloatField(default=0)
-    quantity = models.FloatField(default=0)
+    som = models.IntegerField(default=0)
+    sotish_som = models.IntegerField(default=0)
+    dollar = models.IntegerField(default=0)
+    sotish_dollar = models.IntegerField(default=0)
+    kurs = models.IntegerField(default=0)
+    quantity = models.IntegerField(default=0)
 
     def __str__(self):
         return self.product.name
@@ -219,8 +229,8 @@ class RecieveItem(models.Model):
 
 class Faktura(models.Model):
     date = models.DateTimeField(auto_now_add=True)
-    som = models.FloatField(default=0)
-    dollar = models.FloatField(default=0)
+    som = models.IntegerField(default=0)
+    dollar = models.IntegerField(default=0)
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
     status = models.IntegerField(default=0)
     difference_som = models.IntegerField(default=0)
@@ -238,11 +248,11 @@ class FakturaItem(models.Model):
     faktura = models.ForeignKey(Faktura, on_delete=models.CASCADE)
     product = models.ForeignKey(ProductFilial, on_delete=models.CASCADE)
     group = models.ForeignKey(Groups, on_delete=models.CASCADE, blank=True, null=True)
-    body_som = models.FloatField(default=0)
-    body_dollar = models.FloatField(default=0)
-    som = models.FloatField(default=0)
-    dollar = models.FloatField(default=0)
-    quantity = models.FloatField(default=0)
+    body_som = models.IntegerField(default=0)
+    body_dollar = models.IntegerField(default=0)
+    som = models.IntegerField(default=0)
+    dollar = models.IntegerField(default=0)
+    quantity = models.IntegerField(default=0)
     barcode = models.CharField(max_length=255)
 
     def __str__(self):
@@ -264,14 +274,14 @@ class Course(models.Model):
 
 class Shop(models.Model):
     date = models.DateTimeField(auto_now_add=True)
-    naqd_som = models.FloatField(default=0)
-    naqd_dollar = models.FloatField(default=0)
+    naqd_som = models.IntegerField(default=0) 
+    naqd_dollar = models.IntegerField(default=0)
     plastik = models.FloatField(default=0)
-    nasiya_som = models.FloatField(default=0)
-    nasiya_dollar = models.FloatField(default=0)
-    transfer = models.FloatField(default=0)
-    skidka_dollar = models.FloatField(default=0)
-    skidka_som = models.FloatField(default=0)
+    nasiya_som = models.IntegerField(default=0)
+    nasiya_dollar = models.IntegerField(default=0)
+    transfer = models.IntegerField(default=0)
+    skidka_dollar = models.IntegerField(default=0)
+    skidka_som = models.IntegerField(default=0)
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
     saler = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True)
     
@@ -291,8 +301,8 @@ class Cart(models.Model):
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True)
     product = models.ForeignKey(ProductFilial, on_delete=models.CASCADE)
     price = models.IntegerField()
-    quantity = models.FloatField()
-    total = models.FloatField(blank=True, null=True)
+    quantity = models.IntegerField()
+    total = models.IntegerField(blank=True, null=True)
 
     # def save(self, *args, **kwargs):
     #     self.total = int(self.quantity) * self.product.price
@@ -312,9 +322,9 @@ class Debtor(models.Model):
     fio = models.CharField(max_length=255)
     phone1 = models.CharField(max_length=13)
     phone2 = models.CharField(max_length=13, blank=True, null=True)
-    som = models.FloatField(default=0)
-    dollar = models.FloatField(default=0)
-    difference = models.FloatField(default=0)
+    som = models.IntegerField(default=0)
+    dollar = models.IntegerField(default=0)
+    difference = models.IntegerField(default=0)
 
     #new fields
     debt_return = models.DateField(null=True, blank=True)
@@ -345,8 +355,8 @@ class Debt(models.Model):
     debtor = models.ForeignKey(Debtor, on_delete=models.CASCADE)
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
-    som = models.FloatField(default=0)
-    dollar = models.FloatField(default=0)
+    som = models.IntegerField(default=0)
+    dollar = models.IntegerField(default=0)
     status = models.IntegerField(default=0)
     return_date = models.DateField()
 
@@ -360,8 +370,8 @@ class Debt(models.Model):
 class PayHistory(models.Model):
     debtor = models.ForeignKey(Debtor, on_delete=models.CASCADE)
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE,related_name='filial_pay')
-    som = models.FloatField()
-    dollar = models.FloatField()
+    som = models.IntegerField()
+    dollar = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -393,8 +403,8 @@ class CartDebt(models.Model):
 class ReturnProduct(models.Model):
     product = models.ForeignKey(ProductFilial, on_delete=models.CASCADE)
     return_quan = models.FloatField(default=0)
-    som = models.FloatField(default=0)
-    dollar = models.FloatField(default=0)
+    som = models.IntegerField(default=0)
+    dollar = models.IntegerField(default=0)
     difference = models.FloatField(default=0)
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
@@ -410,8 +420,8 @@ class ReturnProduct(models.Model):
 
 class Pereotsenka(models.Model):
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
-    som = models.FloatField(default=0)
-    dollar = models.FloatField(default=0)
+    som = models.IntegerField(default=0)
+    dollar = models.IntegerField(default=0)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -435,10 +445,10 @@ class ChangePrice(models.Model):
 class ChangePriceItem(models.Model):
     changeprice = models.ForeignKey(ChangePrice, on_delete=models.CASCADE)
     product = models.ForeignKey(ProductFilial, on_delete=models.CASCADE)
-    old_som = models.FloatField(default=0)
-    old_dollar = models.FloatField(default=0)
-    new_som = models.FloatField(default=0)
-    new_dollar = models.FloatField(default=0)
+    old_som = models.IntegerField(default=0)
+    old_dollar = models.IntegerField(default=0)
+    new_som = models.IntegerField(default=0)
+    new_dollar = models.IntegerField(default=0)
     quantity = models.FloatField(default=0)
 
     def __str__(self):
@@ -451,8 +461,8 @@ class ChangePriceItem(models.Model):
 class ReturnProductToDeliver(models.Model):
     deliver = models.ForeignKey(Deliver, on_delete=models.CASCADE)
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
-    som = models.FloatField(default=0)
-    dollar = models.FloatField(default=0)
+    som = models.IntegerField(default=0)
+    dollar = models.IntegerField(default=0)
     kurs = models.IntegerField(null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
 
@@ -466,8 +476,8 @@ class ReturnProductToDeliver(models.Model):
 class ReturnProductToDeliverItem(models.Model):
     returnproduct = models.ForeignKey(ReturnProductToDeliver, on_delete=models.CASCADE)
     product = models.ForeignKey(ProductFilial, on_delete=models.CASCADE)
-    som = models.FloatField(default=0)
-    dollar = models.FloatField(default=0)
+    som = models.IntegerField(default=0)
+    dollar = models.IntegerField(default=0)
     quantity = models.FloatField(default=0)
 
     def __str__(self):
@@ -480,8 +490,8 @@ class ReturnProductToDeliverItem(models.Model):
 class Kamomad(models.Model):
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
     valyuta = models.CharField(max_length=25)
-    difference_sum = models.FloatField(default=0)
-    difference_dollar = models.FloatField(default=0)
+    difference_sum = models.IntegerField(default=0)
+    difference_dollar = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now=True)
 
 

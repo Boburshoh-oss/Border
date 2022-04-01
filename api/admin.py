@@ -15,7 +15,7 @@ admin.site.unregister(User)
 admin.site.register(MobilUser)
 admin.site.register(MyOwnToken)
 admin.site.register(Banner)
-
+admin.site.register(Yalpi_savdo)
 @admin.register(MOrder)
 class MOrderProfileAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'date', 'total')

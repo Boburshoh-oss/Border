@@ -17,7 +17,7 @@
     <link href="{% static 'assets/css/scrollspyNav.css'%}" rel="stylesheet" type="text/css" />
     <link href="{% static 'plugins/flatpickr/custom-flatpickr.css'%}" rel="stylesheet" type="text/css">
     <link href="{% static 'plugins/noUiSlider/custom-nouiSlider.css'%}" rel="stylesheet" type="text/css">
-    <link href="{% static 'plugins/bootstrap-range-Slider/bootstrap-slider.css'%}" rel="stylesheet" type="text/css">
+    {% comment %} <link href="{% static 'plugins/bootstrap-range-Slider/bootstrap-slider.css'%}" rel="stylesheet" type="text/css"> {% endcomment %}
     <!--  END CUSTOM STYLE FILE  -->
 
 {% endblock css %}
@@ -81,33 +81,36 @@
 
                             <div class="widget-content">
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table caption-top">
                                         <thead>
                                             <tr>
-                                                <th><div class="th-content">№</div></th>
-                                                <th><div class="th-content">Filial</div></th>
-                                                <th><div class="th-content">Naqd Som</div></th>
-                                                <th><div class="th-content">Naqd Dollar</div></th>
-                                                <th><div class="th-content">Plastik</div></th>
-                                                <th><div class="th-content">Nasiya Som</div></th>
-                                                <th><div class="th-content">Nasiya Dollar</div></th>
-                                                <th><div class="th-content">Transfer</div></th>
-                                                <th><div class="th-content">Skidka Som</div></th>
-                                                <th><div class="th-content">Skidka Dollar</div></th>
+                                                <th scope="col" >№</th>
+                                                <th scope="col"><div>Filial</div></th>
+                                                <th scope="col"><div>Naqd Som</div></th>
+                                                <th scope="col"><div>Naqd Dollar</div></th>
+                                                <th scope="col"><div>Plastik</div></th>
+                                                <th scope="col"><div>Nasiya Som</div></th>
+                                                <th scope="col"><div>Nasiya Dollar</div></th>
+                                                <th scope="col"><div>Transfer</div></th>
+                                                <th scope="col"><div>Skidka Som</div></th>
+                                                <th scope="col"><div>Skidka Dollar</div></th>
+                                                <th scope="col"><div>Yalpi Daromad so'm</div></th>
                                             </tr>
                                         </thead>
                                         <tbody id="fil">
                                         {% for filial in filials %}
                                             <tr>
-                                                <td><div class="td-content customer-name">{{ filial.name }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.naqd_som|default_if_none:'0.0' }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.naqd_dollar|default_if_none:'0.0' }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.plastik|default_if_none:'0.0' }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.nasiya_som|default_if_none:'0.0' }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.nasiya_dollar|default_if_none:'0.0' }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.transfer|default_if_none:'0.0' }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.skidka_som|default_if_none:'0.0' }}</div></td>
-                                                <td><div class="td-content pricing">{{ filial.skidka_dollar|default_if_none:'0.0' }}</div></td>
+                                                <td scope="row">{{ forloop.counter }}</td>
+                                                <td><div >{{ filial.name }}</div></td>
+                                                <td class="naqd_som_money">{{ filial.naqd_som|default_if_none:'0' }}</td>
+                                                <td><div class="naqd_som_money">{{ filial.naqd_dollar|default_if_none:'0' }}</div></td>
+                                                <td><div class="naqd_som_money">{{ filial.plastik|default_if_none:'0' }}</div></td>
+                                                <td><div class="naqd_som_money">{{ filial.nasiya_som|default_if_none:'0' }}</div></td>
+                                                <td><div class="naqd_som_money">{{ filial.nasiya_dollar|default_if_none:'0.0' }}</div></td>
+                                                <td><div class="naqd_som_money">{{ filial.transfer|default_if_none:'0.0' }}</div></td>
+                                                <td><div class="naqd_som_money">{{ filial.skidka_som|default_if_none:'0.0' }}</div></td>
+                                                <td><div class="naqd_som_money">{{ filial.skidka_dollar|default_if_none:'0.0' }}</div></td>
+                                                <td><div class="naqd_som_money">{{ filial.yalpi_daromad|default_if_none:'0.0' }}</div></td>
 
                                             </tr>
                                         {% endfor %}
@@ -147,15 +150,15 @@
                                                 {% if saler.staff == 3 %}
                                                     <tr>
                                                         <td><div class="td-content customer-name">{{ saler.first_name }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.filial.name }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.naqd_som|default_if_none:'0.0' }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.naqd_dollar|default_if_none:'0.0' }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.plastik|default_if_none:'0.0' }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.nasiya_som|default_if_none:'0.0' }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.nasiya_dollar|default_if_none:'0.0' }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.transfer|default_if_none:'0.0' }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.skidka_som|default_if_none:'0.0' }}</div></td>
-                                                        <td><div class="td-content pricing">{{ saler.skidka_dollar|default_if_none:'0.0' }}</div></td>
+                                                        <td><div>{{ saler.filial.name }}</div></td>
+                                                        <td><div class="naqd_som_money">{{ saler.naqd_som|default_if_none:'0.0' }}</div></td>
+                                                        <td><div class="naqd_som_money">{{ saler.naqd_dollar|default_if_none:'0.0' }}</div></td>
+                                                        <td><div class="naqd_som_money">{{ saler.plastik|default_if_none:'0.0' }}</div></td>
+                                                        <td><div class="naqd_som_money">{{ saler.nasiya_som|default_if_none:'0.0' }}</div></td>
+                                                        <td><div class="naqd_som_money">{{ saler.nasiya_dollar|default_if_none:'0.0' }}</div></td>
+                                                        <td><div class="naqd_som_money">{{ saler.transfer|default_if_none:'0.0' }}</div></td>
+                                                        <td><div class="naqd_som_money">{{ saler.skidka_som|default_if_none:'0.0' }}</div></td>
+                                                        <td><div class="naqd_som_money">{{ saler.skidka_dollar|default_if_none:'0.0' }}</div></td>
                                                     </tr>
                                                 {% endif %}
                                             {% endfor %}
@@ -192,15 +195,23 @@
             type: 'get',
             url: '/summa/',
             success: function (data) {
-                var naqd_som = data['naqd_som'];
-                var naqd_dollar = data['naqd_dollar'];
-                var plastik = data['plastik'];
-                var nasiya_som = data['nasiya_som'];
-                var nasiya_dollar = data['nasiya_dollar'];
-                var transfer = data['transfer'];
-                var skidka_som = data['skidka_som'];
-                var skidka_dollar = data['skidka_dollar'];
-                
+                var naqd_som = (data['naqd_som']);
+                var naqd_dollar = (data['naqd_dollar']);
+                var plastik = (data['plastik']);
+                var nasiya_som = (data['nasiya_som']);
+                var nasiya_dollar = (data['nasiya_dollar']);
+                var transfer = (data['transfer']);
+                var skidka_som = (data['skidka_som']);
+                var skidka_dollar = (data['skidka_dollar']);
+
+                var naqd_som_ = String(data['naqd_som']).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ");
+                var naqd_dollar_ = String(data['naqd_dollar']).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ");
+                var plastik_ = String(data['plastik']).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ");
+                var nasiya_som_ = String(data['nasiya_som']).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ");
+                var nasiya_dollar_ = String(data['nasiya_dollar']).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ");
+                var transfer_ = String(data['transfer']).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ");
+                var skidka_som_ = String(data['skidka_som']).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ");
+                var skidka_dollar_ = String(data['skidka_dollar']).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ");
                 var options = {
                     chart: {
                         type: 'donut',
@@ -239,23 +250,34 @@
                                     },
                                     value: {
                                         show: true,
-                                        fontSize: '14px',
+                                        fontSize: '12px',
                                         fontFamily: 'Nunito, sans-serif',
                                         color: '20',
                                         offsetY: 16,
                                         formatter: function (val) {
+                                            var val_ = String(val).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ") 
                                             // val = val / 1000000 + "M"
-                                            return val
+                                            return val_
                                         }
                                     },
                                     total: {
-                                        show: true,
+                                        show: false,
                                         showAlways: true,
                                         label: 'Total',
                                         color: '#888ea8',
+                                        // formatter: function (val) {
+                                        //     var total_sum = [naqd_som, naqd_dollar, plastik, nasiya_som, nasiya_dollar, transfer, skidka_som, skidka_dollar]
+                                        //     // var val_ = String(val).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ") 
+                                        //     let val = val / 1000000 + "M"
+                                        //     var total = 0;
+                                        //     for (var i in total_sum) {
+                                        //         total += arr[i];
+                                        //     }
+                                        //     return total
+
                                         formatter: function (w) {
                                             return w.globals.seriesTotals.reduce(function (a, b) {
-                                                return a + b
+                                                return String(a + b).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ")
                                             }, 0)
                                         }
                                     }
@@ -267,6 +289,7 @@
                         show: true,
                         width: 25,
                     },
+                    
                     series: [naqd_som, naqd_dollar, plastik, nasiya_som, nasiya_dollar, transfer, skidka_som, skidka_dollar],
                     labels: ['Naqd Som', 'Naqd Dollar', 'Plastik', 'Nasiya Som', 'Nasiya Dollar', 'Transfer', 'Skidka Som', 'Skidka Dollar'],
                     responsive: [{
@@ -349,6 +372,7 @@
                     var transfer = data11['transfer'];
                     var skidka_som = data11['skidka_som'];
                     var skidka_dollar = data11['skidka_dollar'];
+                    var yalpi_summa = data11['yalpi_daromad'];
                     $("#fil").empty();
                     var summ = 0;
                     var i = 1;
@@ -356,19 +380,20 @@
                         var tr = `<tr>
                                     <td><div class="td-content customer-name">`+i+`</div></td>
                                     <td><div class="td-content customer-name">`+dt.name+`</div></td>
-                                    <td><div class="td-content pricing">`+String(dt.naqd_som)+`</div></td>
-                                    <td><div class="td-content pricing">`+String(dt.naqd_dollar)+`</div></td>
-                                    <td><div class="td-content pricing">`+String(dt.plastik)+`</div></td>
-                                    <td><div class="td-content pricing">`+String(dt.nasiya_som)+`</div></td>
-                                    <td><div class="td-content pricing">`+String(dt.nasiya_dollar)+`</div></td>
-                                    <td><div class="td-content pricing">`+String(dt.transfer)+`</div></td>
-                                    <td><div class="td-content pricing">`+String(dt.skidka_som)+`</div></td>
-                                    <td><div class="td-content pricing">`+String(dt.skidka_dollar)+`</div></td>
+                                    <td><div class="td-content pricing">`+String(dt.naqd_som).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ")+`</div></td>
+                                    <td><div class="td-content pricing">`+String(dt.naqd_dollar).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ")+`</div></td>
+                                    <td><div class="td-content pricing">`+String(dt.plastik).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ")+`</div></td>
+                                    <td><div class="td-content pricing">`+String(dt.nasiya_som).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ")+`</div></td>
+                                    <td><div class="td-content pricing">`+String(dt.nasiya_dollar).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ")+`</div></td>
+                                    <td><div class="td-content pricing">`+String(dt.transfer).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ")+`</div></td>
+                                    <td><div class="td-content pricing">`+String(dt.skidka_som).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ")+`</div></td>
+                                    <td><div class="td-content pricing">`+String(dt.skidka_dollar).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ")+`</div></td>
                                 </tr>`;
                         i++;
                         $("#fil").append(tr);
                         summ = summ + dt.naqd_som + dt.plastik + dt.nasiya_som;
                     }
+                    console.log(summ,"bir nimalar keldimi")
                     $('#jami').empty();
                     $('#jami').append('Jami : ', summ);
                     $("#sel").empty();
@@ -378,22 +403,35 @@
                             var tr = `<tr>
                                 <td><div class="td-content customer-name">` + dt.name + `</div></td>
                                 <td><div class="td-content pricing">` + dt.filial + `</div></td>
-                                <td><div class="td-content pricing">` + String(dt.naqd_som) +`</div></td>
-                                <td><div class="td-content pricing">` + String(dt.naqd_dollar) + `</div></td>
-                                <td><div class="td-content pricing">` + String(dt.plastik) + `</div></td>
-                                <td><div class="td-content pricing">` + String(dt.nasiya_som) + `</div></td>
-                                <td><div class="td-content pricing">` + String(dt.nasiya_dollar) + `</div></td>
-                                <td><div class="td-content pricing">` + String(dt.transfer) + `</div></td>
-                                <td><div class="td-content pricing">` + String(dt.skidka_som) + `</div></td>
-                                <td><div class="td-content pricing">` + String(dt.skidka_dollar) + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.naqd_som).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ") +`</div></td>
+                                <td><div class="td-content pricing">` + String(dt.naqd_dollar).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ") + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.plastik).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ") + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.nasiya_som).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ") + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.nasiya_dollar).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ") + `</div></td>
+                                <td><div class="td-content pricing>` + String(dt.transfer).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ") + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.skidka_som).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ") + `</div></td>
+                                <td><div class="td-content pricing">` + String(dt.skidka_dollar).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ") + `</div></td>
                             </tr>`;
                             $('#sel').append(tr);
 
                         }
                     }
+                    
                     }
             });
         });
     });
     </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script>
+        var classic = document.querySelectorAll('.naqd_som_money').length
+        console.log(classic)
+        for (let i = 0; i < document.querySelectorAll('.naqd_som_money').length; i++) {
+            let cash_number = document.querySelectorAll('.naqd_som_money')[i];
+            let cash = Number(cash_number.innerText).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ');
+            cash_number.innerText = cash.slice(0,cash.length-2);
+        }
+
+    </script>
+    
 {% endblock %}

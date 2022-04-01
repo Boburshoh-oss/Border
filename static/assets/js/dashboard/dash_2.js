@@ -7,8 +7,8 @@ try {
             url: '/charthome/',
             success: function (data) {
                 var kirims = data['kirims'];
-                // var chiqims = data['chiqims'];
-               
+                var chiqims = data['chiqims'];
+                var yalpi = data['yalpi']
                 var options1 = {
                     chart: {
                         fontFamily: 'Nunito, sans-serif',
@@ -79,10 +79,11 @@ try {
                                         offsetY: 5
                                     }
                                 })
+                                
                             },
                         }
                     },
-                    colors: ['#1b55e2', '#e7515a'],
+                    colors: ['#1b55e2', '#e7515a', '#00AFB9'],
                     dataLabels: {
                         enabled: false
                     },
@@ -135,10 +136,15 @@ try {
                         name: 'Kirim Som',
                         data: kirims
                     }, 
-                    // {
-                    //     name: 'Chiqim So`mda',
-                    //     data: chiqims
-                    // },
+                    {
+                        name: 'Chiqim So`mda',
+                        data: chiqims
+                    },
+                    {
+                        name: 'Yalpi so`mda',
+                        // data: [12,13,140000000,1500000000000,160000000000000,1700000000,1800000000000,19000000,2000000]
+                        data: yalpi
+                    },
                 ],
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                     xaxis: {
@@ -165,7 +171,7 @@ try {
                         labels: {
                             formatter: function (value, index) {
                                 // return (value / 1000000) + 'M'
-                                return value
+                                return String(value).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 ")
                             },
                             offsetX: -22,
                             offsetY: 0,

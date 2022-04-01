@@ -52,7 +52,7 @@
                                                     <h4>FI</h4>
                                                 </div>
                                             </div>
-                                            <div class="col-3">
+                                            <div class="col-2">
                                                 <div class="">
                                                     <h4>Lavozim</h4>
                                                 </div>
@@ -62,7 +62,7 @@
                                                     <h4>Filial</h4>
                                                 </div>
                                             </div>
-                                            <div class="col-3">
+                                            <div class="col-2">
                                                 <div class="user-phone">
                                                     <h4>Telefon</h4>
                                                 </div>
@@ -74,7 +74,7 @@
                                     </div>
                                 </div>
                                 {% for saler in salers %}
-                                    <div class="items">
+                                    <div class="items items-header-section">
                                         <div class="item-content">
                                             <div class="row" style="width: 100%">
                                                 <div class="col-1">
@@ -105,7 +105,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-3">
+                                                <div class="col-2">
                                                     <div class="user-profile">
                                                         <div class="user-meta-info">
                                                             <p class="user-name" data-name="Alan Green">{% if saler.staff == 2 %}Ish boshqaruvchi{% elif saler.staff == 3 %}Sotuvchi{% elif saler.staff == 4 %}Omborchi{% endif %}</p>
@@ -118,11 +118,16 @@
                                                         <p class="usr-email-addr" data-email="alan@mail.com">{{ saler.filial.name }}</p>
                                                     </div>
                                                 </div>
-                                                <div class="col-3">
+                                                <div class="col-2">
                                                     <div class="user-phone">
                                                         <p class="info-title">Telefon: </p>
                                                         <p class="usr-ph-no" data-phone="+1 (070) 123-4567">{{ saler.phone }}</p>
                                                     </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    {% comment %} <div class="user-phone"> {% endcomment %}
+                                                    <a class="btn btn-danger" href="{% url 'hodim_delete' id=saler.id %}">Delete</a>
+                                                    {% comment %} </div> {% endcomment %}
                                                 </div>
                                             </div>
                                                 <!-- <div class="action-btn">

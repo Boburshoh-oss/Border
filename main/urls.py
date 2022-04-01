@@ -22,6 +22,7 @@ urlpatterns = [
     path('table/', Table.as_view(), name='table'),
     path('datatable/', DataTable.as_view(), name='datatable'),
     path('hodim/', Hodim.as_view(), name='hodim'),
+    path('hodim_delete/<int:id>/', delete_hodim, name='hodim_delete'),
     path('debtor/', Debtors.as_view(), name='debtor'),
     path('debtorhistory/', DebtorHistory, name='debtorhistory'),
     path('deliverhistory/', DeliverHistory, name='deliverhistory'),
