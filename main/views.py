@@ -47,6 +47,7 @@ def ChartHome(request):
     chiqims = []
     chiqimd = []
     yalpi = []
+    filial_sum = []
     for i in range(1, 13):
         date = datetime.now().date()
         year = date.year
@@ -62,8 +63,10 @@ def ChartHome(request):
         kirr = Shop.objects.filter(date__gte=gte, date__lte=lte)
         ks = 0
         kd = 0
+        filial_count = 0
         for kir in kirr:
             ks += kir.naqd_som + kir.plastik + kir.nasiya_som + kir.transfer + kir.skidka_som
+            filial_count += kir.naqd_som + kir.plastik + kir.nasiya_som + kir.transfer 
             kd += kir.naqd_dollar + kir.nasiya_dollar + kir.skidka_dollar
         chs = 0
         chd = 0
@@ -82,12 +85,14 @@ def ChartHome(request):
         chiqims.append(chs)
         chiqimd.append(chd)
         yalpi.append(yalpi_sum)
+        filial_sum.append(filial_count)
     dt = {
         'kirims': kirims,
         'kirimd': kirimd,
         'chiqims': chiqims,
         'chiqimd': chiqimd,
-        'yalpi':yalpi
+        'yalpi':yalpi,
+        'filial_sum':filial_sum
     }
     return JsonResponse(dt)
 
@@ -729,11 +734,11 @@ class Home(LoginRequiredMixin, TemplateView):
         try:
             for f in filials:
                 
-                if f.naqd_som == "":
+                if f.naqd_som is None:
                     f.naqd_som = 0
-                if f.plastik == "":
+                if f.plastik is None:
                     f.plastik = 0
-                if f.nasiya_som == "":
+                if f.nasiya_som is None:
                     f.nasiya = 0
                 jami += int(f.naqd_som) + int(f.plastik) + int(f.nasiya_som)
         except Exception as e:
@@ -913,6 +918,7 @@ class Filials(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         # gte, lte = monthly()
+        
         lte = datetime.now()
         gte = lte - timedelta(days=1)
         som = 0

@@ -1032,8 +1032,8 @@ def schedular_sms_send_oldi(nasiya_som, id):
 
 
 class ShopViewset(viewsets.ModelViewSet):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
 
